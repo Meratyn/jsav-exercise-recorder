@@ -143,6 +143,12 @@ module.exports = {
 }
 },{}],4:[function(require,module,exports){
 "use strict";
+$(document).on("jsav-log-event",  function (event, eventData) {
+  console.log('EVENT', event);
+  console.log('EVENT DATA', eventData);
+  passEvent(eventData)
+});
+
 const submission = require('./submission/submission');
 const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
@@ -154,8 +160,8 @@ let jsav = {};
 let exercise = {};
 
 function passEvent(eventData) {
-  console.log("Exercise", exercise)
-
+  console.log("EXERCISE", exercise)
+  
   switch(eventData.type){
     case 'jsav-init':
       def_func.setExerciseOptions(eventData);
@@ -188,7 +194,7 @@ function passEvent(eventData) {
       // We don't know what happened
       // Anyway if the exercise exists we should save the state if it has changed
       console.log('Unknown event', eventData);
-      anim_func.handleStateChange(exercise, eventData);
+      // anim_func.handleStateChange(exercise, eventData);
   }
 }
 
