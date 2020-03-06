@@ -1,13 +1,25 @@
-// Takes an string containing an html element
+// Takes a string containing an html element
 function extractTextByClassName(html, className){
-  let doc = (new DOMParser()).parseFromString(removeTrimLineBreaks(html), 'text/html');
-  return doc.getElementsByClassName('instructions')[0].innerHTML
+  let text;
+  try {
+    let doc = (new DOMParser()).parseFromString(removeTrimLineBreaks(html), 'text/html');
+    text = doc.getElementsByClassName('instructions')[0].innerHTML;
+  } catch (err) {
+    throw new Error('Failed to extract text: ' + err)
+  }
+  return text;
 }
 
-// Takes an string containing an html element
+// Takes a string containing an html element
 function extractTextByTagName(html, tagName){
-  let doc = (new DOMParser()).parseFromString(removeTrimLineBreaks(html), 'text/html');
-  return doc.getElementsByTagName(tagName)[0].innerHTML;
+  let text;
+  try {
+    let doc = (new DOMParser()).parseFromString(removeTrimLineBreaks(html), 'text/html');
+    text = doc.getElementsByTagName(tagName)[0].innerHTML;
+  } catch (err) {
+    throw new Error('Failed to extract text: ' + err)
+  }
+  return text;
 }
 
 const removeTrimLineBreaks = (string) => string.split(/\r?\n|\r/g).map(e => e.trim()).join('');

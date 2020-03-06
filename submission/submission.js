@@ -95,6 +95,13 @@ function setDsId(dsIndex, dsId) {
 }
 
 function addDsClick(data) {
+  if(submission.initialState.length === 0){
+    let error = new Error('Animation initialization data is missing.\n'
+    + 'Exercise is not being recorded for animation: ' 
+    + 'did the exercise emite javas-exercise-init event?')
+    console.log(error)
+    return false;
+  }
   if(valid.dsClick(data)) {
     submission.animation.push(data);
     return JSON.stringify(submission.animation);

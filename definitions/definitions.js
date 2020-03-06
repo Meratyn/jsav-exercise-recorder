@@ -20,15 +20,28 @@ function setFinalGrade(eventData) {
 }
 
 function getExerciseTitle(initialHTML) {
-  return helpers.extractTextByTagName(initialHTML, 'h1');
+  let title;
+  try {
+    title = helpers.extractTextByTagName(initialHTML, 'h1');
+  } catch (err) {
+    console.log('Could not get exercise title, was it set within the jsavcontainer div?'
+    + '\nReturning empty string: ' + err);
+    title = ''
+  }
+  return title;
 }
 
 function getExerciseInstructions(initialHTML) {
-  const instructions = helpers.extractTextByClassName(initialHTML, 'instructions');
+  let instructions;
+  try {
+    instructions = helpers.extractTextByClassName(initialHTML, 'instructions');
+  } catch (err) {
+    console.log('Could not get exercise instruction, was it set within the jsavcontainer div?'
+    + '\nReturning empty string: ' + err)
+    instructions = '';
+  }
   return instructions;
 }
-
-
 
 
 module.exports = {
