@@ -16,7 +16,7 @@ function setDefinitions(exercise) {
 }
 
 function setFinalGrade(eventData) {
-  submission.addDefinition.score({ ...eventData.score });
+  return submission.addDefinition.score({ ...eventData.score });
 }
 
 function getExerciseTitle(initialHTML) {

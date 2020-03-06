@@ -36,6 +36,9 @@ function passEvent(eventData) {
     case 'recorder-set-id':
       init_state_func.setNewId(eventData);
       break;
+    case 'jsav-exercise-undo':
+      setTimeout(() => anim_func.handleStateChange(exercise, eventData), 1000);
+      break;
     case 'jsav-exercise-gradeable-step':
       anim_func.handleStateChange(exercise, eventData);
       break;
