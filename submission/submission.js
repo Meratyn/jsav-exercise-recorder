@@ -21,7 +21,7 @@ function reset() {
     style: {},
     score: {},
     options: {},
-    
+
   };
   submission.initialState = [];
   submission.animation = [];
@@ -30,10 +30,10 @@ function reset() {
 function state() {
   const metadata = helpers.copyObject(submission.metadata);
   const definitions = helpers.copyObject(submission.definitions);
- 
+
   // TODO: change to support new DSs
   const initialState = submission.initialState.map(ds => helpers.copyObject(ds));
-  const animation = submission.animation.map(a => helpers.copyObject(a));  
+  const animation = submission.animation.map(a => helpers.copyObject(a));
   return {
     metadata,
     definitions,
@@ -50,7 +50,7 @@ function addMetadata(metadata) {
   if(valid.metadata(metadata)) {
     submission.metadata = { ...metadata };
     return JSON.stringify(submission.metadata);
-  } 
+  }
   return false;
 }
 
@@ -66,7 +66,7 @@ function addScore(score) {
   if (valid.score(score)) {
     submission.definitions.score = { ...score };
     JSON.stringify(submission.definitions.score);
-  } 
+  }
   return false;
 };
 
@@ -74,13 +74,13 @@ function addOptions(options) {
   if(valid.options(options)) {
     submission.definitions.options = { ...options };
     return JSON.stringify(submission.definitions.options);
-  } 
+  }
   return false;
 }
 
 function addDataStructure(ds) {
   if(valid.dataStructure(ds)) {
-    submission.initialState.push(ds);    
+    submission.initialState.push(ds);
     return JSON.stringify(submission.initialState);
   }
   return false;
@@ -95,14 +95,7 @@ function setDsId(dsIndex, dsId) {
 }
 
 function addDsClick(data) {
-  if(submission.initialState.length === 0){
-    let error = new Error('Animation initialization data is missing.\n'
-    + 'Exercise is not being recorded for animation: ' 
-    + 'did the exercise emite javas-exercise-init event?')
-    console.log(error)
-    return false;
-  }
-  if(valid.dsClick(data)) {
+  if(valid.dsClick(data) && exerciseInitialized()) {
     submission.animation.push(data);
     return JSON.stringify(submission.animation);
   }
@@ -110,7 +103,7 @@ function addDsClick(data) {
 }
 
 function addStateChange(data) {
-  if(valid.stateChange(data)) {
+  if(valid.stateChange(data) && exerciseInitialized()) {
     submission.animation.push(data);
     return JSON.stringify(submission.animation);
   }
@@ -118,11 +111,22 @@ function addStateChange(data) {
 }
 
 function addGradeButtonClick(data) {
-  if(valid.gradeButtonClick(data)) {
+  if(valid.gradeButtonClick(data) && exerciseInitialized()) {
     submission.animation.push(data);
     return JSON.stringify(submission.animation);
   }
   return false;
+}
+
+const exerciseInitialized () => {
+  if(submission.initialState.length === 0){
+    let error = new Error('Animation initialization data is missing.\n'
+    + 'Exercise is not being recorded for animation: '
+    + 'did the exercise emite javas-exercise-init event?')
+    console.log(error)
+    return false;
+  }
+  return true;
 }
 
 const addDefinition = {
