@@ -43,8 +43,7 @@ function passEvent(eventData) {
       anim_func.handleGradeButtonClick(eventData);
       break;
     case 'jsav-exercise-grade':
-      def_func.setFinalGrade(eventData);
-      services.sendSubmission(submission.state());
+      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state());
       break;
     default:
       // We don't know what happened

@@ -63,9 +63,10 @@ function addStyle(style) {
 }
 
 function addScore(score) {
-  if (valid.score(score)) {
+  if (valid.score(score) && exerciseInitialized()) {
     submission.definitions.score = { ...score };
     JSON.stringify(submission.definitions.score);
+    return true;
   }
   return false;
 };
@@ -122,7 +123,7 @@ const exerciseInitialized  = () => {
   if(submission.initialState.length === 0){
     let error = new Error('Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
-    + 'did the exercise emite javas-exercise-init event?')
+    + 'did the exercise emit javas-exercise-init event?')
     console.log(error)
     return false;
   }
