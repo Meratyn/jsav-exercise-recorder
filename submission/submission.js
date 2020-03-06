@@ -118,7 +118,7 @@ function addGradeButtonClick(data) {
   return false;
 }
 
-const exerciseInitialized () => {
+const exerciseInitialized  = () => {
   if(submission.initialState.length === 0){
     let error = new Error('Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
