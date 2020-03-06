@@ -24,7 +24,7 @@ function getExerciseTitle(initialHTML) {
   try {
     title = helpers.extractTextByTagName(initialHTML, 'h1');
   } catch (err) {
-    console.log('Could not get exercise title, was it set within the jsavcontainer div?'
+    console.warn('Could not get exercise title, was it set within the jsavcontainer div?'
     + '\nReturning empty string: ' + err);
     title = ''
   }
@@ -36,7 +36,7 @@ function getExerciseInstructions(initialHTML) {
   try {
     instructions = helpers.extractTextByClassName(initialHTML, 'instructions');
   } catch (err) {
-    console.log('Could not get exercise instruction, was it set within the jsavcontainer div?'
+    console.warn('Could not get exercise instruction, was it set within the jsavcontainer div?'
     + '\nReturning empty string: ' + err)
     instructions = '';
   }

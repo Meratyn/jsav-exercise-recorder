@@ -2,7 +2,7 @@
 
 function customError(message) {
   const error = new Error(message);
-  console.log(error);
+  console.warn(error);
   // TODO: add error to submission? & stop recording
 }
 

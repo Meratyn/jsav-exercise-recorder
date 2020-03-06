@@ -124,7 +124,7 @@ const exerciseInitialized  = () => {
     let error = new Error('Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
     + 'did the exercise emit javas-exercise-init event?')
-    console.log(error)
+    console.warn(error)
     return false;
   }
   return true;

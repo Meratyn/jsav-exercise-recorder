@@ -45,10 +45,12 @@ function passEvent(eventData) {
     case 'jsav-exercise-grade':
       def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state());
       break;
+    case 'jsav-recorded':
+      break;
     default:
       // We don't know what happened
       // Anyway if the exercise exists we should save the state if it has changed
-      console.log('Unknown event', eventData);
+      console.warn('UNKNOWN EVENT', eventData);
       // anim_func.handleStateChange(exercise, eventData);
   }
 }
