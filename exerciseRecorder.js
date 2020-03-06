@@ -49,9 +49,7 @@ function passEvent(eventData) {
       break;
     default:
       // We don't know what happened
-      // Anyway if the exercise exists we should save the state if it has changed
       console.warn('UNKNOWN EVENT', eventData);
-      // anim_func.handleStateChange(exercise, eventData);
   }
 }
 
