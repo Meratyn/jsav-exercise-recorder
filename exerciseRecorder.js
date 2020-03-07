@@ -36,13 +36,16 @@ function passEvent(eventData) {
     case 'recorder-set-id':
       init_state_func.setNewId(eventData);
       break;
+    case 'jsav-exercise-undo':
+      setTimeout(() => anim_func.handleStateChange(exercise, eventData), 1000);
+      break;
     case 'jsav-exercise-gradeable-step':
       anim_func.handleStateChange(exercise, eventData);
       break;
     case 'jsav-exercise-grade-button':
-      anim_func.handleGradeButtonClick(eventData);
       break;
     case 'jsav-exercise-grade':
+      anim_func.handleGradeButtonClick(eventData);
       def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state());
       break;
     case 'jsav-recorded':

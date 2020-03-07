@@ -28,19 +28,33 @@ function handleStateChange(exercise, eventData) {
 }
 
 function addNewStatesToSubmission(eventData, newStates) {
+  const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'state-change';
   const animation = submission.state().animation;
-  const currentStep = eventData.currentStep !== undefined ? eventData.currentStep
-    : animation[animation.length - 1].currentStep +1;
+  const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
   newStates.forEach((state, i) => {
     const newState = {
-      type: 'state-change',
+      type,
       tstamp: eventData.tstamp || new Date(),
       currentStep,
       dataStructureId: state.id, 
-      state: state.values
+      state: [ ...state.values]
     }; 
       submission.addAnimationStep.stateChange(newState);
   });
+}
+
+function handleUndo(exercise, eventData) {
+  const animation = submission.state().animation;
+  // const lastStep = animation[animation.length -1];
+  // const undoStep = {
+  //   type: 'undo',
+  //   tstamp: eventData.tstamp || new Date(),
+  //   currentStep: lastStep.currentStep,
+  //   dataStructureId: lastStep.state.id, 
+  //   state: lastStep.state
+  // };
+  // submission.addAnimationStep.stateChange(undoStep);
+  console.log(animation)
 }
 
 // TODO: support for other data structures
@@ -55,6 +69,19 @@ function submissionDataStructures() {
   return dataStructures;
 }
 
+function dsInsubmissionLastValues(dsId) {
+  let initialDs = submission.state().initialState.find(ds => ds.id === dsId);
+  const initialDsValues = [...initialDs.values];
+  let lastDsValues;
+  let stateTypes = ['state-change', 'undo'];
+  submission.state().animation.forEach((step,  i) => {
+    if(stateTypes.includes(step.type) && step.dataStructureId === dsId) {
+      lastDsValues = [...step.state];
+    } 
+  })
+  return lastDsValues || initialDsValues;
+}
+
 // Returns an empthy array if there is not state change
 function getNewStates(dataStructures, exercise) {
   return dataStructures.map((ds, i) => {
@@ -64,7 +91,7 @@ function getNewStates(dataStructures, exercise) {
         const arrayInExercise = Array.isArray(exercise.initialStructures) ?
         exercise.initialStructures.find(s => s.element['0'].id === ds.id) :
         exercise.initialStructures;
-        if (!arrayInExercise._values.every((v,j) => v === ds.values[j])) {
+        if (!arrayInExercise._values.every((v,j) => v === dsInsubmissionLastValues(ds.id)[j])) {
           return { id: ds.id, values: [ ...arrayInExercise._values ] };
         }
         break;
@@ -87,5 +114,6 @@ function handleGradeButtonClick(eventData) {
 module.exports = {
   handleArrayEvents,
   handleStateChange,
+  handleUndo,
   handleGradeButtonClick,
 }
