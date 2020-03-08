@@ -1,12 +1,16 @@
 const helpers = require('./helpers');
 const valid = require('./validate');
 
+// TODO: set all try catch statements
+
+
 const submission =  {
   metadata: {},
   definitions: {
     style: {},
     score: {},
     options: {},
+    modelSolution: "",
   },
   initialState: [],
   animation: []
@@ -79,6 +83,16 @@ function addOptions(options) {
   return false;
 }
 
+function addModelSolution(modelSolution) {
+  try {
+    valid.modelSolution(modelSolution)
+} catch (error) {
+  throw error;
+}
+  submission.definitions.modelSolution = modelSolution;
+  return JSON.stringify(submission.definitions.modelSolution);
+}
+
 function addDataStructure(ds) {
   if(valid.dataStructure(ds)) {
     submission.initialState.push(ds);
@@ -134,6 +148,7 @@ const addDefinition = {
   style: addStyle,
   score: addScore,
   options: addOptions,
+  modelSolution: addModelSolution
 };
 
 const addInitialState = {

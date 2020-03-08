@@ -10,13 +10,27 @@ function setExerciseOptions(eventData) {
 }
 
 function setDefinitions(exercise) {
-  const definitions = [];
   // TODO: implement setDefinitions(exercise)
-  return definitions;
+  try {
+    setModelSolution(exercise.options.model.toString());
+  } catch (error) {
+    console.warn(`Could nor set model answer when recording animation: ${error.message}`);
+    return false;
+  }
+  return true
 }
 
 function setFinalGrade(eventData) {
   return submission.addDefinition.score({ ...eventData.score });
+}
+
+function setModelSolution(modelSolution) {
+  try {
+    submission.addDefinition.modelSolution(modelSolution);
+  } catch (error) {
+    throw error;
+  }
+  return true;
 }
 
 function getExerciseTitle(initialHTML) {

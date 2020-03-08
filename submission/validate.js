@@ -1,3 +1,5 @@
+//TODO: set all try catch statements
+
 const helpers = require('./helpers');
 
 function validateMetadata(metadata) {
@@ -24,6 +26,15 @@ function validateOptions(option) {
   const notArray = helpers.objectIsNotArray(option);
   const noInnerObjects = helpers.doesNotContainObjects(option);
   return (notEmpthy && notArray && noInnerObjects);
+}
+
+function validateModelSolution(modelSolution) {
+  try {
+    helpers.isValidString(modelSolution);
+  } catch (error) {
+    throw error;
+  }
+  return true;
 }
 
 function validateDataStructure(ds) {
@@ -54,6 +65,7 @@ module.exports = {
   style: validateStyle,
   score: validateScore,
   options: validateOptions,
+  modelSolution: validateModelSolution,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
   stateChange: validateStateChange,
