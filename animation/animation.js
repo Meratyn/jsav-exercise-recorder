@@ -11,7 +11,11 @@ function handleArrayEvents(eventData) {
         dataStructureId: eventData.arrayid,
         index: eventData.index
       }
-      submission.addAnimationStep.dsClick(clickData);   
+      try {
+        submission.addAnimationStep.dsClick(clickData);   
+      } catch (error) {
+        console.warn(`Could not set array click in animation: ${error}`);
+      }
   }
   // TODO: check also for state changes?
 }
@@ -39,22 +43,12 @@ function addNewStatesToSubmission(eventData, newStates) {
       dataStructureId: state.id, 
       state: [ ...state.values]
     }; 
+    try {
       submission.addAnimationStep.stateChange(newState);
+    } catch (error) {
+      console.warn(`Could not add state change to animatio: ${error}`)
+    }
   });
-}
-
-function handleUndo(exercise, eventData) {
-  const animation = submission.state().animation;
-  // const lastStep = animation[animation.length -1];
-  // const undoStep = {
-  //   type: 'undo',
-  //   tstamp: eventData.tstamp || new Date(),
-  //   currentStep: lastStep.currentStep,
-  //   dataStructureId: lastStep.state.id, 
-  //   state: lastStep.state
-  // };
-  // submission.addAnimationStep.stateChange(undoStep);
-  console.log(animation)
 }
 
 // TODO: support for other data structures
@@ -101,19 +95,49 @@ function getNewStates(dataStructures, exercise) {
   });
 }
 
+function handleModelSolution(exercise, eventData) {
+  const type = eventData.type === 'jsav-exercise-model-recorded' ? 'model-opened'
+  : String(eventData.type.match(/model.*/))
+  const currentStep = eventData.currentStep;
+  switch(type) {
+    case 'model-open':
+      break;
+    case 'model-init':
+      break;
+    default:
+      const newState = {
+        type,
+        tstamp: eventData.tstamp || new Date(),
+        currentStep,
+        state: exercise.modelDialog[0].innerHTML
+      }; 
+      try {
+        submission.addAnimationStep.modelSolution(newState);
+      } catch (error) {
+        console.warn(`Could not add model solution step to animation: ${error}`)
+      }
+      break;
+  }
+}
+
 function handleGradeButtonClick(eventData) {
-  submission.addAnimationStep.gradeButtonClick({
-    type: "grade",
-    tstamp: eventData.tstamp,
-    currentStep: eventData.currentStep,
-    score: { ...eventData.score }
-  });
+  try {
+    submission.addAnimationStep.gradeButtonClick({
+      type: "grade",
+      tstamp: eventData.tstamp,
+      currentStep: eventData.currentStep,
+      score: { ...eventData.score }
+    });
+  } catch (error) {
+    console.warn(`Could not add grade button click to animation: ${error}`)
+  }
+
 }
 
 
 module.exports = {
   handleArrayEvents,
   handleStateChange,
-  handleUndo,
   handleGradeButtonClick,
+  handleModelSolution,
 }

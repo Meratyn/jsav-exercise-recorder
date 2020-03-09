@@ -48,6 +48,9 @@ function passEvent(eventData) {
       anim_func.handleGradeButtonClick(eventData);
       def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state());
       break;
+    case String(eventData.type.match(/^jsav-exercise-model-.*/)):
+      anim_func.handleModelSolution(exercise, eventData);
+      break;
     case 'jsav-recorded':
       break;
     default:

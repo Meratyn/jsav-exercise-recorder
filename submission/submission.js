@@ -118,11 +118,24 @@ function addDsClick(data) {
 }
 
 function addStateChange(data) {
-  if(valid.stateChange(data) && exerciseInitialized()) {
-    submission.animation.push(data);
-    return JSON.stringify(submission.animation);
+  try {
+    valid.stateChange(data);
+    exerciseInitialized();
+  } catch (error) {
+    throw error;
   }
-  return false;
+  submission.animation.push(data);
+  return JSON.stringify(submission.animation);
+}
+
+function addModelSolutionStep(data) {
+  try {
+    valid.stateChange(data);
+  } catch (error) {
+    throw error
+  }
+  submission.animation.push(data);
+  return JSON.stringify(submission.animation);
 }
 
 function addGradeButtonClick(data) {
@@ -139,7 +152,7 @@ const exerciseInitialized  = () => {
     + 'Exercise is not being recorded for animation: '
     + 'did the exercise emit javas-exercise-init event?')
     console.warn(error)
-    return false;
+    throw new Error(error);
   }
   return true;
 }
@@ -159,6 +172,7 @@ const addInitialState = {
 const addAnimationStep = {
   dsClick: addDsClick,
   stateChange: addStateChange,
+  modelSolution: addModelSolutionStep,
   gradeButtonClick: addGradeButtonClick,
 };
 
