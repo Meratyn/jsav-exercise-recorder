@@ -12,7 +12,7 @@ function handleArrayEvents(eventData) {
         index: eventData.index
       }
       try {
-        submission.addAnimationStep.dsClick(clickData);   
+        submission.addAnimationStep.dsClick(clickData);
       } catch (error) {
         console.warn(`Could not set array click in animation: ${error}`);
       }
@@ -21,13 +21,13 @@ function handleArrayEvents(eventData) {
 }
 
 function handleStateChange(exercise, eventData) {
-  // Filter to remove undefined elements  
-  const newStates = getNewStates(submissionDataStructures(), exercise).filter(s => 
+  // Filter to remove undefined elements
+  const newStates = getNewStates(submissionDataStructures(), exercise).filter(s =>
     s && Object.keys(s).length > 0);
   if(newStates.length) {
     addNewStatesToSubmission(eventData, newStates);
     return newStates;
-  }  
+  }
   return false;
 }
 
@@ -40,9 +40,9 @@ function addNewStatesToSubmission(eventData, newStates) {
       type,
       tstamp: eventData.tstamp || new Date(),
       currentStep,
-      dataStructureId: state.id, 
+      dataStructureId: state.id,
       state: [ ...state.values]
-    }; 
+    };
     try {
       submission.addAnimationStep.stateChange(newState);
     } catch (error) {
@@ -59,7 +59,7 @@ function submissionDataStructures() {
       id: ds.id,
       values: ds.values
     };
-  });  
+  });
   return dataStructures;
 }
 
@@ -71,7 +71,7 @@ function dsInsubmissionLastValues(dsId) {
   submission.state().animation.forEach((step,  i) => {
     if(stateTypes.includes(step.type) && step.dataStructureId === dsId) {
       lastDsValues = [...step.state];
-    } 
+    }
   })
   return lastDsValues || initialDsValues;
 }
@@ -96,25 +96,24 @@ function getNewStates(dataStructures, exercise) {
 }
 
 function handleModelSolution(exercise, eventData) {
-  const type = eventData.type === 'jsav-exercise-model-recorded' ? 'model-opened'
-  : String(eventData.type.match(/model.*/))
+  const type = String(eventData.type.match(/model.*/))
   const currentStep = eventData.currentStep;
   switch(type) {
-    case 'model-open':
-      break;
     case 'model-init':
       break;
     default:
-      const newState = {
-        type,
-        tstamp: eventData.tstamp || new Date(),
-        currentStep,
-        state: exercise.modelDialog[0].innerHTML
-      }; 
-      try {
-        submission.addAnimationStep.modelSolution(newState);
-      } catch (error) {
-        console.warn(`Could not add model solution step to animation: ${error}`)
+      if(exercise.modelDialog) {
+        const newState = {
+          type,
+          tstamp: eventData.tstamp || new Date(),
+          currentStep,
+          state: exercise.modelDialog[0].innerHTML
+        };
+        try {
+          submission.addAnimationStep.modelSolution(newState);
+        } catch (error) {
+          console.warn(`Could not add model solution step to animation: ${error}`)
+        }
       }
       break;
   }

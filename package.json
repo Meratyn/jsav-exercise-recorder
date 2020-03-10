@@ -6,7 +6,7 @@
   "scripts": {
     "build": "browserify exerciseRecorder.js > build/exercise_recorder-bundle.js",
     "test": "jest --watch --verbose",
-    "array": "nohup google-chrome ../exercises/insertionSort/insertionSortPRO.html"
+    "array": "nohup chromium-browser ../exercises/insertionSort.html"
   },
   "keywords": [
     "JSAV"

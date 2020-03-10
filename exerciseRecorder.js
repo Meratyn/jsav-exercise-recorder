@@ -17,7 +17,7 @@ let exercise = {};
 
 function passEvent(eventData) {
   console.log("EXERCISE", exercise)
-  
+
   switch(eventData.type){
     case 'jsav-init':
       def_func.setExerciseOptions(eventData);
@@ -37,7 +37,7 @@ function passEvent(eventData) {
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
-      setTimeout(() => anim_func.handleStateChange(exercise, eventData), 1000);
+      setTimeout(() => anim_func.handleStateChange(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
       anim_func.handleStateChange(exercise, eventData);
