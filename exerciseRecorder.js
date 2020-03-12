@@ -58,6 +58,9 @@ function passEvent(eventData) {
       if(isTestingApp) {
         window.submission = submission.state();
       }
+      submission.reset();
+      window.alert('To see the submitted file move to the JAAL Animation File page')
+      $(document).off("jsav-log-event");
       break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
       anim_func.handleModelSolution(exercise, eventData);
@@ -70,11 +73,12 @@ function passEvent(eventData) {
   }
 }
 
-initialize();
+// initialize();
 
 let recorder = {
   initialize,
-  passEvent
+  passEvent,
+  reset: submission.reset
 };
 
 export default recorder;

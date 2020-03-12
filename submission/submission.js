@@ -163,9 +163,11 @@ const exerciseInitialized  = () => {
   if(submission.initialState.length === 0){
     let error = new Error('Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
-    + 'did the exercise emit javas-exercise-init event?')
-    console.warn(error)
-    throw new Error(error);
+    + 'did the exercise emit javas-exercise-init event?'
+    + '\nIf you are submitting again the same exercise, try first reloading the page')
+    alert(new Error(error))
+    console.warn(new Error(error));
+    return false;
   }
   return true;
 }
