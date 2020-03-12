@@ -146,6 +146,19 @@ function addGradeButtonClick(data) {
   return false;
 }
 
+function checkAndFixLastAnimationStep() {
+  try {
+    let animation = submission.animation
+    let lastIndex = animation.length -1
+    let lastStep = animation[lastIndex]
+    if(lastStep.type === 'model-recorded') {
+      submission.animation.pop();
+    }
+  } catch (error) {
+    console.warn(`Could not remove model solution from last animation step: ${error}`)
+  }
+}
+
 const exerciseInitialized  = () => {
   if(submission.initialState.length === 0){
     let error = new Error('Animation initialization data is missing.\n'
@@ -173,7 +186,7 @@ const addAnimationStep = {
   dsClick: addDsClick,
   stateChange: addStateChange,
   modelSolution: addModelSolutionStep,
-  gradeButtonClick: addGradeButtonClick,
+  gradeButtonClick: addGradeButtonClick
 };
 
 
@@ -185,4 +198,5 @@ module.exports = {
   addDefinition,
   addInitialState,
   addAnimationStep,
+  checkAndFixLastAnimationStep
 }
