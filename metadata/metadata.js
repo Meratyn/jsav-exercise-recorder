@@ -1,5 +1,3 @@
-"use strict";
-
 function setExerciseMetadata(exercise) {
   const metadata = [];
   // TODO: implement setExerciseMetadata(exercise)

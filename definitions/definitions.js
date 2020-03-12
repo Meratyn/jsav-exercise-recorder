@@ -1,4 +1,3 @@
-"use strict";
 const helpers = require('../utils/helperFunctions');
 const submission = require('../submission/submission');
 

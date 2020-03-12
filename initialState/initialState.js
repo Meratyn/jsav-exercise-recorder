@@ -1,4 +1,4 @@
-"use strict";
+const recorder = require("../exerciseRecorder.js")
 const error_handler = require('../errors/errors');
 const submission = require('../submission/submission');
 
@@ -11,13 +11,13 @@ function setInitialDataStructures(exercise) {
     .forEach(ds => dataStructures.push(ds));
   } else {
     dataStructures.push(getSingleDataStructures(initialStructures));
-  }  
+  }
   dataStructures.forEach(dataStructure => {
     submission.addInitialState.dataStructure(dataStructure);
   });
 }
 
-function getSingleDataStructures(initialStructure) {  
+function getSingleDataStructures(initialStructure) {
   const domElement = initialStructure.element['0'];
   let tempId;
   if (!domElement.id) {
@@ -37,7 +37,7 @@ function getSingleDataStructures(initialStructure) {
 
 function setClickListenerWithId(domElement, tempId) {
   domElement.onclick = ((clickData) => {
-    passEvent({
+    recorder.passEvent({
     type: 'recorder-set-id',
     tempId: tempId,
     newId: domElement.id

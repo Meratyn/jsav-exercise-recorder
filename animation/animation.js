@@ -1,4 +1,3 @@
-"use strict";
 const submission = require('../submission/submission');
 
 function handleArrayEvents(eventData) {

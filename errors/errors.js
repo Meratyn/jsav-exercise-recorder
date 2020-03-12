@@ -1,5 +1,3 @@
-"use strict";
-
 function customError(message) {
   const error = new Error(message);
   console.warn(error);

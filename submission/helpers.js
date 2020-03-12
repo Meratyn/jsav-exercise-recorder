@@ -1,7 +1,7 @@
 // TODO: add check to avoid endless loop
 function copyObject(obj) {
   const copy = {};
-  for(k in obj) {
+  for(let k in obj) {
     if(Array.isArray(obj[k])) {
       copy[k] = [ ...obj[k] ];
       continue;
@@ -10,7 +10,7 @@ function copyObject(obj) {
       copyObject(obj[k]);
       continue;
     }
-    copy[k] = obj[k]; 
+    copy[k] = obj[k];
   }
   return copy;
 }
@@ -43,7 +43,7 @@ function objectIsNotArray(object) {
 }
 
 function doesNotContainObjects(object) {
-  for(k in object) {
+  for(let k in object) {
     if (typeof(object[k]) === "object") {
       throw new Error(`Object can not contain other objects: ${JSON.stringify(object)}`);
     }

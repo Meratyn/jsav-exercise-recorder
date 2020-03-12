@@ -3,9 +3,9 @@
 const helpers = require('./helpers');
 
 function validateMetadata(metadata) {
-  const notEmpthy = helpers.objectIsNotEmpthy(option);
-  const notArray = helpers.objectIsNotArray(option);
-  const noInnerObjects = helpers.doesNotContainObjects(option);
+  const notEmpthy = helpers.objectIsNotEmpthy(metadata);
+  const notArray = helpers.objectIsNotArray(metadata);
+  const noInnerObjects = helpers.doesNotContainObjects(metadata);
   return (notEmpthy && notArray && noInnerObjects);
 }
 
@@ -13,14 +13,14 @@ function validateStyle(style) {
   // TODO: implement validateStyle
   return true;
 }
-  
+
 function validateScore(score) {
   const notEmpthy = helpers.objectIsNotEmpthy(score);
   const notArray = helpers.objectIsNotArray(score);
   const noInnerObjects = helpers.doesNotContainObjects(score);
   return (notEmpthy && notArray && noInnerObjects);
 }
-  
+
 function validateOptions(option) {
   const notEmpthy = helpers.objectIsNotEmpthy(option);
   const notArray = helpers.objectIsNotArray(option);
