@@ -25,6 +25,7 @@ let exercise = {};
 function passEvent(eventData) {
   switch(eventData.type){
     case 'jsav-init':
+      submission.reset();
       def_func.setExerciseOptions(eventData);
       metad_func.setExerciseMetadata(eventData);
       break;
@@ -53,13 +54,12 @@ function passEvent(eventData) {
       // We remove it because JSAV logs automatically the model solution when grading
       submission.checkAndFixLastAnimationStep();
       anim_func.handleGradeButtonClick(eventData);
-      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state());
-      let isTestingApp = window.location.pathname.includes('test');
-      if(isTestingApp) {
+      if(def_func.setFinalGrade(eventData)){
         window.submission = submission.state();
+        services.sendSubmission(submission.state());
+        window.alert('To see the submitted file go to the JAAL Animation File page\nTo see the animation go to the Animation page')
       }
       submission.reset();
-      window.alert('To see the submitted file move to the JAAL Animation File page')
       $(document).off("jsav-log-event");
       break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
@@ -73,12 +73,21 @@ function passEvent(eventData) {
   }
 }
 
-// initialize();
+function detach() {
+  $(document).off("jsav-log-event");
+}
 
-let recorder = {
-  initialize,
-  passEvent,
-  reset: submission.reset
-};
+window.initializeRecorder = initialize;
+window.detachRecorder = detach;
 
-export default recorder;
+module.exports = {
+  passEvent
+}
+
+// let recorder = {
+//   initialize,
+//   passEvent,
+//   reset: submission.reset
+// };
+//
+// export default recorder;

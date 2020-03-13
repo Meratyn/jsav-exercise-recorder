@@ -1,6 +1,6 @@
 //TODO: set all try catch statements
 
-const helpers = require('./helpers');
+const helpers = require('./helpers.js');
 
 function validateMetadata(metadata) {
   const notEmpthy = helpers.objectIsNotEmpthy(metadata);
