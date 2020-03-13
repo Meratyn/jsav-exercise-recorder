@@ -55,7 +55,7 @@ function passEvent(eventData) {
       // We remove it because JSAV logs automatically the model solution when grading
       submission.checkAndFixLastAnimationStep();
       anim_func.handleGradeButtonClick(eventData);
-      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), env.SERVER_URL);
+      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), env.SUBMISSION_URL);
       submission.reset();
       $(document).off("jsav-log-event");
       break;
