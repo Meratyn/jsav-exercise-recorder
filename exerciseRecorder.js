@@ -55,10 +55,7 @@ function passEvent(eventData) {
       // We remove it because JSAV logs automatically the model solution when grading
       submission.checkAndFixLastAnimationStep();
       anim_func.handleGradeButtonClick(eventData);
-      if(def_func.setFinalGrade(eventData)){
-        window.submission = submission.state();
-        services.sendSubmission(submission.state());
-      }
+      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), env.SERVER_URL);
       submission.reset();
       $(document).off("jsav-log-event");
       break;
@@ -80,7 +77,7 @@ function detach() {
 window.initializeRecorder = initialize;
 window.detachRecorder = detach;
 
-if(EXEC_ENV === 'STATIC') {
+if(env.EXEC_ENV === 'STATIC') {
   initialize();
 }
 
