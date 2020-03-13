@@ -4,6 +4,7 @@ const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
 const services = require('./rest/services');
+const env = require('./.env.js');
 let $;
 
 function initialize() {
@@ -57,7 +58,6 @@ function passEvent(eventData) {
       if(def_func.setFinalGrade(eventData)){
         window.submission = submission.state();
         services.sendSubmission(submission.state());
-        window.alert('To see the submitted file go to the JAAL Animation File page\nTo see the animation go to the Animation page')
       }
       submission.reset();
       $(document).off("jsav-log-event");
@@ -79,6 +79,11 @@ function detach() {
 
 window.initializeRecorder = initialize;
 window.detachRecorder = detach;
+
+if(EXEC_ENV === 'STATIC') {
+  initialize();
+}
+
 
 module.exports = {
   passEvent
