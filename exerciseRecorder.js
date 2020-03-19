@@ -75,7 +75,7 @@ function setEventOnWindowClose() {
     // Cancel the event as stated by the standard.
     event.preventDefault();
     // Chrome requires returnValue to be set.
-    event.returnValue = '';
+    event.returnValue = 'Are you sure you want to leave the exercise?';
   });
 }
 
@@ -96,7 +96,7 @@ if(env.EXEC_ENV === 'STATIC') {
   initialize();
   setEventOnWindowClose();
 }
-else if (env.EXEC_ENV === 'STATIC') {
+else if (env.EXEC_ENV === 'DYNAMIC') {
   setEventOnHashChange();
 }
 
