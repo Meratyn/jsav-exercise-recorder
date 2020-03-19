@@ -70,6 +70,21 @@ function passEvent(eventData) {
   }
 }
 
+function setEventOnWindowClose() {
+  window.addEventListener('beforeunload', (event) => {
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    // Chrome requires returnValue to be set.
+    event.returnValue = '';
+  });
+}
+
+function setEventOnHashChange() {
+  window.addEventListener('hashchange', function() {
+    console.log('The hash has changed!')
+  }, false);
+}
+
 function detach() {
   $(document).off("jsav-log-event");
 }
@@ -79,7 +94,12 @@ window.detachRecorder = detach;
 
 if(env.EXEC_ENV === 'STATIC') {
   initialize();
+  setEventOnWindowClose();
 }
+else if (env.EXEC_ENV === 'STATIC') {
+  setEventOnHashChange();
+}
+
 
 
 module.exports = {
