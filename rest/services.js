@@ -1,11 +1,8 @@
 const axios = require('axios');
-const env = require('../.env.js')
-
-const exerciseServer = env.EXERCISE_SERVER_URL
 
 async function sendSubmission(data, url) {
   if(url === 'window'){
-    window.parent.postMessage(data, exerciseServer);
+    window.parent.postMessage(data, "*");
   }
   else {
     try {
