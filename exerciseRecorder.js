@@ -4,11 +4,23 @@ const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
 const services = require('./rest/services');
-const env = require('./.env.js');
-let $;
+// const env = require('./.env.js');
+// let $;
+let jsav = {};
+let exercise = {};
+// LMS defines: used if grading asynchronously
+let submission_url;
+// LMS defines: where to post the submission
+let post_url;
+
+initialize();
+setEventOnWindowClose();
 
 function initialize() {
-  $ = window.$
+  setSubmissionAndPostUrl();
+  submission.reset();
+  metad_func.setExerciseMetadata(getMetadataFromURLparams())
+  // $ = window.$
   try {
     $(document).off("jsav-log-event");
     $(document).on("jsav-log-event",  function (event, eventData) {
@@ -20,13 +32,9 @@ function initialize() {
   }
 }
 
-let jsav = {};
-let exercise = {};
-
 function passEvent(eventData) {
   switch(eventData.type){
     case 'jsav-init':
-      submission.reset();
       def_func.setExerciseOptions(eventData);
       metad_func.setExerciseMetadata(eventData);
       break;
@@ -55,7 +63,7 @@ function passEvent(eventData) {
       // We remove it because JSAV logs automatically the model solution when grading
       submission.checkAndFixLastAnimationStep();
       anim_func.handleGradeButtonClick(eventData);
-      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), env.SUBMISSION_URL);
+      def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
       submission.reset();
       $(document).off("jsav-log-event");
       break;
@@ -70,6 +78,26 @@ function passEvent(eventData) {
   }
 }
 
+// According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
+function setSubmissionAndPostUrl() {
+  // LMS submission url
+  submission_url = new URL(location.href).searchParams.get('submission_url');
+  // url where the LMS posts submission data
+  post_url = new URL(location.href).searchParams.get('post_url');
+}
+
+// According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
+function getMetadataFromURLparams() {
+  // set in LMS
+  const max_points = new URL(location.href).searchParams.get('max_points');
+  // User identifier
+  const uid = new URL(location.href).searchParams.get('uid');
+  // Ordinal number of the submission which has not yet been done
+  const ordinal_number = new URL(location.href).searchParams.get('ordinal_number');
+  return { max_points, uid, ordinal_number };
+}
+
+
 function setEventOnWindowClose() {
   window.addEventListener('beforeunload', (event) => {
     // Cancel the event as stated by the standard.
@@ -79,12 +107,6 @@ function setEventOnWindowClose() {
   });
 }
 
-function setEventOnHashChange() {
-  window.addEventListener('hashchange', function() {
-    console.log('The hash has changed!')
-  }, false);
-}
-
 function detach() {
   $(document).off("jsav-log-event");
 }
@@ -92,13 +114,14 @@ function detach() {
 window.initializeRecorder = initialize;
 window.detachRecorder = detach;
 
-if(env.EXEC_ENV === 'STATIC') {
-  initialize();
-  setEventOnWindowClose();
-}
-else if (env.EXEC_ENV === 'STATIC') {
-  setEventOnHashChange();
-}
+
+// if(env.EXEC_ENV === 'STATIC') {
+//   initialize();
+//   setEventOnWindowClose();
+// }
+// else if (env.EXEC_ENV === 'STATIC') {
+//   setEventOnHashChange();
+// }
 
 
 

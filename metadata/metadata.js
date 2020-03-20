@@ -1,8 +1,8 @@
-function setExerciseMetadata(exercise) {
-  const metadata = [];
-  // TODO: implement setExerciseMetadata(exercise)
-  return metadata;
-}
+const submission = require('../submission/submission');
+
+function setExerciseMetadata(metadata) {
+  return submission.addMetadata(metadata);
+  }
 
 
 module.exports = {
