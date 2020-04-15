@@ -22,11 +22,19 @@ function extractTextByTagName(html, tagName){
   return text;
 }
 
-const removeTrimLineBreaks = (string) => string.split(/\r?\n|\r/g).map(e => e.trim()).join('');
+function removeTrimLineBreaks(string){
+  return string.split(/\r?\n|\r/g).map(e => e.trim()).join('');
+}
+
+function getExerciseDOM(exercise) {
+  return exercise.jsav.container[0].innerHTML;
+}
+
 
 const helpers = {
   extractTextByClassName,
-  extractTextByTagName
+  extractTextByTagName,
+  getExerciseDOM
 }
 
 module.exports = helpers;

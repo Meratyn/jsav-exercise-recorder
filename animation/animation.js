@@ -1,51 +1,27 @@
-const submission = require('../submission/submission');
+const submission = require('../../submission/submission');
+const arrayAnimation = require('./array/array-animation');
+const modelAnswerAnimation = require('./model-anmswer/model-answer-animation');
+const helpers = require('../utils/helperFunctions');
 
-function handleArrayEvents(eventData) {
-  switch(eventData.type) {
-    case 'jsav-array-click':
-      const clickData = {
-        type: 'click',
-        tstamp: eventData.tstamp,
-        currentStep: eventData.currentStep,
-        dataStructureId: eventData.arrayid,
-        index: eventData.index
-      }
-      try {
-        submission.addAnimationStep.dsClick(clickData);
-      } catch (error) {
-        console.warn(`Could not set array click in animation: ${error}`);
-      }
-  }
-  // TODO: check also for state changes?
+
+function handleGradableStep(exercise, eventData) {
+  const dataStructuresState = getDataStructuresState(submissionDataStructures(), exercise);
+  if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState);
 }
 
-function handleStateChange(exercise, eventData) {
-  // Filter to remove undefined elements
-  const newStates = getNewStates(submissionDataStructures(), exercise).filter(s =>
-    s && Object.keys(s).length > 0);
-  if(newStates.length) {
-    addNewStatesToSubmission(eventData, newStates);
-    return newStates;
-  }
-  return false;
-}
-
-function addNewStatesToSubmission(eventData, newStates) {
-  const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'state-change';
-  const animation = submission.state().animation;
-  const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
-  newStates.forEach((state, i) => {
-    const newState = {
-      type,
-      tstamp: eventData.tstamp || new Date(),
-      currentStep,
-      dataStructureId: state.id,
-      state: [ ...state.values]
-    };
-    try {
-      submission.addAnimationStep.stateChange(newState);
-    } catch (error) {
-      console.warn(`Could not add state change to animatio: ${error}`)
+// Returns an empthy array if there is not state change
+function getDataStructuresState(dataStructures, exercise) {
+  return dataStructures.map((ds, i) => {
+    switch(ds.type) {
+      case 'array':
+        // TODO: make a function for this
+        const arrayInExercise = Array.isArray(exercise.initialStructures) ?
+        exercise.initialStructures.find(s => s.element['0'].id === ds.id) :
+        exercise.initialStructures;
+        return { id: ds.id, values: [ ...arrayInExercise._values ] };
+        break;
+      default:
+        return `unknown ds type ${ds.type}`;
     }
   });
 }
@@ -62,59 +38,21 @@ function submissionDataStructures() {
   return dataStructures;
 }
 
-function dsInsubmissionLastValues(dsId) {
-  let initialDs = submission.state().initialState.find(ds => ds.id === dsId);
-  const initialDsValues = [...initialDs.values];
-  let lastDsValues;
-  let stateTypes = ['state-change', 'undo'];
-  submission.state().animation.forEach((step,  i) => {
-    if(stateTypes.includes(step.type) && step.dataStructureId === dsId) {
-      lastDsValues = [...step.state];
-    }
-  })
-  return lastDsValues || initialDsValues;
-}
-
-// Returns an empthy array if there is not state change
-function getNewStates(dataStructures, exercise) {
-  return dataStructures.map((ds, i) => {
-    switch(ds.type) {
-      case 'array':
-        // TODO: make a function for this
-        const arrayInExercise = Array.isArray(exercise.initialStructures) ?
-        exercise.initialStructures.find(s => s.element['0'].id === ds.id) :
-        exercise.initialStructures;
-        if (!arrayInExercise._values.every((v,j) => v === dsInsubmissionLastValues(ds.id)[j])) {
-          return { id: ds.id, values: [ ...arrayInExercise._values ] };
-        }
-        break;
-      default:
-        return `unknown ds type ${ds.type}`;
-    }
-  });
-}
-
-function handleModelSolution(exercise, eventData) {
-  const type = String(eventData.type.match(/model.*/))
-  const currentStep = eventData.currentStep;
-  switch(type) {
-    case 'model-init':
-      break;
-    default:
-      if(exercise.modelDialog) {
-        const newState = {
-          type,
-          tstamp: eventData.tstamp || new Date(),
-          currentStep,
-          state: exercise.modelDialog[0].innerHTML
-        };
-        try {
-          submission.addAnimationStep.modelSolution(newState);
-        } catch (error) {
-          console.warn(`Could not add model solution step to animation: ${error}`)
-        }
-      }
-      break;
+function addStepToSubmission(eventData, dataStructuresState) {
+  const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'state-change';
+  const animation = submission.state().animation;
+  const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
+  const newState = {
+    type,
+    tstamp: eventData.tstamp || new Date(),
+    currentStep,
+    dataStructuresState,
+    animationDOM: helpers.getExerciseDOM(exercise)
+  };
+  try {
+    submission.addAnimationStep.addGradableStep(newState);
+  } catch (error) {
+    console.warn(`Could not add state change to animatio: ${error}`)
   }
 }
 
@@ -132,10 +70,9 @@ function handleGradeButtonClick(eventData) {
 
 }
 
-
 module.exports = {
-  handleArrayEvents,
-  handleStateChange,
+  handleArrayEvents: arrayAnimation.handleArrayEvents,
+  handleGradableStep,
   handleGradeButtonClick,
-  handleModelSolution,
+  handleModelAnswer: modelAnswerAnimation.handleOpenModelAnswer
 }

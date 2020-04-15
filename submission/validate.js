@@ -2,11 +2,28 @@
 
 const helpers = require('./helpers.js');
 
+function validateOptions(option) {
+  try {
+    const notEmpthy = helpers.objectIsNotEmpthy(option);
+    const notArray = helpers.objectIsNotArray(option);
+    const noInnerObjects = helpers.doesNotContainObjects(option);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating options', err);
+    return false;
+  }
+  return true;
+}
+
 function validateMetadata(metadata) {
-  const notEmpthy = helpers.objectIsNotEmpthy(metadata);
-  const notArray = helpers.objectIsNotArray(metadata);
-  const noInnerObjects = helpers.doesNotContainObjects(metadata);
-  return (notEmpthy && notArray && noInnerObjects);
+  try {
+    const notEmpthy = helpers.objectIsNotEmpthy(metadata);
+    const notArray = helpers.objectIsNotArray(metadata);
+    const noInnerObjects = helpers.doesNotContainObjects(metadata);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating metadata', err);
+    return false;
+  }
+  return true;
 }
 
 function validateStyle(style) {
@@ -15,34 +32,45 @@ function validateStyle(style) {
 }
 
 function validateScore(score) {
-  const notEmpthy = helpers.objectIsNotEmpthy(score);
-  const notArray = helpers.objectIsNotArray(score);
-  const noInnerObjects = helpers.doesNotContainObjects(score);
-  return (notEmpthy && notArray && noInnerObjects);
-}
-
-function validateOptions(option) {
-  const notEmpthy = helpers.objectIsNotEmpthy(option);
-  const notArray = helpers.objectIsNotArray(option);
-  const noInnerObjects = helpers.doesNotContainObjects(option);
-  return (notEmpthy && notArray && noInnerObjects);
-}
-
-function validateModelSolution(modelSolution) {
   try {
-    helpers.isValidString(modelSolution);
-  } catch (error) {
-    throw error;
+    const notEmpthy = helpers.objectIsNotEmpthy(score);
+    const notArray = helpers.objectIsNotArray(score);
+    const noInnerObjects = helpers.doesNotContainObjects(score);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating score', err);
+    return false;
+  }
+  return true;
+}
+
+function validateModelAnswerFunction(modelAnswer) {
+  try {
+    helpers.isValidString(modelAnswer);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating model answer function as string', err);
+    return false
   }
   return true;
 }
 
 function validateDataStructure(ds) {
-  return helpers.objectIsNotEmpthy(ds);
+  try {
+    helpers.objectIsNotEmpthy(ds);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating data structure', err);
+    return false;
+  }
+  return true;
 }
 
 function validateDsId(dsId) {
-  return helpers.isValidString(dsId);
+  try {
+    helpers.isValidString(dsId);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating data structure id', err);
+    return false;
+  }
+  return false;
 }
 
 function validateDsClick(click) {
@@ -50,7 +78,7 @@ function validateDsClick(click) {
   return true;
 }
 
-function validateStateChange(data) {
+function validateGradableStep(data) {
   // TODO: implement chackStateChange
   return true;
 }
@@ -65,10 +93,10 @@ module.exports = {
   style: validateStyle,
   score: validateScore,
   options: validateOptions,
-  modelSolution: validateModelSolution,
+  modelAnswerFunction: validateModelAnswerFunction,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
-  stateChange: validateStateChange,
+  gradableStep: validateGradableStep,
   gradeButtonClick: validateGradeButtonClick,
   dsId: validateDsId,
 }

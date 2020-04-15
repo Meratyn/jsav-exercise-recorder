@@ -9,9 +9,8 @@ function setExerciseOptions(eventData) {
 }
 
 function setDefinitions(exercise) {
-  // TODO: implement setDefinitions(exercise)
   try {
-    setModelSolution(exercise.options.model.toString());
+    setModelAnswerFunction(exercise.options.model.toString());
   } catch (error) {
     console.warn(`Could nor set model answer when recording animation: ${error.message}`);
     return false;
@@ -23,9 +22,10 @@ function setFinalGrade(eventData) {
   return submission.addDefinition.score({ ...eventData.score });
 }
 
-function setModelSolution(modelSolution) {
+// Adds the model answer function as string
+function setModelAnswerFunction(modelSolution) {
   try {
-    submission.addDefinition.modelSolution(modelSolution);
+    submission.addDefinition.modelAnswerFunction(modelSolution);
   } catch (error) {
     throw error;
   }

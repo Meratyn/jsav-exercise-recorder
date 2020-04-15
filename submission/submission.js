@@ -10,9 +10,12 @@ const submission =  {
     style: {},
     score: {},
     options: {},
-    modelSolution: "",
+    modelAnswerFunction: "",
   },
-  initialState: [],
+  initialState: {
+    dataStructures: [],
+    animationDOM: ""
+  },
   animation: []
 };
 
@@ -25,9 +28,12 @@ function reset() {
     style: {},
     score: {},
     options: {},
-
+    modelAnswerFunction: "",
   };
-  submission.initialState = [];
+  submission.initialState = {
+    dataStructures: [],
+    animationDOM: ""
+  };
   submission.animation = [];
 }
 
@@ -36,7 +42,10 @@ function state() {
   const definitions = helpers.copyObject(submission.definitions);
 
   // TODO: change to support new DSs
-  const initialState = submission.initialState.map(ds => helpers.copyObject(ds));
+  const initialState = {
+    dataStructures: submission.initialState.map(ds => helpers.copyObject(ds)),
+    animationDOM: submission.initialState.animationDOM
+  }
   const animation = submission.animation.map(a => helpers.copyObject(a));
   return {
     metadata,
@@ -51,99 +60,51 @@ function stateAsJSON() {
 }
 
 function addMetadata(metadata) {
-  if(valid.metadata(metadata)) {
-    submission.metadata = { ...metadata };
-    return JSON.stringify(submission.metadata);
-  }
-  return false;
+  if(valid.metadata(metadata)) submission.metadata = { ...metadata };
 }
 
 function addStyle(style) {
-  if (valid.style(style)) {
-    submission.definitions.style = { ...style };
-    return JSON.stringify(submission.definitions.style);
-  }
-  return false;
+  if (valid.style(style)) submission.definitions.style = { ...style };
 }
 
 function addScore(score) {
-  if (valid.score(score) && exerciseInitialized()) {
-    submission.definitions.score = { ...score };
-    JSON.stringify(submission.definitions.score);
-    return true;
-  }
-  return false;
+  if (valid.score(score) && exerciseIsInitialized()) submission.definitions.score = { ...score };
 };
 
 function addOptions(options) {
-  if(valid.options(options)) {
-    submission.definitions.options = { ...options };
-    return JSON.stringify(submission.definitions.options);
-  }
-  return false;
+  if(valid.options(options)) submission.definitions.options = { ...options };
 }
 
-function addModelSolution(modelSolution) {
-  try {
-    valid.modelSolution(modelSolution)
-} catch (error) {
-  throw error;
-}
-  submission.definitions.modelSolution = modelSolution;
-  return JSON.stringify(submission.definitions.modelSolution);
+function addModelAnswerFunction(modelAnswerFunction) {
+  if (valid.modelAnswerFunction(modelAnswerFunction)) submission.definitions.modelAnswerFunction = modelAnswerFunction;
 }
 
 function addDataStructure(ds) {
-  if(valid.dataStructure(ds)) {
-    submission.initialState.push(ds);
-    return JSON.stringify(submission.initialState);
-  }
-  return false;
+  if(valid.dataStructure(ds)) submission.initialState.dataStructures.push(ds);
 }
 
 function setDsId(dsIndex, dsId) {
-  if(valid.dsId(dsId)) {
-    submission.initialState[dsIndex].id = dsId;
-    return JSON.stringify(submission.initialState);
-  }
-  return false;
+  if(valid.dsId(dsId)) submission.initialState.dataStructures[dsIndex].id = dsId;
 }
 
 function addDsClick(data) {
-  if(valid.dsClick(data) && exerciseInitialized()) {
+  if(valid.dsClick(data) && exerciseIsInitialized()) submission.animation.push(data);
+}
+
+function addGradableStep(data) {
+  if (valid.gradableStep(data) && exerciseIsInitialized()) {
     submission.animation.push(data);
-    return JSON.stringify(submission.animation);
   }
-  return false;
 }
 
-function addStateChange(data) {
-  try {
-    valid.stateChange(data);
-    exerciseInitialized();
-  } catch (error) {
-    throw error;
-  }
-  submission.animation.push(data);
-  return JSON.stringify(submission.animation);
-}
-
-function addModelSolutionStep(data) {
-  try {
-    valid.stateChange(data);
-  } catch (error) {
-    throw error
-  }
-  submission.animation.push(data);
-  return JSON.stringify(submission.animation);
+function addModelAnswerStep(data) {
+  if (valid.gradableStep(data)) submission.animation.push(data);
 }
 
 function addGradeButtonClick(data) {
-  if(valid.gradeButtonClick(data) && exerciseInitialized()) {
+  if(valid.gradeButtonClick(data) && exerciseIsInitialized()) {
     submission.animation.push(data);
-    return JSON.stringify(submission.animation);
   }
-  return false;
 }
 
 function checkAndFixLastAnimationStep() {
@@ -155,18 +116,17 @@ function checkAndFixLastAnimationStep() {
       submission.animation.pop();
     }
   } catch (error) {
-    console.warn(`Could not remove model solution from last animation step: ${error}`)
+    console.warn(`Could not remove model answer from last animation step: ${error}`)
   }
 }
 
-const exerciseInitialized  = () => {
-  if(submission.initialState.length === 0){
-    let error = new Error('Animation initialization data is missing.\n'
+function exerciseIsInitialized() {
+  if(submission.initialState.dataStructures.length === 0){
+    let message = 'Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
     + 'did the exercise emit javas-exercise-init event?'
-    + '\nIf you are submitting again the same exercise, try first reloading the page')
-    alert(new Error(error))
-    console.warn(new Error(error));
+    + '\nIf you are submitting again the same exercise, try first reloading the page'
+    console.warn(message);
     return false;
   }
   return true;
@@ -176,7 +136,7 @@ const addDefinition = {
   style: addStyle,
   score: addScore,
   options: addOptions,
-  modelSolution: addModelSolution
+  modelAnswerFunction: addModelAnswerFunction
 };
 
 const addInitialState = {
@@ -186,8 +146,8 @@ const addInitialState = {
 
 const addAnimationStep = {
   dsClick: addDsClick,
-  stateChange: addStateChange,
-  modelSolution: addModelSolutionStep,
+  gradableStep: addGradableStep,
+  modelAnswerStep: addModelAnswerStep,
   gradeButtonClick: addGradeButtonClick
 };
 

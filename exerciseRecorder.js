@@ -4,8 +4,7 @@ const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
 const services = require('./rest/services');
-// const env = require('./.env.js');
-// let $;
+
 let jsav = {};
 let exercise = {};
 // LMS defines: used if grading asynchronously
@@ -19,11 +18,9 @@ function initialize() {
   setSubmissionAndPostUrl();
   submission.reset();
   metad_func.setExerciseMetadata(getMetadataFromURLparams())
-  // $ = window.$
   try {
     $(document).off("jsav-log-event");
     $(document).on("jsav-log-event",  function (event, eventData) {
-      console.log('EVENT DATA', eventData);
       passEvent(eventData)
     });
   } catch (error) {
@@ -32,6 +29,8 @@ function initialize() {
 }
 
 function passEvent(eventData) {
+  console.log('EXERCISE', exercise);
+  console.log('EVENT DATA', eventData);
   switch(eventData.type){
     case 'jsav-init':
       def_func.setExerciseOptions(eventData);
@@ -45,8 +44,9 @@ function passEvent(eventData) {
       break;
       // Here we handle all array related events
     case String(eventData.type.match(/^jsav-array-.*/)):
-      anim_func.handleArrayEvents(eventData);
+      anim_func.handleArrayEvents(exercise, eventData);
       break;
+    // This is fired by the initialState.js because JSAV sets array ID only on first click
     case 'recorder-set-id':
       init_state_func.setNewId(eventData);
       break;
@@ -59,7 +59,8 @@ function passEvent(eventData) {
     case 'jsav-exercise-grade-button':
       break;
     case 'jsav-exercise-grade':
-      // We remove it because JSAV logs automatically the model solution when grading
+      // JSAV emits the model answer event when grade is clicked
+      // We remove the last animation step caused by the model answer event
       submission.checkAndFixLastAnimationStep();
       anim_func.handleGradeButtonClick(eventData);
       def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
@@ -67,21 +68,20 @@ function passEvent(eventData) {
       $(document).off("jsav-log-event");
       break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
-      anim_func.handleModelSolution(exercise, eventData);
+      anim_func.handleModelAnswer(exercise, eventData);
       break;
     case 'jsav-recorded':
       break;
     default:
-      // We don't know what happened
       console.warn('UNKNOWN EVENT', eventData);
   }
 }
 
 // According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 function setSubmissionAndPostUrl() {
-  // LMS submission url
+  // LMS defines: used if grading asynchronously
   submission_url = new URL(location.href).searchParams.get('submission_url');
-  // url where the LMS posts submission data
+  // LMS defines: where to post the submission
   post_url = new URL(location.href).searchParams.get('post_url');
 }
 
@@ -96,42 +96,6 @@ function getMetadataFromURLparams() {
   return { max_points, uid, ordinal_number };
 }
 
-
-function setEventOnWindowClose() {
-  window.addEventListener('beforeunload', (event) => {
-    // Cancel the event as stated by the standard.
-    event.preventDefault();
-    // Chrome requires returnValue to be set.
-    event.returnValue = 'Are you sure you want to leave the exercise?';
-  });
-}
-
-function detach() {
-  $(document).off("jsav-log-event");
-}
-
-window.initializeRecorder = initialize;
-window.detachRecorder = detach;
-
-
-// if(env.EXEC_ENV === 'STATIC') {
-//   initialize();
-//   setEventOnWindowClose();
-// }
-// else if (env.EXEC_ENV === 'STATIC') {
-//   setEventOnHashChange();
-// }
-
-
-
 module.exports = {
   passEvent
 }
-
-// let recorder = {
-//   initialize,
-//   passEvent,
-//   reset: submission.reset
-// };
-//
-// export default recorder;

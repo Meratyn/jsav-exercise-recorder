@@ -1,11 +1,10 @@
 const recorder = require("../exerciseRecorder.js")
-const error_handler = require('../errors/errors');
 const submission = require('../submission/submission');
 
 function setInitialDataStructures(exercise) {
   const initialStructures = exercise.initialStructures;
   const dataStructures = [];
-  // If there is only one data structure, then initialStructures is an object
+  // If initialDataStructures is an Array, it means there is more than one data structure
   if(Array.isArray(initialStructures)) {
     initialStructures.map(ds => getSingleDataStructures(ds))
     .forEach(ds => dataStructures.push(ds));
@@ -60,7 +59,7 @@ function getInitiaStructureType(className) {
     className.includes(rootClassName)
   );
   if(foundClassNames.length !== 1) {
-    error_handler.customError(
+    console.warn(
       `Data structure should have exactly one of the following class names: \n
       ${rootClassNames}\n
       Instead found:\n ${foundClassNames}`
