@@ -43,7 +43,7 @@ function state() {
 
   // TODO: change to support new DSs
   const initialState = {
-    dataStructures: submission.initialState.map(ds => helpers.copyObject(ds)),
+    dataStructures: submission.initialState.dataStructures.map(ds => helpers.copyObject(ds)),
     animationDOM: submission.initialState.animationDOM
   }
   const animation = submission.animation.map(a => helpers.copyObject(a));

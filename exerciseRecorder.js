@@ -51,10 +51,10 @@ function passEvent(eventData) {
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
-      setTimeout(() => anim_func.handleStateChange(exercise, eventData), 100);
+      setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
-      anim_func.handleStateChange(exercise, eventData);
+      anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-grade-button':
       break;

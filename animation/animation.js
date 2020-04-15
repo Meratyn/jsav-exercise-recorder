@@ -1,6 +1,6 @@
-const submission = require('../../submission/submission');
+const submission = require('../submission/submission');
 const arrayAnimation = require('./array/array-animation');
-const modelAnswerAnimation = require('./model-anmswer/model-answer-animation');
+const modelAnswerAnimation = require('./model-answer/model-answer-animation');
 const helpers = require('../utils/helperFunctions');
 
 
@@ -28,7 +28,7 @@ function getDataStructuresState(dataStructures, exercise) {
 
 // TODO: support for other data structures
 function submissionDataStructures() {
-  const dataStructures = submission.state().initialState.map( ds => {
+  const dataStructures = submission.state().initialState.dataStructures.map( ds => {
     return {
       type: ds.type,
       id: ds.id,
@@ -50,7 +50,7 @@ function addStepToSubmission(eventData, dataStructuresState) {
     animationDOM: helpers.getExerciseDOM(exercise)
   };
   try {
-    submission.addAnimationStep.addGradableStep(newState);
+    submission.addAnimationStep.gradableStep(newState);
   } catch (error) {
     console.warn(`Could not add state change to animatio: ${error}`)
   }
