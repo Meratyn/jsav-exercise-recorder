@@ -24,6 +24,10 @@ function handleOpenModelAnswer(exercise, eventData) {
   }
 }
 
+function handleModelAnswerAfterGrade(exercise) {
+  document.getElementByClassname('jsavmodelpreparing').
+}
+
 function recordModelAnswer(exercise) {
   const modelStructures = [];
   if (Array.isArray(exercise.modelStructures)) {
@@ -44,7 +48,7 @@ function getModelAnswerStepsDOM(exercise) {
 }
 
 function modelAnswerStepForward(exercise) {
-  
+
 }
 
 module.exports = {
