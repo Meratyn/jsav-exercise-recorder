@@ -39,7 +39,7 @@ function submissionDataStructures() {
 }
 
 function addStepToSubmission(eventData, dataStructuresState) {
-  const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'state-change';
+  const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'gradeable-step';
   const animation = submission.state().animation;
   const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
   const newState = {
@@ -50,7 +50,7 @@ function addStepToSubmission(eventData, dataStructuresState) {
     animationDOM: helpers.getExerciseDOM(exercise)
   };
   try {
-    submission.addAnimationStep.gradableStep(newState);
+    submission.addAnimationStepSuccesfully.gradableStep(newState);
   } catch (error) {
     console.warn(`Could not add state change to animatio: ${error}`)
   }
@@ -58,7 +58,7 @@ function addStepToSubmission(eventData, dataStructuresState) {
 
 function handleGradeButtonClick(eventData) {
   try {
-    submission.addAnimationStep.gradeButtonClick({
+    submission.addAnimationStepSuccesfully.gradeButtonClick({
       type: "grade",
       tstamp: eventData.tstamp,
       currentStep: eventData.currentStep,

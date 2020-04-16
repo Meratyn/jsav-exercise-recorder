@@ -2,7 +2,7 @@ const helpers = require('../utils/helperFunctions');
 const submission = require('../submission/submission');
 
 function setExerciseOptions(eventData) {
-  submission.addDefinition.options({
+  submission.addDefinitionSuccesfully.options({
     'title': getExerciseTitle(eventData.initialHTML),
     'instructions': getExerciseInstructions(eventData.initialHTML),
   });
@@ -19,13 +19,13 @@ function setDefinitions(exercise) {
 }
 
 function setFinalGrade(eventData) {
-  return submission.addDefinition.score({ ...eventData.score });
+  return submission.addDefinitionSuccesfully.score({ ...eventData.score });
 }
 
 // Adds the model answer function as string
 function setModelAnswerFunction(modelSolution) {
   try {
-    submission.addDefinition.modelAnswerFunction(modelSolution);
+    submission.addDefinitionSuccesfully.modelAnswerFunction(modelSolution);
   } catch (error) {
     throw error;
   }

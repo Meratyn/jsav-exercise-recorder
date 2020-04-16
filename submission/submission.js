@@ -59,52 +59,100 @@ function stateAsJSON() {
   return JSON.stringify(submission);
 }
 
-function addMetadata(metadata) {
-  if(valid.metadata(metadata)) submission.metadata = { ...metadata };
+function addMetadataSuccesfully(metadata) {
+  if(valid.metadata(metadata)) {
+    submission.metadata = { ...metadata };
+    return true;
+  }
+  return false;
 }
 
 function addStyle(style) {
-  if (valid.style(style)) submission.definitions.style = { ...style };
+  if (valid.style(style)) {
+    submission.definitions.style = { ...style };
+    return true;
+  }
+  return false;
 }
 
 function addScore(score) {
-  if (valid.score(score) && exerciseIsInitialized()) submission.definitions.score = { ...score };
+  if (valid.score(score) && exerciseIsInitialized()) {
+    submission.definitions.score = { ...score };
+    return true;
+  }
+  return false;
 };
 
 function addOptions(options) {
-  if(valid.options(options)) submission.definitions.options = { ...options };
+  if(valid.options(options)) {
+    submission.definitions.options = { ...options };
+    return true;
+  }
+  return false;
 }
 
 function addModelAnswerFunction(modelAnswerFunction) {
-  if (valid.modelAnswerFunction(modelAnswerFunction)) submission.definitions.modelAnswerFunction = modelAnswerFunction;
+  if (valid.modelAnswerFunction(modelAnswerFunction)) {
+    submission.definitions.modelAnswerFunction = modelAnswerFunction;
+    return true;
+  }
+  return false;
 }
 
 function addDataStructure(ds) {
-  if(valid.dataStructure(ds)) submission.initialState.dataStructures.push(ds);
+  if(valid.dataStructure(ds)) {
+    submission.initialState.dataStructures.push(ds);
+    return true;
+  }
+  return false;
+}
+
+function addAnimationDOM(dom) {
+  if(valid.animationDOM(dom)) {
+    submission.initialState.animationDOM = dom;
+    return true;
+  }
+  return false;
 }
 
 function setDsId(dsIndex, dsId) {
-  if(valid.dsId(dsId)) submission.initialState.dataStructures[dsIndex].id = dsId;
+  if(valid.dsId(dsId)) {
+    submission.initialState.dataStructures[dsIndex].id = dsId;
+    return true;
+  }
+  return false;
 }
 
 function addDsClick(data) {
-  if(valid.dsClick(data) && exerciseIsInitialized()) submission.animation.push(data);
+  if(valid.dsClick(data) && exerciseIsInitialized()) {
+    submission.animation.push(data);
+    return true;
+  }
+  return false;
 }
 
 function addGradableStep(data) {
   if (valid.gradableStep(data) && exerciseIsInitialized()) {
     submission.animation.push(data);
+    return true;
   }
+  return false;
 }
 
 function addModelAnswerStep(data) {
-  if (valid.gradableStep(data)) submission.animation.push(data);
+  if (valid.gradableStep(data)) {
+    submission.animation.push(data);
+    return true;
+  }
+  return false;
 }
 
 function addGradeButtonClick(data) {
   if(valid.gradeButtonClick(data) && exerciseIsInitialized()) {
     submission.animation.push(data);
+    return true;
   }
+  return false;
 }
 
 function checkAndFixLastAnimationStep() {
@@ -117,7 +165,9 @@ function checkAndFixLastAnimationStep() {
     }
   } catch (error) {
     console.warn(`Could not remove model answer from last animation step: ${error}`)
+    return false;
   }
+  return true;
 }
 
 function exerciseIsInitialized() {
@@ -132,19 +182,20 @@ function exerciseIsInitialized() {
   return true;
 }
 
-const addDefinition = {
+const addDefinitionSuccesfully = {
   style: addStyle,
   score: addScore,
   options: addOptions,
   modelAnswerFunction: addModelAnswerFunction
 };
 
-const addInitialState = {
+const addInitialStateSuccesfully = {
   dataStructure: addDataStructure,
-  setDsId
+  setDsId,
+  animationDOM: addAnimationDOM,
 };
 
-const addAnimationStep = {
+const addAnimationStepSuccesfully = {
   dsClick: addDsClick,
   gradableStep: addGradableStep,
   modelAnswerStep: addModelAnswerStep,
@@ -156,9 +207,9 @@ module.exports = {
   reset,
   state,
   stateAsJSON,
-  addMetadata,
-  addDefinition,
-  addInitialState,
-  addAnimationStep,
+  addMetadataSuccesfully,
+  addDefinitionSuccesfully,
+  addInitialStateSuccesfully,
+  addAnimationStepSuccesfully,
   checkAndFixLastAnimationStep
 }

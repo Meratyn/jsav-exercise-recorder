@@ -15,7 +15,7 @@ function handleOpenModelAnswer(exercise, eventData) {
           modelAnswerDOM: exercise.modelDialog[0].innerHTML
         };
         try {
-          submission.addAnimationStep.modelAnswerStep(newStep);
+          submission.addAnimationStepSuccesfully.modelAnswerStep(newStep);
         } catch (error) {
           console.warn(`Could not add model answer step to animation: ${error}`)
         }

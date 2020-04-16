@@ -1,5 +1,6 @@
 const recorder = require("../exerciseRecorder.js")
 const submission = require('../submission/submission');
+const helpers = require('../utils/helperFunctions');
 
 function setInitialDataStructures(exercise) {
   const initialStructures = exercise.initialStructures;
@@ -12,7 +13,7 @@ function setInitialDataStructures(exercise) {
     dataStructures.push(getSingleDataStructures(initialStructures));
   }
   dataStructures.forEach(dataStructure => {
-    submission.addInitialState.dataStructure(dataStructure);
+    submission.addInitialStateSuccesfully.dataStructure(dataStructure);
   });
 }
 
@@ -73,10 +74,16 @@ function getInitiaStructureType(className) {
 function setNewId(eventData) {
   const initialState = submission.state().initialState;
   const dsIndex = initialState.findIndex(ds => ds.id === eventData.tempId);
-  submission.addInitialState.setDsId(dsIndex, eventData.newId);
+  submission.addInitialStateSuccesfully.setDsId(dsIndex, eventData.newId);
+}
+
+function setAnimationDOM(exercise) {
+  const dom = helpers.getExerciseDOM(exercise);
+  submission.addInitialStateSuccesfully.animationDOM(dom);
 }
 
 module.exports = {
   setInitialDataStructures,
   setNewId,
+  setAnimationDOM
 }

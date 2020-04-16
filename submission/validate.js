@@ -73,6 +73,16 @@ function validateDsId(dsId) {
   return false;
 }
 
+function validateAnimationDOM(dom) {
+  try {
+    helpers.isValidString(dom);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating animation DOM', err);
+    return false
+  }
+  return true;
+}
+
 function validateDsClick(click) {
   // TODO: implement validateDsClick
   return true;
@@ -96,6 +106,7 @@ module.exports = {
   modelAnswerFunction: validateModelAnswerFunction,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
+  animationDOM: validateAnimationDOM,
   gradableStep: validateGradableStep,
   gradeButtonClick: validateGradeButtonClick,
   dsId: validateDsId,

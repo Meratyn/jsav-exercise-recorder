@@ -3,7 +3,7 @@ const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
-const services = require('./rest/services');
+const services = require('./rest-service/services');
 
 let jsav = {};
 let exercise = {};
@@ -40,7 +40,8 @@ function passEvent(eventData) {
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
-      init_state_func.setInitialDataStructures(exercise,passEvent);
+      init_state_func.setInitialDataStructures(exercise);
+      init_state_func.setAnimationDOM(exercise);
       break;
       // Here we handle all array related events
     case String(eventData.type.match(/^jsav-array-.*/)):

@@ -17,7 +17,7 @@ function handleArrayEvents(exercise, eventData) {
         animationDOM: helpers.getExerciseDOM(exercise)
         }
       try {
-        submission.addAnimationStep.dsClick(clickData);
+        submission.addAnimationStepSuccesfully.dsClick(clickData);
       } catch (error) {
         console.warn(`Could not set array click in animation: ${error}`);
       }
