@@ -24,6 +24,29 @@ function handleOpenModelAnswer(exercise, eventData) {
   }
 }
 
+function recordModelAnswer(exercise) {
+  const modelStructures = [];
+  if (Array.isArray(exercise.modelStructures)) {
+    exercise.modelStructures.forEach(ds => {
+      modelStructures.push(getSingleModelStructure(ds));
+    })
+  } else {
+    modelStructures.push(getSingleDataStructures(exercise.modelStructures))
+  }
+}
+
+function getModelAnswerStepsDataStructures(exercise) {
+
+}
+
+function getModelAnswerStepsDOM(exercise) {
+
+}
+
+function modelAnswerStepForward(exercise) {
+  
+}
+
 module.exports = {
   handleOpenModelAnswer
 }

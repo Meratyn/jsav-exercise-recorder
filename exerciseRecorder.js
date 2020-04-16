@@ -4,6 +4,7 @@ const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
 const services = require('./rest-service/services');
+const helpers = require('./utils/helperFunctions');
 
 let jsav = {};
 let exercise = {};
@@ -55,7 +56,8 @@ function passEvent(eventData) {
       setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
-      anim_func.handleGradableStep(exercise, eventData);
+      const exerciseDOM = helpers.getExerciseDOM(exercise)
+      anim_func.handleGradableStep(exercise, eventData, exerciseDOM);
       break;
     case 'jsav-exercise-grade-button':
       break;
