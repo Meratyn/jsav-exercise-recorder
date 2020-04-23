@@ -1,7 +1,6 @@
 const submission = require('../../submission/submission');
-const helpers = require('../../utils/helperFunctions');
 
-function handleArrayEvents(exercise, eventData) {
+function handleArrayEvents(exercise, eventData, exerciseDOM) {
   const id = eventData.arrayid;
   switch(eventData.type) {
     case 'jsav-array-click':
@@ -14,7 +13,7 @@ function handleArrayEvents(exercise, eventData) {
           values: getArrayValues(exercise.initialStructures, id)
         },
         index: eventData.index,
-        animationDOM: helpers.getExerciseDOM(exercise)
+        animationDOM: exerciseDOM
         }
       try {
         submission.addAnimationStepSuccesfully.dsClick(clickData);
