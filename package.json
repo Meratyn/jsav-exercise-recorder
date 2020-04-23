@@ -5,7 +5,7 @@
   "main": "exerciseRecorder.js",
   "scripts": {
     "build": "browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
-    "test": "jest --watch --verbose",
+    "test": "jest --watch --verbose"
   },
   "keywords": [
     "JSAV"

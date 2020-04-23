@@ -25,7 +25,7 @@ function handleOpenModelAnswer(exercise, eventData) {
 }
 
 function handleModelAnswerAfterGrade(exercise) {
-  document.getElementByClassname('jsavmodelpreparing').
+  // document.getElementByClassname('jsavmodelpreparing')
 }
 
 function recordModelAnswer(exercise) {
