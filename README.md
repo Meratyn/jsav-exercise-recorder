@@ -1,3 +1,5 @@
+![application diagram](./Exercise_Recorder.png)
+
 ## To run the tests
 The tests are written with Jest. To run the tests do this directory:
 
