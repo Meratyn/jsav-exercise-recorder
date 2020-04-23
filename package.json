@@ -4,9 +4,8 @@
   "description": "records steps from JSAV proficiency exercises and sends them to the server",
   "main": "exerciseRecorder.js",
   "scripts": {
-    "build": "browserify exerciseRecorder.js > build/exercise-recorder-bundle.js",
+    "build": "browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
     "test": "jest --watch --verbose",
-    "array": "nohup chromium-browser ../exercises/insertionSort.html &  "
   },
   "keywords": [
     "JSAV"
