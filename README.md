@@ -15,13 +15,11 @@ The tests are written with Jest. To run the tests do this directory:
 - `npm install` in the root folder of this project (if you have not done yet).
 - `npm run test`.
 
-
-
-
 ## Build the bundle file
 To bundle all the required modules in one file use [Browserify](http://browserify.org/):
-- `npm install`in the root folder of this project (if you have not done yet).
-- `npm install -g browserify`.
+- - `git checkout master`.
+- `npm install` in the root folder of this project (if you have not done yet).
+- `npm install -g browserify` if you have not installed it yet.
 - `browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js`.
 
 - Add the bundle to the exercise HTML file `<head>` element using a `<script>` tag like:
