@@ -23,7 +23,7 @@ function initialize() {
   try {
     $(document).off("jsav-log-event");
     $(document).on("jsav-log-event",  function (event, eventData) {
-      passEvent(eventData)
+      setTimeout(() => passEvent(eventData), 200);
     });
   } catch (error) {
     console.warn(error)
@@ -47,8 +47,7 @@ function passEvent(eventData) {
       break;
       // Here we handle all array related events
     case String(eventData.type.match(/^jsav-array-.*/)):
-      exerciseDOM = helpers.getExerciseDOM(exercise)
-      anim_func.handleArrayEvents(exercise, eventData, exerciseDOM);
+      anim_func.handleArrayEvents(exercise, eventData);
       break;
     // This is fired by the initialState.js because JSAV sets array ID only on first click
     case 'recorder-set-id':

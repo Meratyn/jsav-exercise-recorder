@@ -1,4 +1,5 @@
 const submission = require('../../submission/submission');
+const helpers = require('../../utils/helperFunctions');
 
 function handleArrayEvents(exercise, eventData, exerciseDOM) {
   const id = eventData.arrayid;
@@ -13,7 +14,7 @@ function handleArrayEvents(exercise, eventData, exerciseDOM) {
           values: getArrayValues(exercise.initialStructures, id)
         },
         index: eventData.index,
-        animationDOM: exerciseDOM
+        animationDOM: helpers.getExerciseDOM(exercise)
         }
       try {
         submission.addAnimationStepSuccesfully.dsClick(clickData);
