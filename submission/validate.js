@@ -53,6 +53,28 @@ function validateModelAnswerFunction(modelAnswer) {
   return true;
 }
 
+function validateModelAnswerStep(data) {
+  if(Array.isArray(data)) {
+    try {
+      helpers.isValidString(data.counterHTML);
+      helpers.isValidString(data.outputHTML);
+      helpers.isValidString(data.canvasHTML);
+    } catch (err) {
+      return false;
+      console.warn(`Exercise Recorder, validating model answer HTML`, err);
+    }
+    if(Array.isArray(data.dataStructures)) {
+      console.warn(`Exercise Recorder, validating model answer data structures element. Must be an array`);
+      return true;
+    }
+    return false;
+  }
+  console.warn(`Exercise Recorder, validating model answer step. Must be an array`);
+  return false;
+
+}
+
+
 function validateDataStructure(ds) {
   try {
     helpers.objectIsNotEmpthy(ds);
@@ -104,6 +126,7 @@ module.exports = {
   score: validateScore,
   options: validateOptions,
   modelAnswerFunction: validateModelAnswerFunction,
+  modelAnswerStep: validateModelAnswerStep,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
   animationDOM: validateAnimationDOM,

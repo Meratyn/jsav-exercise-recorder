@@ -25,8 +25,38 @@ function handleOpenModelAnswer(exercise, eventData) {
 }
 
 function handleModelAnswerAfterGrade(exercise) {
-  // document.getElementByClassname('jsavmodelpreparing')
+  const totalSteps = exercise.modelav._redo.length;
+  const modelAnswerStep = [];
+  for(let i = 0; i < totalSteps) {
+    let counterHTML = $('.jsavmodelanswer .jsavcounter').html();
+    let outputHTML = $('.jsavmodelanswer .jsavoutput').html();
+    let canvasHTML = $('.jsavmodelanswer .jsavcanvas').html();
+    let dataStructures = getModelAnswerDataStructuresValues(exercise);
+    modelAnswerStep.push({
+      counterHTML,
+      outputHTML,
+      canvasHTML,
+      dataStructures
+     });
+    $('.jsavmodelanswer .jsavforward').click();
+  }
+  submission.addModelAnswerStep(modelAnswerStep);
 }
+
+function getModelAnswerDataStructuresValues(exercise) {
+  const values = [];
+  const modelStructures = exercise.modelStructures;
+  if(Array.isArray(modelStructures)) {
+    modelStructures.forEach((item) => {
+      values.push([ ...item._values ])
+    });
+    return values;
+  }
+  values.push([ ...modelStructures._values ]);
+  return values;
+}
+
+
 
 function recordModelAnswer(exercise) {
   const modelStructures = [];

@@ -11,6 +11,7 @@ const submission =  {
     score: {},
     options: {},
     modelAnswerFunction: "",
+    modelAnswerSteps: [],
   },
   initialState: {
     dataStructures: [],
@@ -29,6 +30,7 @@ function reset() {
     score: {},
     options: {},
     modelAnswerFunction: "",
+    modelAnswerSteps: [],
   };
   submission.initialState = {
     dataStructures: [],
@@ -99,6 +101,14 @@ function addModelAnswerFunction(modelAnswerFunction) {
   return false;
 }
 
+function addModelAnswerStep(data) {
+  if (valid.modelAnswerStep(data)) {
+    submission.definitions.modelAnswerSteps.push(data);
+    return true;
+  }
+  return false;
+}
+
 function addDataStructure(ds) {
   if(valid.dataStructure(ds)) {
     submission.initialState.dataStructures.push(ds);
@@ -133,14 +143,6 @@ function addDsClick(data) {
 
 function addGradableStep(data) {
   if (valid.gradableStep(data) && exerciseIsInitialized()) {
-    submission.animation.push(data);
-    return true;
-  }
-  return false;
-}
-
-function addModelAnswerStep(data) {
-  if (valid.gradableStep(data)) {
     submission.animation.push(data);
     return true;
   }
