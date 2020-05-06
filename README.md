@@ -11,13 +11,13 @@ Currently the recorded data is sent to the given *post_url* when the user clicks
 
 ## To run the tests
 The tests are written with Jest. To run the tests do this directory:
-
+- `git checkout master`.
 - `npm install` in the root folder of this project (if you have not done yet).
 - `npm run test`.
 
 ## Build the bundle file
 To bundle all the required modules in one file use [Browserify](http://browserify.org/):
-- - `git checkout master`.
+- `git checkout master`.
 - `npm install` in the root folder of this project (if you have not done yet).
 - `npm install -g browserify` if you have not installed it yet.
 - `browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js`.
