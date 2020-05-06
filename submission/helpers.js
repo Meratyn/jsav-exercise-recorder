@@ -68,10 +68,18 @@ function isValidString(string) {
   return true;
 }
 
+function isNumber(num) {
+  if(isNaN(num)) {
+    throw new Error(`value should be a number: ${num}`);
+  }
+  return true;
+}
+
 module.exports = {
   copyObject,
   objectIsNotEmpthy,
   objectIsNotArray,
   doesNotContainObjects,
   isValidString,
+  isNumber
 }

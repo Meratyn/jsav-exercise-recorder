@@ -74,5 +74,5 @@ module.exports = {
   handleArrayEvents: arrayAnimation.handleArrayEvents,
   handleGradableStep,
   handleGradeButtonClick,
-  handleModelAnswer: modelAnswerAnimation.handleOpenModelAnswer
+  handleModelAnswer: modelAnswerAnimation.handleModelAnswer
 }

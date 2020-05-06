@@ -53,33 +53,33 @@ function validateModelAnswerFunction(modelAnswer) {
   return true;
 }
 
-function validateModelAnswerStep(data) {
-  if(Array.isArray(data)) {
-    try {
-      helpers.isValidString(data.counterHTML);
-      helpers.isValidString(data.outputHTML);
-      helpers.isValidString(data.canvasHTML);
-    } catch (err) {
-      return false;
-      console.warn(`Exercise Recorder, validating model answer HTML`, err);
-    }
-    if(Array.isArray(data.dataStructures)) {
-      console.warn(`Exercise Recorder, validating model answer data structures element. Must be an array`);
-      return true;
-    }
-    return false;
-  }
-  console.warn(`Exercise Recorder, validating model answer step. Must be an array`);
-  return false;
-
-}
-
-
 function validateDataStructure(ds) {
   try {
     helpers.objectIsNotEmpthy(ds);
   } catch (err) {
     console.warn('Exercise Recorder, validating data structure', err);
+    return false;
+  }
+  return true;
+}
+
+function validateModelAnswerStepDOM(data) {
+  try {
+    helpers.isValidString(data.counterHTML);
+    helpers.isValidString(data.outputHTML);
+    helpers.isValidString(data.canvasHTML);
+  } catch (err) {
+    console.warn(`Exercise Recorder, validating model answer HTML`, err);
+    return false;
+  }
+  return true;
+}
+
+function validateModelAnswerStepOperations(stepOperatoins) {
+  try {
+    helpers.objectIsNotEmpthy(stepOperatoins);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating model answer step operations', err);
     return false;
   }
   return true;
@@ -92,7 +92,7 @@ function validateDsId(dsId) {
     console.warn('Exercise Recorder, validating data structure id', err);
     return false;
   }
-  return false;
+  return true;
 }
 
 function validateAnimationDOM(dom) {
@@ -115,6 +115,19 @@ function validateGradableStep(data) {
   return true;
 }
 
+function validateWatchedModelAnswerStep(data) {
+  try {
+    helpers.isValidString(data.type);
+    helpers.isValidString(data.tstamp);
+    helpers.isValidString(data.modelAnswerDOM);
+    helpers.isNumber(data.currentStep);
+  } catch (err) {
+    console.warn(`Exercise Recorder, validating watched model answer step`, err);
+    return false;
+  }
+  return true;
+}
+
 function validateGradeButtonClick(data) {
   // TODO: validateGradeButtonClick
   return true;
@@ -126,11 +139,13 @@ module.exports = {
   score: validateScore,
   options: validateOptions,
   modelAnswerFunction: validateModelAnswerFunction,
-  modelAnswerStep: validateModelAnswerStep,
+  modelAnswerStepDOM: validateModelAnswerStepDOM,
+  modelAnswerStepOperations: validateModelAnswerStepOperations,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
   animationDOM: validateAnimationDOM,
   gradableStep: validateGradableStep,
   gradeButtonClick: validateGradeButtonClick,
+  watchedModelAnswerStep: validateWatchedModelAnswerStep,
   dsId: validateDsId,
 }

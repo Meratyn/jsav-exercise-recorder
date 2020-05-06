@@ -1,5 +1,6 @@
 const helpers = require('../utils/helperFunctions');
 const submission = require('../submission/submission');
+const modelAnswer = require('./model-answer/model-answer-definitions.js');
 
 function setExerciseOptions(eventData) {
   submission.addDefinitionSuccesfully.options({
@@ -10,7 +11,7 @@ function setExerciseOptions(eventData) {
 
 function setDefinitions(exercise) {
   try {
-    setModelAnswerFunction(exercise.options.model.toString());
+    modelAnswer.recordModelAnswerFunction(exercise.options.model.toString());
   } catch (error) {
     console.warn(`Could nor set model answer when recording animation: ${error.message}`);
     return false;
@@ -20,16 +21,6 @@ function setDefinitions(exercise) {
 
 function setFinalGrade(eventData) {
   return submission.addDefinitionSuccesfully.score({ ...eventData.score });
-}
-
-// Adds the model answer function as string
-function setModelAnswerFunction(modelSolution) {
-  try {
-    submission.addDefinitionSuccesfully.modelAnswerFunction(modelSolution);
-  } catch (error) {
-    throw error;
-  }
-  return true;
 }
 
 function getExerciseTitle(initialHTML) {
@@ -61,4 +52,10 @@ module.exports = {
   setExerciseOptions,
   setDefinitions,
   setFinalGrade,
+  modelAnswer: {
+    recordFunction: modelAnswer.recordModelAnswerFunction,
+    recordDataStructures: modelAnswer.recordModelAnswerStructures,
+    recordStepDOM: modelAnswer.recordModelAnswerStepDOM,
+    recordStepOperations: modelAnswer.recordModelAnswerOperations,
+  }
 }

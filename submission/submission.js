@@ -10,8 +10,12 @@ const submission =  {
     style: {},
     score: {},
     options: {},
-    modelAnswerFunction: "",
-    modelAnswerSteps: [],
+    modelAnswer: {
+      function: "",
+      dataStructures: [],
+      stepsOperations: [],
+      stepsDOM: []
+    },
   },
   initialState: {
     dataStructures: [],
@@ -29,8 +33,12 @@ function reset() {
     style: {},
     score: {},
     options: {},
-    modelAnswerFunction: "",
-    modelAnswerSteps: [],
+    modelAnswer: {
+      function: "",
+      dataStructures: [],
+      stepsOperations: [],
+      stepsDOM: []
+    }
   };
   submission.initialState = {
     dataStructures: [],
@@ -95,15 +103,31 @@ function addOptions(options) {
 
 function addModelAnswerFunction(modelAnswerFunction) {
   if (valid.modelAnswerFunction(modelAnswerFunction)) {
-    submission.definitions.modelAnswerFunction = modelAnswerFunction;
+    submission.definitions.modelAnswer.function = modelAnswerFunction;
     return true;
   }
   return false;
 }
 
-function addModelAnswerStep(data) {
-  if (valid.modelAnswerStep(data)) {
-    submission.definitions.modelAnswerSteps.push(data);
+function addModelAnswerStepOperations(stepOperations) {
+  if(valid.modelAnswerStepOperations(stepOperations)) {
+    submission.definitions.modelAnswer.stepsOperations.push(stepOperations);
+    return true;
+  }
+  return false;
+}
+
+function addModelAnswerDataStructure(ds) {
+  if(valid.dataStructure(ds)) {
+    submission.definitions.modelAnswer.dataStructures.push(ds)
+    return true;
+  }
+  return false;
+}
+
+function addModelAnswerStepDOM(data) {
+  if (valid.modelAnswerStepDOM(data)) {
+    submission.definitions.modelAnswer.stepsDOM.push(data);
     return true;
   }
   return false;
@@ -157,6 +181,14 @@ function addGradeButtonClick(data) {
   return false;
 }
 
+function addWatchedModelAnswerStep(data) {
+  if(valid.watchedModelAnswerStep(data) && exerciseIsInitialized()) {
+    submission.animation.push(data);
+    return true;
+  }
+  return false;
+}
+
 function checkAndFixLastAnimationStep() {
   try {
     let animation = submission.animation
@@ -188,7 +220,10 @@ const addDefinitionSuccesfully = {
   style: addStyle,
   score: addScore,
   options: addOptions,
-  modelAnswerFunction: addModelAnswerFunction
+  modelAnswerFunction: addModelAnswerFunction,
+  modelAnswerDataStructure: addModelAnswerDataStructure,
+  modelAnswerStepDOM: addModelAnswerStepDOM,
+  modelAnswerStepOperations: addModelAnswerStepOperations
 };
 
 const addInitialStateSuccesfully = {
@@ -200,8 +235,8 @@ const addInitialStateSuccesfully = {
 const addAnimationStepSuccesfully = {
   dsClick: addDsClick,
   gradableStep: addGradableStep,
-  modelAnswerStep: addModelAnswerStep,
-  gradeButtonClick: addGradeButtonClick
+  gradeButtonClick: addGradeButtonClick,
+  modelAnswer: addWatchedModelAnswerStep
 };
 
 

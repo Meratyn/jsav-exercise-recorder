@@ -30,11 +30,48 @@ function getExerciseDOM(exercise) {
   return exercise.jsav.container[0].innerHTML;
 }
 
+function getPopUp(text) {
+  const modalDivStyle = {
+    width: "100%",
+    height: "100%",
+    zIndex: 1,
+    display: 'block',
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    overflow: 'auto',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    paddingTop: '100px',
+  }
+  const modalContentStyle = {
+    textAlign: 'center',
+    backgroundColor: '#fefefe',
+    margin: 'auto',
+    padding: '20px',
+    border: '1px solid #888',
+    width: '80%'
+  }
+  const popUpDiv = document.createElement('div');
+  popUpDiv.id = "popUpDiv";
+  const contentDiv = document.createElement('div');
+  contentDiv.id = 'popUpContent';
+  popUpDiv.appendChild(contentDiv);
+  contentDiv.innerText = text;
+  for(key in modalDivStyle) {
+    popUpDiv.style[key] = modalDivStyle[key];
+  }
+  for(key in modalContentStyle) {
+    contentDiv.style[key] = modalContentStyle[key];
+  }
+  return popUpDiv;
+}
+
 
 const helpers = {
   extractTextByClassName,
   extractTextByTagName,
-  getExerciseDOM
+  getExerciseDOM,
+  getPopUp
 }
 
 module.exports = helpers;
