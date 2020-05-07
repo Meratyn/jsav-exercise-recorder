@@ -10,79 +10,52 @@ function recordModelAnswerFunction(modelAnswerFunction) {
   return true;
 }
 
-// function recordModelAnswerStepDOM(exercise) {
-//   const promiseArray = [];
-//   recording = true;
-//   const totalSteps = exercise.modelav._redo.length;
-//   for(let i = 0; i < totalSteps; i++) {
-//     promiseArray.push(
-//       new Promise((resolve, reject) => {
-//         setTimeout( () => {
-//           const modelAnswerStep = getModelAnswerStep(exercise);
-//           submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep);
-//           $('.jsavmodelanswer .jsavforward').click();
-//           console.log('resolving promsie', i);
-//           resolve(modelAnswerStep);
-//         }, 1000);
-//       })
-//     )
-//   }
-//   Promise.all(promiseArray).then( steps => {
-//     console.log('Finished recording model answer', steps);
-//     recordig = false;
-//   });
-// }
-function recordModelAnswerStructures(exercise) {
-  const modelStructures = exercise.modelStructures;
-  if(Array.isArray(modelStructures)) {
-    modelStructures.forEach((item) => {
-      submission.addDefinitionSuccesfully.modelAnswerDataStructure([ ...item._values ]);
-    });
-  } else {
-    submission.addDefinitionSuccesfully.modelAnswerDataStructure([ ...modelStructures._values ]);
+function recordModelAnswerStep(exercise) {
+  const redoArray = exercise.modelav._redo;
+  if(redoArray.length >= 0) {
+    const dataStructures = recordModelAnswerStepDataStructuresValues(exercise);
+    const operations =  redoArray.length === 0? [] : getModelAnswerStepOperations(redoArray[0].operations);
+    const html = getModelAnswerStepHTML();
+    const modelAnswerStep = { dataStructures, operations, html };
+    submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep);
+    if(redoArray.length === 0) return false;
+    return true;
   }
+  return false;
 }
 
-function recordModelAnswerOperations(exercise) {
-  const redoArray = exercise.modelav._redo
-  for(let i = 0; i < redoArray.length; i++) {
-    const stepOperations = getModelAnswerStepOperations(redoArray[i].operations);
-    submission.addDefinitionSuccesfully.modelAnswerStepOperations(stepOperations);
-    };
+function recordModelAnswerStepDataStructuresValues(exercise) {
+  const modelStructures = exercise.modelStructures;
+  const stepDSvalues = [];
+  if(Array.isArray(modelStructures)) {
+    modelStructures.forEach((item) => {
+      stepDSvalues.push([ ...item._values ]);
+    });
+  } else {
+    stepDSvalues.push([ ...modelStructures._values ]);
   }
+  return stepDSvalues;
+}
 
 function getModelAnswerStepOperations(operations) {
   const stepOperations = []
   for(const op in operations) {
     stepOperations.push({
-      args: { ...operations[op].args },
+      args: getFormattedOperationArgs(operations[op].args),
       effect: operations[op].effect.toString(),
     })
   }
   return stepOperations;
 }
 
-function recordModelAnswerStepDOM(exercise, totalSteps) {
-  console.log('REDO', [ ... exercise.modelav._redo ]);
-  console.log('EXERCISE', { ...exercise  });
-  console.log('MODEL STRUCTURES', [ ...exercise.modelStructures._values ]);
-  const recordedSteps = submission.state().definitions.modelAnswer.stepsDOM;
-  if(recordedSteps.length <= totalSteps) {
-    const modelAnswerStepHTML = getModelAnswerStepHTML();
-    submission.addDefinitionSuccesfully.modelAnswerStepDOM(modelAnswerStepHTML);
-    return false;
+function getFormattedOperationArgs(args) {
+  const formattedArgs = {}
+  for(const arg in args) {
+    formattedArgs[arg] = (typeof(args[arg]) !== 'object' || Array.isArray(args[arg]))?
+    args[arg] : `Converted to string when recording to avoid cyclic object value: ${args[arg].toString()}`
   }
-  return true;
+  return formattedArgs;
 }
-
-// function getModelAnswerStep(exercise) {
-//   const stepHTML = getModelAnswerStepHTML();
-//   return {
-//     counterHTML: stepHTML.counterHTML,
-//     outputHTML: stepHTML.outputHTML,
-//     canvasHTML: stepHTML.canvasHTML,
-//   }
-// }
 
 function getModelAnswerStepHTML() {
   let counterHTML = $('.jsavmodelanswer .jsavcounter').html();
@@ -91,22 +64,13 @@ function getModelAnswerStepHTML() {
   return {counterHTML,  outputHTML, canvasHTML };
 }
 
-// function getModelAnswerDataStructuresValues(exercise) {
-//   const values = [];
-//   const modelStructures = exercise.modelStructures;
-//   if(Array.isArray(modelStructures)) {
-//     modelStructures.forEach((item) => {
-//       values.push([ ...item._values ])
-//     });
-//     return values;
-//   }
-//   values.push([ ...modelStructures._values ]);
-//   return values;
-// }
+function modelAnswerProgress() {
+  return submission.state().definitions.modelAnswer.steps.slice(-1)[0].html.counterHTML;
+}
+
 
 module.exports = {
   recordModelAnswerFunction,
-  recordModelAnswerStructures,
-  recordModelAnswerOperations,
-  recordModelAnswerStepDOM,
+  recordModelAnswerStep,
+  modelAnswerProgress,
 }

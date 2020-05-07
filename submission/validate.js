@@ -53,6 +53,13 @@ function validateModelAnswerFunction(modelAnswer) {
   return true;
 }
 
+function validateModelAnswerStep(step) {
+  const validDataStructures = step.dataStructures.every( ds => validateDataStructure(ds));
+  const validOperations = validateModelAnswerStepOperations(step.operations);
+  const validHTML = validateModelAnswerStepHTML(step.html);
+  return validDataStructures && validOperations && validHTML;
+}
+
 function validateDataStructure(ds) {
   try {
     helpers.objectIsNotEmpthy(ds);
@@ -63,7 +70,7 @@ function validateDataStructure(ds) {
   return true;
 }
 
-function validateModelAnswerStepDOM(data) {
+function validateModelAnswerStepHTML(data) {
   try {
     helpers.isValidString(data.counterHTML);
     helpers.isValidString(data.outputHTML);
@@ -75,14 +82,12 @@ function validateModelAnswerStepDOM(data) {
   return true;
 }
 
-function validateModelAnswerStepOperations(stepOperatoins) {
-  try {
-    helpers.objectIsNotEmpthy(stepOperatoins);
-  } catch (err) {
-    console.warn('Exercise Recorder, validating model answer step operations', err);
-    return false;
+function validateModelAnswerStepOperations(stepOperations) {
+  if (Array.isArray(stepOperations)){
+    return true;
   }
-  return true;
+  console.warn('Exercise Recorder, validating model answer step operations. It must be an array.');
+  return false;
 }
 
 function validateDsId(dsId) {
@@ -95,11 +100,11 @@ function validateDsId(dsId) {
   return true;
 }
 
-function validateAnimationDOM(dom) {
+function validateAnimationHTML(html) {
   try {
-    helpers.isValidString(dom);
+    helpers.isValidString(html);
   } catch (err) {
-    console.warn('Exercise Recorder, validating animation DOM', err);
+    console.warn('Exercise Recorder, validating animation HTML', err);
     return false
   }
   return true;
@@ -119,7 +124,7 @@ function validateWatchedModelAnswerStep(data) {
   try {
     helpers.isValidString(data.type);
     helpers.isValidString(data.tstamp);
-    helpers.isValidString(data.modelAnswerDOM);
+    helpers.isValidString(data.modelAnswerHTML);
     helpers.isNumber(data.currentStep);
   } catch (err) {
     console.warn(`Exercise Recorder, validating watched model answer step`, err);
@@ -139,11 +144,10 @@ module.exports = {
   score: validateScore,
   options: validateOptions,
   modelAnswerFunction: validateModelAnswerFunction,
-  modelAnswerStepDOM: validateModelAnswerStepDOM,
-  modelAnswerStepOperations: validateModelAnswerStepOperations,
+  modelAnswerStep: validateModelAnswerStep,
   dataStructure: validateDataStructure,
   dsClick: validateDsClick,
-  animationDOM: validateAnimationDOM,
+  animationHTML: validateAnimationHTML,
   gradableStep: validateGradableStep,
   gradeButtonClick: validateGradeButtonClick,
   watchedModelAnswerStep: validateWatchedModelAnswerStep,

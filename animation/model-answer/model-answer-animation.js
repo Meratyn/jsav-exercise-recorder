@@ -15,7 +15,7 @@ function handleModelAnswer(exercise, eventData) {
           type,
           tstamp: eventData.tstamp || new Date(),
           currentStep,
-          modelAnswerDOM: exercise.modelDialog[0].innerHTML
+          modelAnswerHTML: exercise.modelDialog[0].innerHTML
         };
         try {
           submission.addAnimationStepSuccesfully.modelAnswer(newStep);

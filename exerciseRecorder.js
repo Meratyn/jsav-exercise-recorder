@@ -8,14 +8,13 @@ const helpers = require('./utils/helperFunctions');
 
 let jsav = {};
 let exercise = {};
-let exerciseDOM = "";
+let exerciseHTML = "";
 // LMS defines: used if grading asynchronously
 let submission_url;
 // LMS defines: where to post the submission
 let post_url;
 const modelAnswer = {
   opened: false,
-  totalSteps: false,
   ready: false,
   recordingSpeed: 20,
 }
@@ -70,7 +69,7 @@ function passEvent(eventData) {
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
       init_state_func.setInitialDataStructures(exercise);
-      init_state_func.setAnimationDOM(exercise);
+      init_state_func.setAnimationHTML(exercise);
       break;
       // Here we handle all array related events
     case String(eventData.type.match(/^jsav-array-.*/)):
@@ -84,27 +83,23 @@ function passEvent(eventData) {
       setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
-      exerciseDOM = helpers.getExerciseDOM(exercise)
-      anim_func.handleGradableStep(exercise, eventData, exerciseDOM);
+      exerciseHTML = helpers.getExerciseHTML(exercise)
+      anim_func.handleGradableStep(exercise, eventData, exerciseHTML);
       break;
     case 'jsav-exercise-model-open':
       modelAnswer.opened = true;
+      modelAnswer.ready = true;
     case 'jsav-exercise-model-init':
       if(!modelAnswer.opened) {
-        if(!modelAnswer.totalSteps) {
-          modelAnswer.totalSteps = exercise.modelav._redo.length;
-        }
         exercise.modelav.SPEED = modelAnswer.recordingSpeed -10;
-        modelAnswer.ready = def_func.modelAnswer.recordStepDOM(exercise, modelAnswer.totalSteps);
-        def_func.modelAnswer.recordDataStructures(exercise);
-        def_func.modelAnswer.recordStepOperations(exercise);
+        modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
         $('.jsavmodelanswer .jsavforward').click();
         break;
       }
     case 'jsav-exercise-model-forward':
       if(!modelAnswer.opened && !modelAnswer.ready) {
         setTimeout(() => {
-          modelAnswer.ready = def_func.modelAnswer.recordStepDOM(exercise, modelAnswer.totalSteps);
+          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
           $('.jsavmodelanswer .jsavforward').click();
         }, modelAnswer.recordingSpeed);
         break;
@@ -115,10 +110,11 @@ function passEvent(eventData) {
     case 'jsav-exercise-grade-button':
       break;
     case 'jsav-exercise-grade':
-      const progress = submission.state().definitions.modelAnswer.stepsDOM.slice(-1)[0].counterHTML;
-      const popUpText = `Recording model answer steps\n ${progress}`;
-      const popUp = helpers.getPopUp(popUpText);
-      $('body').append(popUp);
+      if(!modelAnswer.opened) {
+        const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
+        const popUp = helpers.getPopUp(popUpText);
+        $('body').append(popUp);
+      }
       finish(eventData);
       break;
     default:
@@ -127,15 +123,16 @@ function passEvent(eventData) {
 }
 
 function finish(eventData) {
-  const progress = submission.state().definitions.modelAnswer.stepsDOM.slice(-1)[0].counterHTML;
-  $('#popUpContent').text(`Recording model answer steps\n ${progress}`);
   if(modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
     def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
     submission.reset();
-    $('#popUpDiv').remove();
+    if(!modelAnswer.opened) {
+      $('#popUpDiv').remove();
+    }
     $(document).off("jsav-log-event");
   } else {
+    $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
   }
 }

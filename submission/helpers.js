@@ -62,9 +62,6 @@ function isValidString(string) {
   if(string === null) {
     throw new Error(`value is null: ${string}`);
   }
-  if(string.length === 0) {
-    throw new Error(`Length should be more than 0: ${string}`);
-  }
   return true;
 }
 

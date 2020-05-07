@@ -54,8 +54,7 @@ module.exports = {
   setFinalGrade,
   modelAnswer: {
     recordFunction: modelAnswer.recordModelAnswerFunction,
-    recordDataStructures: modelAnswer.recordModelAnswerStructures,
-    recordStepDOM: modelAnswer.recordModelAnswerStepDOM,
-    recordStepOperations: modelAnswer.recordModelAnswerOperations,
+    recordStep: modelAnswer.recordModelAnswerStep,
+    progress: modelAnswer.modelAnswerProgress
   }
 }

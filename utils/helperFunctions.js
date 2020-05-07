@@ -26,7 +26,7 @@ function removeTrimLineBreaks(string){
   return string.split(/\r?\n|\r/g).map(e => e.trim()).join('');
 }
 
-function getExerciseDOM(exercise) {
+function getExerciseHTML(exercise) {
   return exercise.jsav.container[0].innerHTML;
 }
 
@@ -70,7 +70,7 @@ function getPopUp(text) {
 const helpers = {
   extractTextByClassName,
   extractTextByTagName,
-  getExerciseDOM,
+  getExerciseHTML,
   getPopUp
 }
 

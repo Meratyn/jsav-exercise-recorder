@@ -4,9 +4,9 @@ const modelAnswerAnimation = require('./model-answer/model-answer-animation');
 const helpers = require('../utils/helperFunctions');
 
 
-function handleGradableStep(exercise, eventData, exerciseDOM) {
+function handleGradableStep(exercise, eventData, exerciseHTML) {
   const dataStructuresState = getDataStructuresState(submissionDataStructures(), exercise);
-  if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState, exerciseDOM);
+  if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState, exerciseHTML);
 }
 
 // Returns an empthy array if there is not state change
@@ -38,7 +38,7 @@ function submissionDataStructures() {
   return dataStructures;
 }
 
-function addStepToSubmission(eventData, dataStructuresState, exerciseDOM) {
+function addStepToSubmission(eventData, dataStructuresState, exerciseHTML) {
   const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'gradeable-step';
   const animation = submission.state().animation;
   const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
@@ -47,7 +47,7 @@ function addStepToSubmission(eventData, dataStructuresState, exerciseDOM) {
     tstamp: eventData.tstamp || new Date(),
     currentStep,
     dataStructuresState,
-    animationDOM: exerciseDOM
+    animationHTML: exerciseHTML
   };
   try {
     submission.addAnimationStepSuccesfully.gradableStep(newState);

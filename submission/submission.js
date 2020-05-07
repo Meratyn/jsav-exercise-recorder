@@ -12,14 +12,12 @@ const submission =  {
     options: {},
     modelAnswer: {
       function: "",
-      dataStructures: [],
-      stepsOperations: [],
-      stepsDOM: []
+      steps: []
     },
   },
   initialState: {
     dataStructures: [],
-    animationDOM: ""
+    animationHTML: ""
   },
   animation: []
 };
@@ -35,14 +33,12 @@ function reset() {
     options: {},
     modelAnswer: {
       function: "",
-      dataStructures: [],
-      stepsOperations: [],
-      stepsDOM: []
-    }
+      steps: []
+    },
   };
   submission.initialState = {
     dataStructures: [],
-    animationDOM: ""
+    animationHTML: ""
   };
   submission.animation = [];
 }
@@ -54,7 +50,7 @@ function state() {
   // TODO: change to support new DSs
   const initialState = {
     dataStructures: submission.initialState.dataStructures.map(ds => helpers.copyObject(ds)),
-    animationDOM: submission.initialState.animationDOM
+    animationHTML: submission.initialState.animationHTML
   }
   const animation = submission.animation.map(a => helpers.copyObject(a));
   return {
@@ -109,29 +105,14 @@ function addModelAnswerFunction(modelAnswerFunction) {
   return false;
 }
 
-function addModelAnswerStepOperations(stepOperations) {
-  if(valid.modelAnswerStepOperations(stepOperations)) {
-    submission.definitions.modelAnswer.stepsOperations.push(stepOperations);
+function addModelAnswerStep(step) {
+  if(valid.modelAnswerStep(step)) {
+    submission.definitions.modelAnswer.steps.push(step);
     return true;
   }
   return false;
 }
 
-function addModelAnswerDataStructure(ds) {
-  if(valid.dataStructure(ds)) {
-    submission.definitions.modelAnswer.dataStructures.push(ds)
-    return true;
-  }
-  return false;
-}
-
-function addModelAnswerStepDOM(data) {
-  if (valid.modelAnswerStepDOM(data)) {
-    submission.definitions.modelAnswer.stepsDOM.push(data);
-    return true;
-  }
-  return false;
-}
 
 function addDataStructure(ds) {
   if(valid.dataStructure(ds)) {
@@ -141,9 +122,9 @@ function addDataStructure(ds) {
   return false;
 }
 
-function addAnimationDOM(dom) {
-  if(valid.animationDOM(dom)) {
-    submission.initialState.animationDOM = dom;
+function addAnimationHTML(html) {
+  if(valid.animationHTML(html)) {
+    submission.initialState.animationHTML = html;
     return true;
   }
   return false;
@@ -221,15 +202,13 @@ const addDefinitionSuccesfully = {
   score: addScore,
   options: addOptions,
   modelAnswerFunction: addModelAnswerFunction,
-  modelAnswerDataStructure: addModelAnswerDataStructure,
-  modelAnswerStepDOM: addModelAnswerStepDOM,
-  modelAnswerStepOperations: addModelAnswerStepOperations
+  modelAnswerStep: addModelAnswerStep,
 };
 
 const addInitialStateSuccesfully = {
   dataStructure: addDataStructure,
   setDsId,
-  animationDOM: addAnimationDOM,
+  animationHTML: addAnimationHTML,
 };
 
 const addAnimationStepSuccesfully = {

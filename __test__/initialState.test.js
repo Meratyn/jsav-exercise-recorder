@@ -16,7 +16,7 @@ describe("jsav-exercise-init", () => {
     helpers.resetAllData();
   });
 
-  test("sets click listener on single array DOM element if id is missing", () => {
+  test("sets click listener on single array HTML element if id is missing", () => {
     singleArray.element['0'].id = "";
     exercise.initialStructures = singleArray;
     exerciseInitEvent.exercise = exercise;
@@ -24,7 +24,7 @@ describe("jsav-exercise-init", () => {
     expect(exercise.initialStructures.element['0'].onclick).toBeDefined();
   })
 
-  test("sets click listener on multiple arrays DOM element if id is missing", () => {
+  test("sets click listener on multiple arrays HTML element if id is missing", () => {
     multipleArrays[0].element['0'].id = "";
     multipleArrays[1].element['0'].id = "";
     exercise.initialStructures = multipleArrays;

@@ -18,16 +18,16 @@ function setInitialDataStructures(exercise) {
 }
 
 function getSingleDataStructures(initialStructure) {
-  const domElement = initialStructure.element['0'];
+  const htmlElement = initialStructure.element['0'];
   let tempId;
-  if (!domElement.id) {
+  if (!htmlElement.id) {
     // Arrays miss id untill first click
-    tempId = `tempid-${Math.random().toString().substr(2)}`;
-    setClickListenerWithId(domElement, tempId);
+    tempId = `tempid-${Math.ranhtml().toString().substr(2)}`;
+    setClickListenerWithId(htmlElement, tempId);
   }
-  const id =  (domElement.id === "" || domElement.id === undefined) ? tempId : domElement.id;
+  const id =  (htmlElement.id === "" || htmlElement.id === undefined) ? tempId : htmlElement.id;
   const dataStructure = {
-    type: getInitiaStructureType(domElement.className),
+    type: getInitiaStructureType(htmlElement.className),
     id,
     values: [ ...initialStructure._values ],
     options: { ...initialStructure.options }
@@ -35,14 +35,14 @@ function getSingleDataStructures(initialStructure) {
   return dataStructure;
 }
 
-function setClickListenerWithId(domElement, tempId) {
-  domElement.onclick = ((clickData) => {
+function setClickListenerWithId(htmlElement, tempId) {
+  htmlElement.onclick = ((clickData) => {
     recorder.passEvent({
     type: 'recorder-set-id',
     tempId: tempId,
-    newId: domElement.id
+    newId: htmlElement.id
     })
-    domElement.onclick = null;
+    htmlElement.onclick = null;
   });
 }
 
@@ -77,13 +77,13 @@ function setNewId(eventData) {
   submission.addInitialStateSuccesfully.setDsId(dsIndex, eventData.newId);
 }
 
-function setAnimationDOM(exercise) {
-  const dom = helpers.getExerciseDOM(exercise);
-  submission.addInitialStateSuccesfully.animationDOM(dom);
+function setAnimationHTML(exercise) {
+  const html = helpers.getExerciseHTML(exercise);
+  submission.addInitialStateSuccesfully.animationHTML(html);
 }
 
 module.exports = {
   setInitialDataStructures,
   setNewId,
-  setAnimationDOM
+  setAnimationHTML
 }
