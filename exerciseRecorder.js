@@ -60,7 +60,6 @@ function passEvent(eventData) {
   switch(eventData.type){
     case 'jsav-init':
       def_func.setExerciseOptions(eventData);
-      metad_func.setExerciseMetadata(eventData);
       break;
     case 'jsav-recorded':
       break;
@@ -68,7 +67,7 @@ function passEvent(eventData) {
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
-      init_state_func.setInitialDataStructures(exercise);
+      init_state_func.setInitialDataStructures(exercise, passEvent);
       init_state_func.setAnimationHTML(exercise);
       break;
       // Here we handle all array related events
@@ -140,8 +139,4 @@ function finish(eventData) {
     $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
   }
-}
-
-module.exports = {
-  passEvent
 }
