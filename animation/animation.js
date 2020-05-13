@@ -67,7 +67,6 @@ function handleGradeButtonClick(eventData) {
   } catch (error) {
     console.warn(`Could not add grade button click to animation: ${error}`)
   }
-
 }
 
 module.exports = {

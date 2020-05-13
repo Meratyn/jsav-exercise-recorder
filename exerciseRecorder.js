@@ -80,7 +80,8 @@ function passEvent(eventData) {
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
-      setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
+      exerciseHTML = helpers.getExerciseHTML(exercise)
+      setTimeout(() => anim_func.handleGradableStep(exercise, eventData, exerciseHTML), 100);
       break;
     case 'jsav-exercise-gradeable-step':
       exerciseHTML = helpers.getExerciseHTML(exercise)
@@ -116,6 +117,10 @@ function passEvent(eventData) {
         $('body').append(popUp);
       }
       finish(eventData);
+      break;
+    case 'jsav-exercise-reset':
+      console.warn('Resetting submission');
+      submission.reset();
       break;
     default:
       console.warn('UNKNOWN EVENT', eventData);
