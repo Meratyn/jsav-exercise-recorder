@@ -83,8 +83,7 @@ function passEvent(eventData) {
       setTimeout(() => anim_func.handleGradableStep(exercise, eventData, exerciseHTML), 100);
       break;
     case 'jsav-exercise-gradeable-step':
-      exerciseHTML = helpers.getExerciseHTML(exercise)
-      anim_func.handleGradableStep(exercise, eventData, exerciseHTML);
+      anim_func.handleGradableStep(exercise, eventData, passEvent);
       break;
     case 'jsav-exercise-model-open':
       modelAnswer.opened = true;

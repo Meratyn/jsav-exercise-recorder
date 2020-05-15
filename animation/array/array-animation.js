@@ -6,7 +6,7 @@ function handleArrayEvents(exercise, eventData, exerciseHTML) {
   switch(eventData.type) {
     case 'jsav-array-click':
       const clickData = {
-        type: 'click',
+        type: 'array-click',
         tstamp: eventData.tstamp,
         currentStep: eventData.currentStep,
         dataStructure: {
