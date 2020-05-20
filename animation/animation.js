@@ -1,14 +1,15 @@
 const submission = require('../submission/submission');
 const arrayAnimation = require('./array/array-animation');
+const nodeAnimation = require('./node/node-animation');
 const modelAnswerAnimation = require('./model-answer/model-answer-animation');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
 
 
-function handleGradableStep(exercise, eventData, passEvent) {
+function handleGradableStep(exercise, eventData) {
   const exerciseHTML = helpers.getExerciseHTML(exercise)
   // const dataStructuresState = getDataStructuresState(submissionDataStructures(), exercise);
-  const dataStructuresState = dataStructures.getDataStructuresFromExercise(exercise, passEvent)
+  const dataStructuresState = dataStructures.getDataStructuresFromExercise(exercise)
   if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState, exerciseHTML);
 }
 
@@ -75,6 +76,7 @@ function handleGradeButtonClick(eventData) {
 
 module.exports = {
   handleArrayEvents: arrayAnimation.handleArrayEvents,
+  handleNodeEvents: nodeAnimation.handleNodeEvents,
   handleGradableStep,
   handleGradeButtonClick,
   handleModelAnswer: modelAnswerAnimation.handleModelAnswer

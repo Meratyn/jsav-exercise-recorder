@@ -111,12 +111,22 @@ function validateAnimationHTML(html) {
 }
 
 function validateDsClick(click) {
-  // TODO: implement validateDsClick
+  try {
+    helpers.objectIsNotEmpthy(click);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating data structure click', err);
+    return false;
+  }
   return true;
 }
 
 function validateGradableStep(data) {
-  // TODO: implement chackStateChange
+  try {
+    helpers.objectIsNotEmpthy(data);
+  } catch (err) {
+    console.warn('Exercise Recorder, validating gradable step', err);
+    return false;
+  }
   return true;
 }
 

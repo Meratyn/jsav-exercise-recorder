@@ -1,19 +1,18 @@
 const binaryHeap = require('./binaryHeap/binaryHeap');
 
-function getDataStructuresFromExercise(exercise, passEvent) {
+function getDataStructuresFromExercise(exercise) {
   const initialStructures = exercise.initialStructures;
   const dataStructures = [];
   // If initialDataStructures is an Array, it means there is more than one data structure
   if(Array.isArray(initialStructures)) {
     return initialStructures.map(ds => getSingleDataStructure(ds, missingIdHandlingFunctionss))
   }
-  return [getSingleDataStructure(initialStructures, passEvent)];
+  return [getSingleDataStructure(initialStructures)];
 }
 
-function getSingleDataStructure(initialStructure, passEvent) {
+function getSingleDataStructure(initialStructure) {
   const htmlElement = initialStructure.element['0'];
-  // DS might miss id untill first click
-  let id = !htmlElement.id ? handleMissingId(htmlElement, passEvent) : htmlElement.id;
+  const id = htmlElement.id;
   let type =  getDataStructureType(htmlElement.className);
   if(type === 'array' && binaryHeap.isBinHeap(initialStructure)) {
     return {
@@ -28,19 +27,6 @@ function getSingleDataStructure(initialStructure, passEvent) {
     id,
     values: [ ...initialStructure._values ],
   };
-}
-
-function handleMissingId(htmlElement, passEvent) {
-  tempId = `tempid-${Math.random().toString().substr(2)}`;
-  htmlElement.onclick = ((clickData) => {
-    passEvent({
-    type: 'recorder-set-id',
-    tempId: tempId,
-    newId: htmlElement.id
-    })
-    htmlElement.onclick = null;
-  });
-  return tempId;
 }
 
 function getDataStructureType(className) {
