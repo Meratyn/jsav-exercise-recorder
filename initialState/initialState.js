@@ -31,7 +31,7 @@ function fixMissingIds(exercise, passEvent) {
       if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
     })
   }
-  const htmlElement = ds.element['0'];
+  const htmlElement = initialStructures.element['0'];
   if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
 }
 

@@ -24,8 +24,7 @@ function getSingleDataStructure(initialStructure) {
   }
   return {
     type: type,
-    id,
-    values: [ ...initialStructure._values ],
+    id
   };
 }
 
