@@ -77,10 +77,12 @@ function passEvent(eventData) {
       anim_func.handleArrayEvents(exercise, eventData);
       break;
     case String(eventData.type.match(/^jsav-node-.*/)):
-
       anim_func.handleNodeEvents(exercise, eventData);
       break;
-    // This is fired by the initialState.js because JSAV sets array ID only on first click
+    case String(eventData.type.match(/^jsav-edge-.*/)):
+      anim_func.handleEdgeEvents(exercise, eventData);
+      break;
+    // This is fired by the initialState.js if the DS ID is set only on first click
     case 'recorder-set-id':
       init_state_func.setNewId(eventData);
       break;

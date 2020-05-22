@@ -1,4 +1,5 @@
 const binaryHeap = require('./binaryHeap/binaryHeap');
+const graph = require('./graph/graph');
 
 function getDataStructuresFromExercise(exercise) {
   const initialStructures = exercise.initialStructures;
@@ -20,6 +21,21 @@ function getSingleDataStructure(initialStructure) {
       id,
       values: [ ...initialStructure._values ],
       tree: binaryHeap.getBinHeap(initialStructure),
+    }
+  }
+  else if (type === 'array') {
+    return {
+      type,
+      id,
+      values: [ ...initialStructure._values ],
+    }
+  }
+  else if (type === 'graph') {
+    return {
+      type,
+      id,
+      nodes: graph.nodes(initialStructure),
+      edges: graph.edges(initialStructure)
     }
   }
   return {

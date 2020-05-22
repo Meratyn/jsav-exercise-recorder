@@ -1,38 +1,41 @@
 
-function getChildNodesFromDOM(node) {
+function getChildNodes(node) {
   if(!node.childnodes || node.childnodes.length == 0) {
     return {
       id: node.element[0].id,
       edgeToParent: getEdge(node._edgetoparent),
-      htmlInnerText: node.element[0].innerText
+      value: node.element[0].dataset.value,
+      childRole: node.element[0].dataset.childRole,
+      valueType: node.element[0].dataset.valueType,
     }
   }
   return node.childnodes.map(node => {
     return {
       id: node.element[0].id,
-      htmlInnerText: node.element[0].innerText,
+      value: node.element[0].innerText,
       edgeToParent: getEdge(node._edgetoparent),
-      childNodes: getChildNodesFromDOM(node)
+      childNodes: getChildNodes(node)
     }
   });
 }
 
 function getEdge(edge) {
   return {
-    startNode: getNodeFromDOM(edge.startnode),
-    endNode: getNodeFromDOM(edge.endnode)
+    startNode: getNode(edge.startnode),
+    endNode: getNode(edge.endnode)
   }
 }
 
-function getNodeFromDOM(node) {
+function getNode(node) {
   return {
-    id: node.element[0].id,
-    htmlInnerText: node.element[0].innerText
+    value: node.element[0].dataset.value,
+    valueType: node.element[0].dataset.valueType,
+    id: node.element[0].id
   }
 }
 
 module.exports = {
-  childNodes: getChildNodesFromDOM,
+  childNodes: getChildNodes,
   edge: getEdge,
-  node: getNodeFromDOM
+  node: getNode
 }
