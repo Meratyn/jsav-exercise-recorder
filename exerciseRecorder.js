@@ -67,10 +67,11 @@ function passEvent(eventData) {
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
-      if(init_state_func.someIdMissing(exercise)) {
-        init_state_func.fixMissingIds(exercise, passEvent);
-      }
-      init_state_func.setInitialDataStructures(exercise);
+      // init_state_func.fixMissingIds(exercise, passEvent);
+      // if(init_state_func.someIdMissing(exercise)) {
+      //   init_state_func.fixMissingIds(exercise, passEvent);
+      // }
+      init_state_func.setInitialDataStructures(exercise, passEvent);
       init_state_func.setAnimationHTML(exercise);
       break;
     case String(eventData.type.match(/^jsav-array-.*/)):

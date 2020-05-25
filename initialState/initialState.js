@@ -3,37 +3,42 @@ const submission = require('../submission/submission');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
 
-function setInitialDataStructures(exercise) {
+function setInitialDataStructures(exercise, passEvent) {
   const initialStructures = exercise.initialStructures;
-  dataStructures.getDataStructuresFromExercise(exercise).forEach(dataStructure => {
-    submission.addInitialStateSuccesfully.dataStructure(dataStructure);
+  dataStructures.getDataStructuresFromExercise(exercise,passEvent).forEach(ds => {
+    submission.addInitialStateSuccesfully.dataStructure(ds);
   });
 }
 
-function someIdMissing(exercise) {
-  const initialStructures = exercise.initialStructures;
-  // If initialDataStructures is an Array, it means there is more than one data structure
-  if(Array.isArray(initialStructures)) {
-    initialStructures.map(ds => {
-      const htmlElement = ds.element['0'];
-      if(!htmlElement.id) return true;
-    })
-    return false;
-  }
-  return !!initialStructures.element['0'].id;
+function moreThanOneDs(initialStructures) {
+  return Array.isArray(initialStructures);
 }
 
-function fixMissingIds(exercise, passEvent) {
-  const initialStructures = exercise.initialStructures;
-  if(Array.isArray(initialStructures)) {
-    initialStructures.map(ds => {
-      const htmlElement = ds.element['0'];
-      if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
-    })
-  }
-  const htmlElement = initialStructures.element['0'];
-  if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
-}
+// function someIdMissing(exercise) {
+//   const initialStructures = exercise.initialStructures;
+//   // If initialDataStructures is an Array, it means there is more than one data structure
+//   if(Array.isArray(initialStructures)) {
+//     initialStructures.forEach(ds => {
+//       const htmlElement = ds.element['0'];
+//       if(!htmlElement.id) return true;
+//     })
+//     return false;
+//   }
+//   return !!initialStructures.element['0'].id;
+// }
+
+// function fixMissingIds(exercise, passEvent) {
+//   const initialStructures = exercise.initialStructures;
+//   if(Array.isArray(initialStructures)) {
+//     initialStructures.map(ds => {
+//       const htmlElement = ds.element['0'];
+//       if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
+//     })
+//   } else {
+//     const htmlElement = initialStructures.element['0'];
+//     if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
+//   }
+// }
 
 function handleMissingId(htmlElement, passEvent) {
   tempId = `tempid-${Math.random().toString().substr(2)}`;
@@ -75,9 +80,9 @@ function setAnimationHTML(exercise) {
 }
 
 module.exports = {
-  fixMissingIds,
+  // fixMissingIds,
   setInitialDataStructures,
   setNewId,
   setAnimationHTML,
-  someIdMissing,
+  // someIdMissing,
 }

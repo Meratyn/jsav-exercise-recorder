@@ -4,8 +4,17 @@ function isBinaryHeap(initialStructure) {
   return Object.keys(initialStructure).includes('_tree' && '_treenodes');
 }
 
-function getBinaryTree(initialStructure) {
-  const jsavRoot = initialStructure._tree.rootnode;
+function getBinaryHeap(binaryHeap) {
+  return {
+    type: 'binaryHeap',
+    id: binaryHeap.element[0].id,
+    values: [ ...binaryHeap._values ],
+    tree: getBinaryTree(binaryHeap),
+  }
+}
+
+function getBinaryTree(binaryHeap) {
+  const jsavRoot = binaryHeap._tree.rootnode;
   const rootNode = {
     id: jsavRoot.element[0].id,
     value: jsavRoot.element[0].dataset.value,
@@ -16,9 +25,9 @@ function getBinaryTree(initialStructure) {
   }
   return {
     rootNode,
-    id: initialStructure._tree.element[0].id,
-    root: initialStructure._tree.element[0].dataset.root,
-    values: initialStructure._tree.element[0].innerText
+    id: binaryHeap._tree.element[0].id,
+    root: binaryHeap._tree.element[0].dataset.root,
+    values: binaryHeap._tree.element[0].innerText
   }
 }
 
@@ -70,6 +79,6 @@ function getNode(node) {
 }
 
 module.exports = {
-  isBinHeap: isBinaryHeap,
-  getBinHeap: getBinaryTree
+  isBinaryHeap,
+  getBinaryHeap
 }

@@ -1,9 +1,18 @@
-function getAllNodes(initialStructure) {
-  return initialStructure._nodes.map(node => getNode(node));
+function getGraph(graph) {
+  return {
+    type: "graph",
+    id: graph.element[0].id,
+    nodes: getAllNodes(graph),
+    edges: getAllEdges(graph)
+  }
 }
 
-function getAllEdges(initialStructure) {
-  return initialStructure._alledges.map(edge => getEdge(edge));
+function getAllNodes(graph) {
+  return graph._nodes.map(node => getNode(node));
+}
+
+function getAllEdges(graph) {
+  return graph._alledges.map(edge => getEdge(edge));
 }
 
 function getEdge(edge) {
@@ -22,6 +31,7 @@ function getNode(node) {
 }
 
 module.exports = {
+  getGraph,
   nodes: getAllNodes,
   edges: getAllEdges
 }

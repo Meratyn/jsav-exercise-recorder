@@ -1,27 +1,29 @@
 const binaryHeap = require('./binaryHeap/binaryHeap');
 const graph = require('./graph/graph');
+const list = require('./list/list');
 
-function getDataStructuresFromExercise(exercise) {
+
+function getDataStructuresFromExercise(exercise, passEvent) {
   const initialStructures = exercise.initialStructures;
   const dataStructures = [];
   // If initialDataStructures is an Array, it means there is more than one data structure
   if(Array.isArray(initialStructures)) {
-    return initialStructures.map(ds => getSingleDataStructure(ds, missingIdHandlingFunctionss))
+    return initialStructures.map(ds => {
+      if(passEvent) return getSingleDataStructure(ds, passEvent);
+      else return getSingleDataStructure(ds);
+    })
   }
-  return [getSingleDataStructure(initialStructures)];
+  if(passEvent) return [getSingleDataStructure(ds, passEvent)];
+  else return [getSingleDataStructure(ds)];
 }
 
-function getSingleDataStructure(initialStructure) {
-  const htmlElement = initialStructure.element['0'];
-  const id = htmlElement.id;
+function getSingleDataStructure(initialStructure, passEvent) {
+  const htmlElement = initialStructure.element[0];
+  const id = (!htmlElement.id && passEvent)?
+  handleMissingId(htmlElement, passEvent): htmlElement.id;
   let type =  getDataStructureType(htmlElement.className);
-  if(type === 'array' && binaryHeap.isBinHeap(initialStructure)) {
-    return {
-      type: 'binaryHeap',
-      id,
-      values: [ ...initialStructure._values ],
-      tree: binaryHeap.getBinHeap(initialStructure),
-    }
+  if(type === 'array' && binaryHeap.isBinaryHeap(initialStructure)) {
+    return binaryHeap.getBinaryHeap(initialStructure);
   }
   else if (type === 'array') {
     return {
@@ -31,12 +33,10 @@ function getSingleDataStructure(initialStructure) {
     }
   }
   else if (type === 'graph') {
-    return {
-      type,
-      id,
-      nodes: graph.nodes(initialStructure),
-      edges: graph.edges(initialStructure)
-    }
+    return graph.getGraph(initialStructure)
+  }
+  else if (type === 'list') {
+    return list.getList(initialStructure);
   }
   return {
     type: type,
@@ -66,6 +66,19 @@ function getDataStructureType(className) {
   }
   // TODO: check subclasses of trees
   return type.replace('jsav','');
+}
+
+function handleMissingId(htmlElement, passEvent) {
+  const tempId = `tempid-${Math.random().toString().substr(2)}`;
+  htmlElement.onclick = ((clickData) => {
+    passEvent({
+    type: 'recorder-set-id',
+    tempId: tempId,
+    newId: htmlElement.id
+    })
+    htmlElement.onclick = null;
+  });
+  return tempId;
 }
 
 module.exports = {
