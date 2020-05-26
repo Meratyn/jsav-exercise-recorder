@@ -1,5 +1,3 @@
-const tree = require('../tree/tree');
-
 function isBinaryHeap(initialStructure) {
   return Object.keys(initialStructure).includes('_tree' && '_treenodes');
 }
@@ -33,16 +31,7 @@ function getBinaryTree(binaryHeap) {
 
 function getChildNodes(node) {
   if(!node.childnodes || node.childnodes.length == 0) {
-    return {
-      id: node.element[0].id,
-      value: node.element[0].dataset.value,
-      valueType: node.element[0].dataset.valueType,
-      heapIndex: node.element[0].dataset.jsavHeapIndex,
-      childRole: node.element[0].dataset.binchildrole,
-      childPos: node.element[0].dataset.childPos,
-      parent: node.element[0].dataset.parent,
-      edgeToParent: getEdge(node._edgetoparent),
-    }
+    return;
   }
   return node.childnodes.map(node => {
     return {

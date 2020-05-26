@@ -1,7 +1,9 @@
 const binaryHeap = require('./binaryHeap/binaryHeap');
 const graph = require('./graph/graph');
 const list = require('./list/list');
-
+const stack = require('./stack/stack');
+const binaryTree = require('./tree/binaryTree');
+const tree = require('./tree/tree');
 
 function getDataStructuresFromExercise(exercise, passEvent) {
   const initialStructures = exercise.initialStructures;
@@ -13,8 +15,8 @@ function getDataStructuresFromExercise(exercise, passEvent) {
       else return getSingleDataStructure(ds);
     })
   }
-  if(passEvent) return [getSingleDataStructure(ds, passEvent)];
-  else return [getSingleDataStructure(ds)];
+  if(passEvent) return [getSingleDataStructure(initialStructures, passEvent)];
+  else return [getSingleDataStructure(initialStructures)];
 }
 
 function getSingleDataStructure(initialStructure, passEvent) {
@@ -38,6 +40,15 @@ function getSingleDataStructure(initialStructure, passEvent) {
   else if (type === 'list') {
     return list.getList(initialStructure);
   }
+  else if (type === 'stack') {
+    return stack.getStack(initialStructure);
+  }
+  else if (type === 'binarytree') {
+    return binaryTree.getBinaryTree(initialStructure);
+  }
+  else if (type === 'tree') {
+    return tree.getTree(initialStructure);
+  }
   return {
     type: type,
     id
@@ -51,7 +62,8 @@ function getDataStructureType(className) {
     'jsavtree',
     'jsavgraph',
     'jsavlist',
-    'jsavmatrix'
+    'jsavmatrix',
+    'jsavstack'
   ];
   const type = rootClassNames.find(name =>
     className.includes(name)
@@ -65,6 +77,9 @@ function getDataStructureType(className) {
     return;
   }
   // TODO: check subclasses of trees
+  if(type === 'jsavtree' && className.includes('jsavbinarytree')) {
+     return 'binarytree';
+  }
   return type.replace('jsav','');
 }
 

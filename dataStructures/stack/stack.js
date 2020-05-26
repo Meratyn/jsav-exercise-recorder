@@ -1,9 +1,9 @@
-function getList(list) {
+function getStack(stack) {
   return {
-    first: getAllNodes(list._first),
-    id: list.element[0].id,
-    innerText: list.element[0].innerText,
-    type: "list"
+    first: getAllNodes(stack._first),
+    id: stack.element[0].id,
+    innerText: stack.element[0].innerText,
+    type: "stack"
   }
 }
 
@@ -18,7 +18,6 @@ function getAllNodes(node) {
     id,
     value,
     next: getAllNodes(node._next),
-    edgeToNext: getEdge(node._edgetonext)
   }
 }
 
@@ -29,13 +28,7 @@ function getNode(node) {
   }
 }
 
-function getEdge(edge) {
-  return {
-    startNode: getNode(edge.startnode),
-    endNode: getNode(edge.endnode)
-  }
-}
 
 module.exports = {
-  getList
+  getStack
 }

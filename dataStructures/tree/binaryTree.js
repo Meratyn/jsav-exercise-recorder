@@ -1,4 +1,4 @@
-function getTree(tree) {
+function getBinaryTree(tree) {
   const jsavRoot = tree.rootnode;
   const rootNode = {
     id: jsavRoot.element[0].id,
@@ -12,7 +12,7 @@ function getTree(tree) {
     id: tree.element[0].id,
     root: tree.element[0].dataset.root,
     values: tree.element[0].innerText,
-    type: 'tree'
+    type: 'binarytree'
   }
 }
 
@@ -23,30 +23,15 @@ function getChildNodes(node) {
   return node.childnodes.map(node => {
     return {
       id: node.element[0].id,
-      value: node.element[0].innerText,
-      childRole: node.element[0].dataset.childRole,
+      value: node.element[0].dataset.value,
+      childRole: node.element[0].dataset.binchildrole,
       valueType: node.element[0].dataset.valueType,
-      edgeToParent: getEdge(node._edgetoparent),
+      childPos: node.element[0].dataset.childPos,
       childNodes: getChildNodes(node)
     }
   });
 }
 
-function getEdge(edge) {
-  return {
-    startNode: getNode(edge.startnode),
-    endNode: getNode(edge.endnode)
-  }
-}
-
-function getNode(node) {
-  return {
-    value: node.element[0].dataset.value,
-    valueType: node.element[0].dataset.valueType,
-    id: node.element[0].id
-  }
-}
-
 module.exports = {
-  getTree
+  getBinaryTree
 }
