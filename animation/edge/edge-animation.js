@@ -2,7 +2,7 @@ const submission = require('../../submission/submission');
 const helpers = require('../../utils/helperFunctions');
 const dataStructures = require('../../dataStructures/dataStructures');
 
-function handleArrayEvents(exercise, eventData, exerciseHTML) {
+function handleEdgeEvents(exercise, eventData) {
   const dataStructuresState = dataStructures.getDataStructuresFromExercise(exercise);
   const clickDataSource = {
     tstamp: eventData.tstamp,
@@ -11,21 +11,22 @@ function handleArrayEvents(exercise, eventData, exerciseHTML) {
     animationHTML: helpers.getExerciseHTML(exercise)
     }
   switch(eventData.type) {
-    case 'jsav-array-click':
-    const clickDataTarget = {
-      type: 'array-click',
-      index: eventData.index,
-    };
-    if(eventData.arrayid) clickDataTarget.arrayid = eventData.arrayid;
-    if(eventData.binaryHeapId) clickDataTarget.binaryHeapId = eventData.binaryHeapId;
+    case 'jsav-edge-click':
+      const clickDataTarget = {
+        type: 'edge-click',
+        startId:  eventData.startid,
+        endId:  eventData.endid,
+        startValue: eventData.startvalue,
+        endValue: eventData.endvalue,
+        }
       try {
         submission.addAnimationStepSuccesfully.dsClick(Object.assign(clickDataTarget, clickDataSource));
       } catch (error) {
-        console.warn(`Could not set array click in animation: ${error}`);
+        console.warn(`Could not set node click in animation: ${error}`);
       }
   }
 }
 
 module.exports = {
-  handleArrayEvents
+  handleEdgeEvents
 }

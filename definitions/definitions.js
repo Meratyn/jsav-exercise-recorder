@@ -13,7 +13,7 @@ function setDefinitions(exercise) {
   try {
     modelAnswer.recordModelAnswerFunction(exercise.options.model.toString());
   } catch (error) {
-    console.warn(`Could nor set model answer when recording animation: ${error.message}`);
+    console.warn(`Could not set model answer when recording animation: ${error.message}`);
     return false;
   }
   return true

@@ -29,10 +29,10 @@ function recordModelAnswerStepDataStructuresValues(exercise) {
   const stepDSvalues = [];
   if(Array.isArray(modelStructures)) {
     modelStructures.forEach((item) => {
-      stepDSvalues.push([ ...item._values ]);
+      stepDSvalues.push([ ...item._values || 'undefined' ]);
     });
   } else {
-    stepDSvalues.push([ ...modelStructures._values ]);
+    stepDSvalues.push([ ...modelStructures._values || 'undefined' ]);
   }
   return stepDSvalues;
 }

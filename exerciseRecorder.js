@@ -22,6 +22,20 @@ Object.seal(modelAnswer);
 
 initialize();
 
+function initialize() {
+  setSubmissionAndPostUrl();
+  submission.reset();
+  metad_func.setExerciseMetadata(getMetadataFromURLparams())
+  try {
+    $(document).off("jsav-log-event");
+    $(document).on("jsav-log-event",  function (event, eventData) {
+      setTimeout( () => passEvent(eventData), 50);
+    });
+  } catch (error) {
+    console.warn(error)
+  }
+}
+
 // According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 function setSubmissionAndPostUrl() {
   // LMS defines: used if grading asynchronously
@@ -41,26 +55,11 @@ function getMetadataFromURLparams() {
   return { max_points, uid, ordinal_number };
 }
 
-function initialize() {
-  setSubmissionAndPostUrl();
-  submission.reset();
-  metad_func.setExerciseMetadata(getMetadataFromURLparams())
-  try {
-    $(document).off("jsav-log-event");
-    $(document).on("jsav-log-event",  function (event, eventData) {
-      setTimeout( () => passEvent(eventData), 50);
-    });
-  } catch (error) {
-    console.warn(error)
-  }
-}
-
 function passEvent(eventData) {
   console.log('EVENT DATA', eventData);
   switch(eventData.type){
     case 'jsav-init':
       def_func.setExerciseOptions(eventData);
-      metad_func.setExerciseMetadata(eventData);
       break;
     case 'jsav-recorded':
       break;
@@ -68,31 +67,38 @@ function passEvent(eventData) {
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
-      init_state_func.setInitialDataStructures(exercise);
+      // init_state_func.fixMissingIds(exercise, passEvent);
+      // if(init_state_func.someIdMissing(exercise)) {
+      //   init_state_func.fixMissingIds(exercise, passEvent);
+      // }
+      init_state_func.setInitialDataStructures(exercise, passEvent);
       init_state_func.setAnimationHTML(exercise);
       break;
-      // Here we handle all array related events
     case String(eventData.type.match(/^jsav-array-.*/)):
       anim_func.handleArrayEvents(exercise, eventData);
       break;
-    // This is fired by the initialState.js because JSAV sets array ID only on first click
+    case String(eventData.type.match(/^jsav-node-.*/)):
+      anim_func.handleNodeEvents(exercise, eventData);
+      break;
+    case String(eventData.type.match(/^jsav-edge-.*/)):
+      anim_func.handleEdgeEvents(exercise, eventData);
+      break;
+    // This is fired by the initialState.js if the DS ID is set only on first click
     case 'recorder-set-id':
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
-      exerciseHTML = helpers.getExerciseHTML(exercise)
-      setTimeout(() => anim_func.handleGradableStep(exercise, eventData, exerciseHTML), 100);
+      setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
-      exerciseHTML = helpers.getExerciseHTML(exercise)
-      anim_func.handleGradableStep(exercise, eventData, exerciseHTML);
+      anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-model-open':
       modelAnswer.opened = true;
       modelAnswer.ready = true;
     case 'jsav-exercise-model-init':
       if(!modelAnswer.opened) {
-        exercise.modelav.SPEED = modelAnswer.recordingSpeed -10;
+        exercise.modelav.SPEED = modelAnswer.recordingSpeed +10;
         modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
         $('.jsavmodelanswer .jsavforward').click();
         break;
@@ -140,8 +146,4 @@ function finish(eventData) {
     $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
   }
-}
-
-module.exports = {
-  passEvent
 }

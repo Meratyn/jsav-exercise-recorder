@@ -186,7 +186,7 @@ function checkAndFixLastAnimationStep() {
 }
 
 function exerciseIsInitialized() {
-  if(submission.initialState.dataStructures.length === 0){
+  if(submission.initialState.animationHTML.length === 0){
     let message = 'Animation initialization data is missing.\n'
     + 'Exercise is not being recorded for animation: '
     + 'did the exercise emit javas-exercise-init event?'
