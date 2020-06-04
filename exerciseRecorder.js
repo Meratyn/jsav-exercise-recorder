@@ -1,3 +1,11 @@
+//
+// exerciseRecorder.js
+//
+// This is the main module of the JSAV Exercise Recorder.
+
+// Submodules of the JSAV Exercise Recorder.
+// The program code of these modules will be included in the JSAV Exercise
+// Recorder bundle file.
 const submission = require('./submission/submission');
 const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
@@ -6,13 +14,26 @@ const anim_func = require('./animation/animation');
 const services = require('./rest-service/services');
 const helpers = require('./utils/helperFunctions');
 
+//
+// Starter code.
+//
+// This will be run when the JSAV Exercise Recorder bundle file is referred
+// by a <script> tag in a HTML document.
+
+
 let jsav = {};
 let exercise = {};
 let exerciseHTML = "";
-// LMS defines: used if grading asynchronously
+
+// Unique address for asynchronously creating a new graded submission.
+// This is defined by the A+ LMS. It is used if grading asynchronously.
+// https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 let submission_url;
-// LMS defines: where to post the submission
+
+// A+ LMS defines: where to post the submission.
+// https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 let post_url;
+
 const modelAnswer = {
   opened: false,
   ready: false,
@@ -22,6 +43,10 @@ Object.seal(modelAnswer);
 
 initialize();
 
+// End of starter code
+
+// Initializer function.
+// Binds events of type "jsav-log-event" to function passEvent() (see below).
 function initialize() {
   setSubmissionAndPostUrl();
   submission.reset();
@@ -55,6 +80,11 @@ function getMetadataFromURLparams() {
   return { max_points, uid, ordinal_number };
 }
 
+// Event handler for JSAV events.
+//
+// Parameters:
+// eventData: { type: string,
+//              exercise: JSAV exercise, ...}
 function passEvent(eventData) {
   console.log('EVENT DATA', eventData);
   switch(eventData.type){

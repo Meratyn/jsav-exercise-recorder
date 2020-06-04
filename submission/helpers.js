@@ -1,3 +1,8 @@
+//
+// helpers.js
+//
+// Helper functions for
+
 // TODO: add check to avoid endless loop
 function copyObject(obj) {
   const copy = {};

@@ -1,3 +1,8 @@
+//
+// dataStructures.js
+//
+// Support for visualizable data structures of JSAV and OpenDSA.
+
 const binaryHeap = require('./binaryHeap/binaryHeap');
 const graph = require('./graph/graph');
 const list = require('./list/list');

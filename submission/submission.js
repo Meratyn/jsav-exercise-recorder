@@ -1,9 +1,18 @@
+//
+// submission.js
+//
+// This module contains data structures and functions for the exercise
+// recording in JAAL format.
+//
 const helpers = require('./helpers');
 const valid = require('./validate');
 
 // TODO: set all try catch statements
 
-
+//
+// Basic structure of the exercise recording.
+// Format: JAAL (JSON Algorithm Animation Language).
+//
 const submission =  {
   metadata: {},
   definitions: {
