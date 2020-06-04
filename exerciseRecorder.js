@@ -89,11 +89,14 @@ function passEvent(eventData) {
   console.log('EVENT DATA', eventData);
   switch(eventData.type){
     case 'jsav-init':
+      // Set exercise title and instructions
       def_func.setExerciseOptions(eventData);
       break;
     case 'jsav-recorded':
+      // All steps of a JSAV slideshow have been created.
       break;
     case 'jsav-exercise-init':
+      // JSAV exercise object created
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
@@ -105,36 +108,45 @@ function passEvent(eventData) {
       init_state_func.setAnimationHTML(exercise);
       break;
     case String(eventData.type.match(/^jsav-array-.*/)):
+      // JSAV Array data structure events.
+      // http://jsav.io/datastructures/array/
       anim_func.handleArrayEvents(exercise, eventData);
       break;
     case String(eventData.type.match(/^jsav-node-.*/)):
+      // JSAV Node data structure events
+      // http://jsav.io/datastructures/common/
       anim_func.handleNodeEvents(exercise, eventData);
       break;
     case String(eventData.type.match(/^jsav-edge-.*/)):
+      // JSAV Edge data structure events
+      // http://jsav.io/datastructures/common/
       anim_func.handleEdgeEvents(exercise, eventData);
       break;
-    // This is fired by the initialState.js if the DS ID is set only on first click
     case 'recorder-set-id':
+      // This is fired by the initialState.js if the DS ID is set only on first click
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
+      // User clicks the Undo button
       setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':
       anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-model-open':
+      // User clicks the Model answer button
       modelAnswer.opened = true;
       modelAnswer.ready = true;
     case 'jsav-exercise-model-init':
-      if(!modelAnswer.opened) {
-        exercise.modelav.SPEED = modelAnswer.recordingSpeed +10;
+      if (!modelAnswer.opened) {
+        exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
         modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
         $('.jsavmodelanswer .jsavforward').click();
         break;
       }
     case 'jsav-exercise-model-forward':
-      if(!modelAnswer.opened && !modelAnswer.ready) {
+      // User views the animation of the model answer one step forward
+      if (!modelAnswer.opened && !modelAnswer.ready) {
         setTimeout(() => {
           modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
           $('.jsavmodelanswer .jsavforward').click();
@@ -142,11 +154,16 @@ function passEvent(eventData) {
         break;
       }
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
-      if (modelAnswer.opened) anim_func.handleModelAnswer(exercise, eventData);
+      // All user actions with the model answer animation
+      if (modelAnswer.opened) {
+        anim_func.handleModelAnswer(exercise, eventData);
+      }
       break;
     case 'jsav-exercise-grade-button':
+      // User clicks the Grade button
       break;
     case 'jsav-exercise-grade':
+      // Automatic grading of the exercise finished
       if(!modelAnswer.opened) {
         const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
         const popUp = helpers.getPopUp(popUpText);
@@ -155,6 +172,7 @@ function passEvent(eventData) {
       finish(eventData);
       break;
     case 'jsav-exercise-reset':
+      // User clicks the Reset button
       console.warn('Resetting submission');
       submission.reset();
       break;
