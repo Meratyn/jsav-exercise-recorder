@@ -1,8 +1,10 @@
 # JSAV Exercise Recorder
 
 The JSAV Exercise Recorder is a JavaScript software for creating recordings of
-visual algorithm simulation exercises based on
+Visual Algorithm Simulation exercises. It is based on
 [JSAV](http://jsav.io) and [OpenDSA](https://github.com/OpenDSA/OpenDSA).
+For extensive background information, see
+[Giacomo Mariani's MSc thesis](https://aaltodoc.aalto.fi/handle/123456789/44448).
 
 ![](./Exercise_Recorder_modules.png)
 
