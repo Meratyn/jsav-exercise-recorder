@@ -1,0 +1,151 @@
+{
+  "metadata": {
+    "max_points": "20",
+    "uid": "testuser",
+    "ordinal_number": "1"
+  },
+  "definitions": {
+    "style": {},
+    "score": {
+      "total": 32,
+      "correct": 2,
+      "undo": 0,
+      "fix": 0,
+      "student": 2
+    },
+    "options": {
+      "title": "Insertion Sort",
+      "instructions": "Use Insertion Sort ..."
+    },
+    "modelAnswer": {
+      "function": "function modelSolution(jsav) { ...  }",
+      "steps": [{
+        "dataStructures": [
+          [72, 89, 69, 63, 92, 45, 72, 12, 36, 45]
+        ],
+        "operations": [
+          {
+            "args": { "0": "Shift \"69\" to the left." },
+            "effect": "function(msg, options) { ... }"
+          },
+          {
+            "args": {
+            "0": 2,
+            "1": 1
+          },
+          "effect": "function(index1, index2, options) { ... }"
+        }],
+        "html": {
+          "counterHTML": "1 / 33",
+          "outputHTML": "<span></span>",
+          "canvasHTML": "<ol class=\"jsavautoresize ... >"
+        }
+      }, {
+        "dataStructures": [
+          [72, 69, 89, 63, 92, 45, 72, 12, 36, 45]
+        ],
+        ...
+      }, {
+        "dataStructures": [
+          [69, 72, 89, 63, 92, 45, 72, 12, 36, 45]
+        ],
+        ...
+      },
+      ...
+      {
+        "dataStructures": [
+          [12, 36, 45, 45, 63, 69, 72, 72, 89, 92]
+        ],
+        ...
+      }]
+    }
+  },
+  "initialState": {
+    "dataStructures": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["72", "89", "69", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "\n          <h1>Insertion Sort</h1>\n          <!-- <a class=\"jsavsettings\" href=\"#\">Settings</a> -->\n          <p class=\"instructLabel\">Instructions:</p>\n          <p class=\"instructions\">\n                  Use Insertion Sort to sort the table given below in ascending order. Click on an item to select it and click again on another one to swap these bars.\n          </p>\n          <p class=\"jsavexercisecontrols\" align=\"center\"><input type=\"button\" name=\"undo\" value=\"Undo\"><input type=\"button\" name=\"reset\" value=\"Reset\"><input type=\"button\" name=\"answer\" value=\"Model Answer\"><input type=\"button\" name=\"grade\" value=\"Grade\"><span class=\"actionIndicator\" style=\"top: -2px; left: 598.95px;\"></span></p>\n          <p class=\"jsavscore\"></p>\n          <ol id=\"exerArray\" class=\"jsavarray jsavautoresize jsavcenter jsavindexed jsavbararray\" style=\"width: 321px;\"><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 102px;\"><span class=\"jsavvaluelabel\">72</span></span><span class=\"jsavindexlabel\">0</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 126px;\"><span class=\"jsavvaluelabel\">89</span></span><span class=\"jsavindexlabel\">1</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 98px;\"><span class=\"jsavvaluelabel\">69</span></span><span class=\"jsavindexlabel\">2</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 89px;\"><span class=\"jsavvaluelabel\">63</span></span><span class=\"jsavindexlabel\">3</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 130px;\"><span class=\"jsavvaluelabel\">92</span></span><span class=\"jsavindexlabel\">4</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 64px;\"><span class=\"jsavvaluelabel\">45</span></span><span class=\"jsavindexlabel\">5</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 102px;\"><span class=\"jsavvaluelabel\">72</span></span><span class=\"jsavindexlabel\">6</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 17px;\"><span class=\"jsavvaluelabel\">12</span></span><span class=\"jsavindexlabel\">7</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 51px;\"><span class=\"jsavvaluelabel\">36</span></span><span class=\"jsavindexlabel\">8</span></li><li class=\"jsavnode jsavindex\"><span class=\"jsavvaluebar\"></span><span class=\"jsavvalue\" style=\"height: 64px;\"><span class=\"jsavvaluelabel\">45</span></span><span class=\"jsavindexlabel\">9</span></li></ol>\n          <!-- <p class=\"jsavoutput jsavline\"></p> -->\n        <div class=\"jsavcanvas\" style=\"min-height: 250px; min-width: 815.6px;\"><ol class=\"jsavcode jsavcenter\" style=\"display: block; width: 532px;\"><li class=\"jsavcodeline\">public static void insertionSort(int[] table) {</li><li class=\"jsavcodeline\">   for (int i = 0; i &lt; table.length; i++) {</li><li class=\"jsavcodeline\">       int j = i+1;</li><li class=\"jsavcodeline jsavhighlight\">       while (j &gt; 0 &amp;&amp; table[j - 1] &gt; table[j]) {</li><li class=\"jsavcodeline\">           swap(table, j - 1, j);</li><li class=\"jsavcodeline\">           j--;</li><li class=\"jsavcodeline\">       }</li><li class=\"jsavcodeline\">   }</li><li class=\"jsavcodeline\">}</li></ol><div class=\"jsavvariable\" style=\"display: none;\"><span class=\"jsavvarlabel\"></span> <span class=\"jsavvalue\"><span class=\"jsavvaluelabel jsavvarvalue\" data-value=\"-1\">-1</span></span></div></div><div class=\"jsavshutter\"></div>"
+  },
+  "animation": [{
+    "type": "array-click",
+    "index": 1,
+    "arrayid": "exerArray",
+    "tstamp": "2020-06-04T14:12:27.174Z",
+    "currentStep": 0,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["72", "89", "69", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "array-click",
+    "index": 2,
+    "arrayid": "exerArray",
+    "tstamp": "2020-06-04T14:12:27.732Z",
+    "currentStep": 1,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["72", "69", "89", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "gradeable-step",
+    "tstamp": "2020-06-04T14:12:28.208Z",
+    "currentStep": 2,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["72", "69", "89", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "array-click",
+    "index": 0,
+    "arrayid": "exerArray",
+    "tstamp": "2020-06-04T14:12:28.514Z",
+    "currentStep": 2,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["72", "69", "89", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "array-click",
+    "index": 1,
+    "arrayid": "exerArray",
+    "tstamp": "2020-06-04T14:12:29.104Z",
+    "currentStep": 2,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["69", "72", "89", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "gradeable-step",
+    "tstamp": "2020-06-04T14:12:29.603Z",
+    "currentStep": 3,
+    "dataStructuresState": [{
+      "type": "array",
+      "id": "exerArray",
+      "values": ["69", "72", "89", "63", "92", "45", "72", "12", "36", "45"]
+    }],
+    "animationHTML": "..."
+  }, {
+    "type": "grade",
+    "tstamp": "2020-06-04T14:12:32.878Z",
+    "currentStep": 3,
+    "score": {
+      "total": 32,
+      "correct": 2,
+      "undo": 0,
+      "fix": 0,
+      "student": 2
+    }
+  }]
+}
