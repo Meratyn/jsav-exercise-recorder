@@ -11,7 +11,12 @@ const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
-const services = require('./rest-service/services');
+
+// Services module is not needed, because OpenDSA code will handle the
+// communication to A+ LMS through mooc-grader.
+//
+// const services = require('./rest-service/services');
+
 const helpers = require('./utils/helperFunctions');
 
 //
@@ -20,6 +25,15 @@ const helpers = require('./utils/helperFunctions');
 // This will be run when the JSAV Exercise Recorder bundle file is referred
 // by a <script> tag in a HTML document.
 
+// Global namespace. This is accessible in browser as window.JSAVrecorder.
+// When the OpenDSA code has graded the submission and ready to send it to
+// mooc-grader, call window.JSAVrecorder.getRecording() to obtain the JAAL data.
+global.JSAVrecorder = {
+  testFunc: function() { return "Jee!"; },
+  getRecording: function() {
+    return submission.state();
+  }
+}
 
 let jsav = {};
 let exercise = {};
@@ -182,9 +196,11 @@ function passEvent(eventData) {
 }
 
 function finish(eventData) {
-  if(modelAnswer.ready) {
+  if (modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
-    def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
+    //def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
+    def_func.setFinalGrade(eventData);
+    console.log("JSAV Exercise recorder: finish(eventData): setFinalGrade finished()");
     submission.reset();
     if(!modelAnswer.opened) {
       $('#popUpDiv').remove();
