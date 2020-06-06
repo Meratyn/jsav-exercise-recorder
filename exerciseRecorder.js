@@ -195,6 +195,8 @@ function passEvent(eventData) {
   }
 }
 
+// Finishes the recording: forwards model answer and records its steps.
+// Note: recursive, asynchronous; uses setTimeout() to call itself.
 function finish(eventData) {
   if (modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
