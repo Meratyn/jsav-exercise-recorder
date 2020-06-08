@@ -99,6 +99,7 @@ function modelAnswerProgress() {
 
 
 module.exports = {
+  recordModelAnswer,
   recordModelAnswerFunction,
   recordModelAnswerStep,
   modelAnswerProgress,

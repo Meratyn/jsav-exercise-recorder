@@ -2,6 +2,7 @@ const helpers = require('../utils/helperFunctions');
 const submission = require('../submission/submission');
 const modelAnswer = require('./model-answer/model-answer-definitions.js');
 
+// JAAL: definitions.options
 function setExerciseOptions(eventData) {
   submission.addDefinitionSuccesfully.options({
     'title': getExerciseTitle(eventData.initialHTML),
@@ -9,6 +10,7 @@ function setExerciseOptions(eventData) {
   });
 }
 
+// JAAL: definitions.modelAnswer.function
 function setDefinitions(exercise) {
   try {
     modelAnswer.recordModelAnswerFunction(exercise.options.model.toString());

@@ -26,12 +26,17 @@ const helpers = require('./utils/helperFunctions');
 // by a <script> tag in a HTML document.
 
 // Global namespace. This is accessible in browser as window.JSAVrecorder.
-// When the OpenDSA code has graded the submission and ready to send it to
-// mooc-grader, call window.JSAVrecorder.getRecording() to obtain the JAAL data.
 global.JSAVrecorder = {
-  testFunc: function() { return "Jee!"; },
-  getRecording: function() {
-    return submission.state();
+
+  // Prototype for a sendSubmission() function. This is a callback function
+  // which should perform a HTTP POST request to a grader service of an LMS.
+  // It must be set before the JSAV event "jsav-exercise-grade-button" is
+  // triggered.
+  //
+  // Parameters:
+  //     recording: JAAL data of the exercise
+  sendSubmission: function(recording) {
+    console.log("You must set JSAVrecorder.sendSubmission()!")
   }
 }
 
@@ -108,9 +113,11 @@ function passEvent(eventData) {
       break;
     case 'jsav-recorded':
       // All steps of a JSAV slideshow have been created.
+      // In practise, this means that the slideshow of the model answer has
+      // been created.
       break;
     case 'jsav-exercise-init':
-      // JSAV exercise object created
+      // A JSAV exercise object was created.
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       def_func.setDefinitions(exercise);
@@ -151,6 +158,7 @@ function passEvent(eventData) {
       // User clicks the Model answer button
       modelAnswer.opened = true;
       modelAnswer.ready = true;
+      break;
     case 'jsav-exercise-model-init':
       if (!modelAnswer.opened) {
         exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
@@ -158,15 +166,23 @@ function passEvent(eventData) {
         $('.jsavmodelanswer .jsavforward').click();
         break;
       }
+      break;
     case 'jsav-exercise-model-forward':
-      // User views the animation of the model answer one step forward
+      // The Forward button of the model answer animation was clicked.
       if (!modelAnswer.opened && !modelAnswer.ready) {
+        // The user had clicked Grade button. Now the model answer recording
+        // is in progress.
         setTimeout(() => {
+          // Record current step of model answer
           modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+          // Trigger this click event again
           $('.jsavmodelanswer .jsavforward').click();
         }, modelAnswer.recordingSpeed);
-        break;
       }
+      else {
+        // The user clicked Forward button in the model answer
+      }
+      break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
       // All user actions with the model answer animation
       if (modelAnswer.opened) {
@@ -177,7 +193,7 @@ function passEvent(eventData) {
       // User clicks the Grade button
       break;
     case 'jsav-exercise-grade':
-      // Automatic grading of the exercise finished
+      // Automatic grading of the exercise has finished
       if(!modelAnswer.opened) {
         const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
         const popUp = helpers.getPopUp(popUpText);
@@ -202,9 +218,11 @@ function finish(eventData) {
     anim_func.handleGradeButtonClick(eventData);
     //def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
     def_func.setFinalGrade(eventData);
-    console.log("JSAV Exercise recorder: finish(eventData): setFinalGrade finished()");
+    JSAVrecorder.sendSubmission(submission.state())
+
+    // The submission could be sent to grader at this point.
     submission.reset();
-    if(!modelAnswer.opened) {
+    if (!modelAnswer.opened) {
       $('#popUpDiv').remove();
     }
     $(document).off("jsav-log-event");
