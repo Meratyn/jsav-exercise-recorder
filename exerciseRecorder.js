@@ -67,7 +67,6 @@ initialize();
 // Initializer function.
 // Binds events of type "jsav-log-event" to function passEvent() (see below).
 function initialize() {
-  setSubmissionAndPostUrl();
   submission.reset();
   metad_func.setExerciseMetadata(getMetadataFromURLparams())
   try {
@@ -81,21 +80,22 @@ function initialize() {
 }
 
 // According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
-function setSubmissionAndPostUrl() {
-  // LMS defines: used if grading asynchronously
-  submission_url = new URL(location.href).searchParams.get('submission_url');
-  // LMS defines: where to post the submission
-  post_url = new URL(location.href).searchParams.get('post_url');
-}
-
-// According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 function getMetadataFromURLparams() {
   // set in LMS
   const max_points = new URL(location.href).searchParams.get('max_points');
-  // User identifier
-  const uid = new URL(location.href).searchParams.get('uid');
+
+  // User identifier.
+  // Note: when the exercise is fetched from mooc-grader instead of A+, this
+  // feature is not supported.
+  //const uid = new URL(location.href).searchParams.get('uid');
+  const uid = 0;
+
   // Ordinal number of the submission which has not yet been done
-  const ordinal_number = new URL(location.href).searchParams.get('ordinal_number');
+  // Note: when the exercise is fetched from mooc-grader instead of A+, this
+  // feature is not supported.
+  //const ordinal_number = new URL(location.href).searchParams.get('ordinal_number');
+  const ordinal_number = 0;
+
   return { max_points, uid, ordinal_number };
 }
 
@@ -216,16 +216,14 @@ function passEvent(eventData) {
 function finish(eventData) {
   if (modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
-    //def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
     def_func.setFinalGrade(eventData);
     JSAVrecorder.sendSubmission(submission.state())
 
-    // The submission could be sent to grader at this point.
     submission.reset();
     if (!modelAnswer.opened) {
       $('#popUpDiv').remove();
     }
-    $(document).off("jsav-log-event");
+
   } else {
     $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
