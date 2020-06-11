@@ -75,21 +75,27 @@ Exercise Recorder has been loaded.
 Currently the recorded data is sent to the given *post_url* when the user clicks
 the grade button.
 
+## Installation for development with DSA Y
 
-## To run the tests
-The tests are written with [Jest](https://jestjs.io/). To run the tests do the
-following in this directory:
-- `git checkout master`.
-- `npm install` in the root folder of this project (if you have not done yet).
-- `npm run test`.
+It is assumed that the DSA Y course repository is at <some_dir>/traky.
+Go to <some_dir> and give the following commands:
 
-## Build the bundle file
+    git clone -b traky
+    git clone -b traky https://github.com/MarianiGiacomo/jsav-exercise-recorder
+    cd jsav-exercise-recorder
+    npm install
 
-To bundle all the required modules in one file use [Browserify](http://browserify.org/):
-- `git checkout master`.
-- `npm install` in the root folder of this project (if you have not done yet).
-- `npm install -g browserify` if you have not installed it yet.
-- `browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js`.
+### Running the tests
+The tests are written with Jest. To run the tests do this the
+`jsav-exercise-recorder` directory:
 
-- Add the bundle to the exercise HTML file `<head>` element using a `<script>` tag like:
-`<script src="<PATH>/<TO>/build/jsav-exercise-recorder-bundle.js"></script>`.
+    npm run test
+
+### Building the bundle file
+To bundle all the required modules in one file use [Browserify](http://browserify.org/).
+
+    npm install -g browserify
+    browserify exerciseRecorder.js > build/jsav-exercise-player-bundle.js
+
+The DSA Y course repository, branch `traky`, should have a script called
+`compile-jaal.sh` which does the rest.
