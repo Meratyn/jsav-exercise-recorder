@@ -36,7 +36,14 @@ global.JSAVrecorder = {
   // Parameters:
   //     recording: JAAL data of the exercise
   sendSubmission: function(recording) {
-    console.log("You must set JSAVrecorder.sendSubmission()!")
+    console.log("You must set JSAVrecorder.sendSubmission()!");
+  },
+
+  // Returns the "submission" variable which contains a JSAV exercise recording.
+  // This is useful when both the recorder and player are used in a JSAV
+  // exercise: student can play their solution and compare it with model answer.
+  getSubmission: function() {
+    return submission;
   }
 }
 
