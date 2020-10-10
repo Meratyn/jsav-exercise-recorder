@@ -24,6 +24,13 @@ The main differences in the JSAV Exercise Recorder between the `master` and
 3. Exercise recording is accessible globally:
    `global.JSAVrecorder.getRecording()`
 
+## Required software
+
+To compile and run the software, you will need:
+
+- [Node.js](https://nodejs.org/en/)
+- [Browserify](http://browserify.org/)
+
 ## JAAL
 
 The export data format of the Exercise Recorder is *JSON-based Algorithm
@@ -80,10 +87,14 @@ the grade button.
 It is assumed that the DSA Y course repository is at <some_dir>/traky.
 Go to <some_dir> and give the following commands:
 
-    git clone -b traky
     git clone -b traky https://github.com/MarianiGiacomo/jsav-exercise-recorder
     cd jsav-exercise-recorder
     npm install
+
+For more information, see the file `exercises/jsav/jaal/README.md` in the
+source code of [Data Structures and Algorithms
+Y](https://version.aalto.fi/gitlab/course/traky). As of Autumn 2020, the
+branch `2020-both` contains a working version.
 
 ### Running the tests
 The tests are written with Jest. To run the tests do this the
