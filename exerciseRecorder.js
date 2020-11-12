@@ -44,6 +44,24 @@ global.JSAVrecorder = {
   // exercise: student can play their solution and compare it with model answer.
   getSubmission: function() {
     return submission;
+  },
+
+  // Converts an exercise recording to base64
+  // Source: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
+  recordingToBase64: function(recording) {
+
+    // 1. Convert JSON data into (Unicode) string
+    const jsonString = JSON.stringify(recording);
+
+    // 2. Split the string into one byte pieces in the case it is UTF-16
+    const codeUnits = new Uint16Array(jsonString.length);
+    for (let i = 0; i < codeUnits.length; i++) {
+      codeUnits[i] = jsonString.charCodeAt(i);
+    }
+    const safeString = String.fromCharCode(new Uint8Array(codeUnits.buffer));
+
+    // 3. Base64 encode the result.
+    return btoa(safeString);
   }
 }
 
