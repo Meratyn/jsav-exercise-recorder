@@ -30,6 +30,7 @@ To compile and run the software, you will need:
 
 - [Node.js](https://nodejs.org/en/)
 - [Browserify](http://browserify.org/)
+- [he](https://github.com/mathiasbynens/he)
 
 ## JAAL
 

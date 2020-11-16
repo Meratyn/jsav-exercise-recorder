@@ -19,6 +19,9 @@ const anim_func = require('./animation/animation');
 
 const helpers = require('./utils/helperFunctions');
 
+// HTML Entity encoder/decoder library. https://github.com/mathiasbynens/he
+const he = require('he');
+
 //
 // Starter code.
 //
@@ -46,22 +49,22 @@ global.JSAVrecorder = {
     return submission;
   },
 
-  // Converts an exercise recording to base64
-  // Source: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
-  recordingToBase64: function(recording) {
-
-    // 1. Convert JSON data into (Unicode) string
+  // Converts an exercise recording into a JSON string where all non-ASCII
+  escapeRecording: function(recording) {
+    // 1. Convert JSON data into (Unicode) string so that in can be stored as
+    // text in the database of A+ LMS.
     const jsonString = JSON.stringify(recording);
 
-    // 2. Split the string into one byte pieces in the case it is UTF-16
-    const codeUnits = new Uint16Array(jsonString.length);
-    for (let i = 0; i < codeUnits.length; i++) {
-      codeUnits[i] = jsonString.charCodeAt(i);
-    }
-    const safeString = String.fromCharCode(new Uint8Array(codeUnits.buffer));
+    // 2. HTML Escape non-ASCII characters so that each character in the
+    // string can be represented with one byte (character values 0-255).
+    // Base64 encoding requires this format.
+    // const escaped = he.encode(jsonString, { 'allowUnsafeSymbols': true });
+    const escaped = he.encode(jsonString);
 
-    // 3. Base64 encode the result.
-    return btoa(safeString);
+    // 3. Encode the string as Base64 so that the data will not be modified
+    // when it is stored to A+ LMS.
+    const encoded = btoa(escaped);
+    return encoded;
   }
 }
 
