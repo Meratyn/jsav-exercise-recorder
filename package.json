@@ -1,6 +1,6 @@
 {
   "name": "jsav-exercise-recorder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "records steps from JSAV proficiency exercises and sends them to the server",
   "main": "exerciseRecorder.js",
   "scripts": {
@@ -10,13 +10,14 @@
   "keywords": [
     "JSAV"
   ],
-  "author": "Giacomo Mariani",
+  "author": "Giacomo Mariani and Artturi Tilanterä",
   "license": "ISC",
   "devDependencies": {
     "jest": "^25.3.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "he": "^1.2.0"
+    "he": "^1.2.0",
+    "rfdc": "^1.1.4"
   }
 }
