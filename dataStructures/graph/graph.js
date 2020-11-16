@@ -24,15 +24,6 @@ function getEdge(edge) {
   if (typeof edge.element[0]._weight !== "undefined") {
     w = edge.element[0]._weight
   }
-
-  // debug
-  const classes = edge.element[0].classList;
-  for (i in classes) {
-    if (classes[i] === "marked") {
-      console.log("marked edge: " + edge.startnode.element[0].dataset.value +
-      "-" + edge.endnode.element[0].dataset.value);
-    }
-  }
   return {
     // list of CSS classes, e.g. ["jsavedge", "marked"]
     classList: edge.element[0].classList,
