@@ -7,6 +7,8 @@
 const helpers = require('./helpers');
 const valid = require('./validate');
 
+
+
 // TODO: set all try catch statements
 
 //
@@ -35,7 +37,8 @@ Object.seal(submission);
 Object.seal(submission.definitions);
 
 function reset() {
-  submission.metadata = {};
+  submission.metadata = {
+  };
   submission.definitions = {
     style: {},
     score: {},
