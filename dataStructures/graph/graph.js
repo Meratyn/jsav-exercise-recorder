@@ -20,9 +20,9 @@ function getAllEdges(graph) {
 }
 
 function getEdge(edge) {
-  let w = 0;
-  if (typeof edge.element[0]._weight !== "undefined") {
-    w = edge.element[0]._weight
+  let w = edge.weight();
+  if (typeof(w) === "undefined") {
+    w = 0;
   }
   return {
     // list of CSS classes, e.g. ["jsavedge", "marked"]
@@ -30,7 +30,7 @@ function getEdge(edge) {
 
     startNode: getNode(edge.startnode),
     endNode: getNode(edge.endnode),
-    weight: w,
+    weight: edge.weight()
   }
 }
 

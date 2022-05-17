@@ -65,6 +65,11 @@ global.JSAVrecorder = {
     // when it is stored to A+ LMS.
     const encoded = btoa(escaped);
     return encoded;
+  },
+
+  // Adds an extra entry into the Metadata section of the recording.
+  addMetadata: function(name, data) {
+    submission.addCustomMetadata(name, data);
   }
 }
 
@@ -148,6 +153,7 @@ function passEvent(eventData) {
       // A JSAV exercise object was created.
       exercise = eventData.exercise;
       jsav = exercise.jsav;
+      metad_func.setExerciseMetadata(getMetadataFromURLparams())
       def_func.setDefinitions(exercise);
       // init_state_func.fixMissingIds(exercise, passEvent);
       // if(init_state_func.someIdMissing(exercise)) {
@@ -183,51 +189,52 @@ function passEvent(eventData) {
       anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-model-open':
-      // User clicks the Model answer button
-      modelAnswer.opened = true;
-      modelAnswer.ready = true;
+      // // User clicks the Model answer button
+      // modelAnswer.opened = true;
+      // modelAnswer.ready = true;
       break;
     case 'jsav-exercise-model-init':
-      if (!modelAnswer.opened) {
-        exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
-        modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-        $('.jsavmodelanswer .jsavforward').click();
-        break;
-      }
+      // if (!modelAnswer.opened) {
+      //   exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
+      //   modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+      //   $('.jsavmodelanswer .jsavforward').click();
+      //   break;
+      // }
       break;
     case 'jsav-exercise-model-forward':
-      // The Forward button of the model answer animation was clicked.
-      if (!modelAnswer.opened && !modelAnswer.ready) {
-        // The user had clicked Grade button. Now the model answer recording
-        // is in progress.
-        setTimeout(() => {
-          // Record current step of model answer
-          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-          // Trigger this click event again
-          $('.jsavmodelanswer .jsavforward').click();
-        }, modelAnswer.recordingSpeed);
-      }
-      else {
-        // The user clicked Forward button in the model answer
-      }
+      // // The Forward button of the model answer animation was clicked.
+      // if (!modelAnswer.opened && !modelAnswer.ready) {
+      //   // The user had clicked Grade button. Now the model answer recording
+      //   // is in progress.
+      //   setTimeout(() => {
+      //     // Record current step of model answer
+      //     modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+      //     // Trigger this click event again
+      //     $('.jsavmodelanswer .jsavforward').click();
+      //   }, modelAnswer.recordingSpeed);
+      // }
+      // else {
+      //   // The user clicked Forward button in the model answer
+      // }
       break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
-      // All user actions with the model answer animation
-      if (modelAnswer.opened) {
-        anim_func.handleModelAnswer(exercise, eventData);
-      }
+      // // All user actions with the model answer animation
+      // if (modelAnswer.opened) {
+      //   anim_func.handleModelAnswer(exercise, eventData);
+      // }
       break;
     case 'jsav-exercise-grade-button':
       // User clicks the Grade button
       break;
     case 'jsav-exercise-grade':
       // Automatic grading of the exercise has finished
-      if(!modelAnswer.opened) {
-        const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
-        const popUp = helpers.getPopUp(popUpText);
-        $('body').append(popUp);
-      }
-      finish(eventData);
+      // if(!modelAnswer.opened) {
+      //   const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
+      //   const popUp = helpers.getPopUp(popUpText);
+      //   $('body').append(popUp);
+      // }
+      // finish(eventData);
+      finishWithoutModelAnswer(eventData);
       break;
     case 'jsav-exercise-reset':
       // User clicks the Reset button
@@ -256,4 +263,11 @@ function finish(eventData) {
     $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
   }
+}
+
+// Finishes the recording without saving the model answer.
+function finishWithoutModelAnswer(eventData) {
+  def_func.setFinalGrade(eventData);
+
+  JSAVrecorder.sendSubmission(submission.state())
 }
