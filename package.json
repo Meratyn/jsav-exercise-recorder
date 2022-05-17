@@ -1,16 +1,16 @@
 {
   "name": "jsav-exercise-recorder",
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "records steps from JSAV proficiency exercises and sends them to the server",
   "main": "exerciseRecorder.js",
   "scripts": {
-    "build": "browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
+    "build": "genversion metadata/version.js && browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
     "test": "jest --watch --verbose"
   },
   "keywords": [
     "JSAV"
   ],
-  "author": "Giacomo Mariani",
+  "author": "Giacomo Mariani, Artturi Tilanterä, and Johanna Sänger",
   "license": "ISC",
   "devDependencies": {
     "jest": "^28.1.0"
@@ -18,6 +18,10 @@
   "dependencies": {
     "axios": "^0.21.1",
     "browserify": "^17.0.0",
+    "genversion": "^3.0.2",
+    "he": "^1.2.0",
+    "jest": "^27.3.1",
+    "rfdc": "^1.1.4",
     "watchify": "^4.0.0"
   }
 }

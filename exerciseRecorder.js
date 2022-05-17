@@ -11,8 +11,16 @@ const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
-const services = require('./rest-service/services');
+
+// Services module is not needed, because OpenDSA code will handle the
+// communication to A+ LMS through mooc-grader.
+//
+// const services = require('./rest-service/services');
+
 const helpers = require('./utils/helperFunctions');
+
+// HTML Entity encoder/decoder library. https://github.com/mathiasbynens/he
+const he = require('he');
 
 //
 // Starter code.
@@ -20,6 +28,50 @@ const helpers = require('./utils/helperFunctions');
 // This will be run when the JSAV Exercise Recorder bundle file is referred
 // by a <script> tag in a HTML document.
 
+// Global namespace. This is accessible in browser as window.JSAVrecorder.
+global.JSAVrecorder = {
+
+  // Prototype for a sendSubmission() function. This is a callback function
+  // which should perform a HTTP POST request to a grader service of an LMS.
+  // It must be set before the JSAV event "jsav-exercise-grade-button" is
+  // triggered.
+  //
+  // Parameters:
+  //     recording: JAAL data of the exercise
+  sendSubmission: function(recording) {
+    console.log("You must set JSAVrecorder.sendSubmission()!");
+  },
+
+  // Returns the "submission" variable which contains a JSAV exercise recording.
+  // This is useful when both the recorder and player are used in a JSAV
+  // exercise: student can play their solution and compare it with model answer.
+  getSubmission: function() {
+    return submission;
+  },
+
+  // Converts an exercise recording into a JSON string where all non-ASCII
+  escapeRecording: function(recording) {
+    // 1. Convert JSON data into (Unicode) string so that in can be stored as
+    // text in the database of A+ LMS.
+    const jsonString = JSON.stringify(recording);
+
+    // 2. HTML Escape non-ASCII characters so that each character in the
+    // string can be represented with one byte (character values 0-255).
+    // Base64 encoding requires this format.
+    // const escaped = he.encode(jsonString, { 'allowUnsafeSymbols': true });
+    const escaped = he.encode(jsonString);
+
+    // 3. Encode the string as Base64 so that the data will not be modified
+    // when it is stored to A+ LMS.
+    const encoded = btoa(escaped);
+    return encoded;
+  },
+
+  // Adds an extra entry into the Metadata section of the recording.
+  addMetadata: function(name, data) {
+    submission.addCustomMetadata(name, data);
+  }
+}
 
 let jsav = {};
 let exercise = {};
@@ -49,7 +101,6 @@ initialize();
 // Initializer function.
 // Binds events of type "jsav-log-event" to function passEvent() (see below).
 function initialize() {
-  setSubmissionAndPostUrl();
   submission.reset();
   metad_func.setExerciseMetadata(getMetadataFromURLparams())
   try {
@@ -63,21 +114,22 @@ function initialize() {
 }
 
 // According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
-function setSubmissionAndPostUrl() {
-  // LMS defines: used if grading asynchronously
-  submission_url = new URL(location.href).searchParams.get('submission_url');
-  // LMS defines: where to post the submission
-  post_url = new URL(location.href).searchParams.get('post_url');
-}
-
-// According to https://github.com/apluslms/a-plus/blob/master/doc/GRADERS.md
 function getMetadataFromURLparams() {
   // set in LMS
   const max_points = new URL(location.href).searchParams.get('max_points');
-  // User identifier
-  const uid = new URL(location.href).searchParams.get('uid');
+
+  // User identifier.
+  // Note: when the exercise is fetched from mooc-grader instead of A+, this
+  // feature is not supported.
+  //const uid = new URL(location.href).searchParams.get('uid');
+  const uid = 0;
+
   // Ordinal number of the submission which has not yet been done
-  const ordinal_number = new URL(location.href).searchParams.get('ordinal_number');
+  // Note: when the exercise is fetched from mooc-grader instead of A+, this
+  // feature is not supported.
+  //const ordinal_number = new URL(location.href).searchParams.get('ordinal_number');
+  const ordinal_number = 0;
+
   return { max_points, uid, ordinal_number };
 }
 
@@ -95,11 +147,14 @@ function passEvent(eventData) {
       break;
     case 'jsav-recorded':
       // All steps of a JSAV slideshow have been created.
+      // In practise, this means that the slideshow of the model answer has
+      // been created.
       break;
     case 'jsav-exercise-init':
-      // JSAV exercise object created
+      // A JSAV exercise object was created.
       exercise = eventData.exercise;
       jsav = exercise.jsav;
+      metad_func.setExerciseMetadata(getMetadataFromURLparams())
       def_func.setDefinitions(exercise);
       // init_state_func.fixMissingIds(exercise, passEvent);
       // if(init_state_func.someIdMissing(exercise)) {
@@ -135,42 +190,52 @@ function passEvent(eventData) {
       anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-model-open':
-      // User clicks the Model answer button
-      modelAnswer.opened = true;
-      modelAnswer.ready = true;
+      // // User clicks the Model answer button
+      // modelAnswer.opened = true;
+      // modelAnswer.ready = true;
+      break;
     case 'jsav-exercise-model-init':
-      if (!modelAnswer.opened) {
-        exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
-        modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-        $('.jsavmodelanswer .jsavforward').click();
-        break;
-      }
+      // if (!modelAnswer.opened) {
+      //   exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
+      //   modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+      //   $('.jsavmodelanswer .jsavforward').click();
+      //   break;
+      // }
+      break;
     case 'jsav-exercise-model-forward':
-      // User views the animation of the model answer one step forward
-      if (!modelAnswer.opened && !modelAnswer.ready) {
-        setTimeout(() => {
-          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-          $('.jsavmodelanswer .jsavforward').click();
-        }, modelAnswer.recordingSpeed);
-        break;
-      }
+      // // The Forward button of the model answer animation was clicked.
+      // if (!modelAnswer.opened && !modelAnswer.ready) {
+      //   // The user had clicked Grade button. Now the model answer recording
+      //   // is in progress.
+      //   setTimeout(() => {
+      //     // Record current step of model answer
+      //     modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+      //     // Trigger this click event again
+      //     $('.jsavmodelanswer .jsavforward').click();
+      //   }, modelAnswer.recordingSpeed);
+      // }
+      // else {
+      //   // The user clicked Forward button in the model answer
+      // }
+      break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
-      // All user actions with the model answer animation
-      if (modelAnswer.opened) {
-        anim_func.handleModelAnswer(exercise, eventData);
-      }
+      // // All user actions with the model answer animation
+      // if (modelAnswer.opened) {
+      //   anim_func.handleModelAnswer(exercise, eventData);
+      // }
       break;
     case 'jsav-exercise-grade-button':
       // User clicks the Grade button
       break;
     case 'jsav-exercise-grade':
-      // Automatic grading of the exercise finished
-      if(!modelAnswer.opened) {
-        const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
-        const popUp = helpers.getPopUp(popUpText);
-        $('body').append(popUp);
-      }
-      finish(eventData);
+      // Automatic grading of the exercise has finished
+      // if(!modelAnswer.opened) {
+      //   const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
+      //   const popUp = helpers.getPopUp(popUpText);
+      //   $('body').append(popUp);
+      // }
+      // finish(eventData);
+      finishWithoutModelAnswer(eventData);
       break;
     case 'jsav-exercise-reset':
       // User clicks the Reset button
@@ -182,17 +247,28 @@ function passEvent(eventData) {
   }
 }
 
+// Finishes the recording: forwards model answer and records its steps.
+// Note: recursive, asynchronous; uses setTimeout() to call itself.
 function finish(eventData) {
-  if(modelAnswer.ready) {
+  if (modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
-    def_func.setFinalGrade(eventData) && services.sendSubmission(submission.state(), post_url);
+    def_func.setFinalGrade(eventData);
+    JSAVrecorder.sendSubmission(submission.state())
+
     submission.reset();
-    if(!modelAnswer.opened) {
+    if (!modelAnswer.opened) {
       $('#popUpDiv').remove();
     }
-    $(document).off("jsav-log-event");
+
   } else {
     $('#popUpContent').text(`Recording model answer steps\n ${def_func.modelAnswer.progress()}`);
     setTimeout(() => finish(eventData), modelAnswer.recordingSpeed);
   }
+}
+
+// Finishes the recording without saving the model answer.
+function finishWithoutModelAnswer(eventData) {
+  def_func.setFinalGrade(eventData);
+
+  JSAVrecorder.sendSubmission(submission.state())
 }

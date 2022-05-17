@@ -7,6 +7,8 @@
 const helpers = require('./helpers');
 const valid = require('./validate');
 
+
+
 // TODO: set all try catch statements
 
 //
@@ -34,8 +36,16 @@ const submission =  {
 Object.seal(submission);
 Object.seal(submission.definitions);
 
+/**
+ * Clears all submission data except metadata.
+ */
 function reset() {
-  submission.metadata = {};
+  // Note: submission.metadata is not cleared, because the exercise itself
+  // might call addCustomMetadata() in its init() function. After the init()
+  // function of the exercise is finished, the JSAV library emits an event
+  // type of "jsav-log-event" with subtype "jsav-exercise-reset". The event is
+  // then processed by the JSAV Exercise recorder, which calls this reset()
+  // function here.
   submission.definitions = {
     style: {},
     score: {},
@@ -74,12 +84,33 @@ function stateAsJSON() {
   return JSON.stringify(submission);
 }
 
-function addMetadataSuccesfully(metadata) {
+/**
+ * Adds the standard metadata entry to the submission.
+ */
+function addStandardMetadata(metadata) {
   if(valid.metadata(metadata)) {
-    submission.metadata = { ...metadata };
+    // Assign metadata entry by entry, because at this point of execution,
+    // the exercise might have called addCustomMetadata() and we don't want to
+    // overwrite that.
+    for (const x in metadata) {
+      submission.metadata[x] = metadata[x];
+    }
     return true;
   }
   return false;
+}
+
+/**
+ * Adds a custom entry to metadata with `name` as key and `data` as value.
+ */
+function addCustomMetadata(name, data) {
+  if (typeof name === "string") {
+    submission.metadata[name] = data;
+  }
+  else {
+    console.warn(["addMetadataEntry: could not add custom metadata: ",
+      "parameter 'name' has value ", name, " which is not a String."].join(""));
+  }
 }
 
 function addStyle(style) {
@@ -232,7 +263,8 @@ module.exports = {
   reset,
   state,
   stateAsJSON,
-  addMetadataSuccesfully,
+  addStandardMetadata,
+  addCustomMetadata,
   addDefinitionSuccesfully,
   addInitialStateSuccesfully,
   addAnimationStepSuccesfully,

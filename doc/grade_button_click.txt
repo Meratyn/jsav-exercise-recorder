@@ -1,0 +1,31 @@
+Grade button click process
+==========================
+
+
+What happens in the Exercise Recorder when the user clicks Grade button?
+
+The following line numbers refer to jsav-exercise-recorder-bundle.js.
+
+935: passEvent(eventData): case 'jsav-exercise-grade-button'
+     -> break
+
+828: setTimeout: passEvent(eventData), 50
+
+939: passEvent(eventData): case 'jsav-exercise-grade':
+943: call finish(eventData)
+
+966: finish(eventData): else {
+     calls modelAnswer.progress(), which is on line 745:
+         function modelAnswerProgress()
+     This function just reports the step number of the model answer.
+
+968 calls setTimeout: passEvent(eventData), modelAnswer.recordingSpeed()
+
+922: passEvent(eventData): case 'jsav-exercise-model-forward'
+     Where is this JSAV event triggered? Line 923?
+     $('.jsavmodelanswer .jsavforward').click();
+
+
+     Certainly the comment on line 919 "User views the animation..."
+     is not totally true, as this seems to be triggered automatically
+     when submitting the exercise.

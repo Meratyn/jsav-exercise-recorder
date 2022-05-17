@@ -6,6 +6,8 @@ const modelAnswerAnimation = require('./model-answer/model-answer-animation');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
 
+// Really Fast Deep Clone library. https://github.com/davidmarkclements/rfdc
+const clone = require('rfdc')()
 
 function handleGradableStep(exercise, eventData) {
   const exerciseHTML = helpers.getExerciseHTML(exercise)
@@ -37,7 +39,7 @@ function submissionDataStructures() {
     return {
       type: ds.type,
       id: ds.id,
-      values: ds.values
+      values: clone(ds.values)
     };
   });
   return dataStructures;
@@ -47,12 +49,18 @@ function addStepToSubmission(eventData, dataStructuresState, exerciseHTML) {
   const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'gradeable-step';
   const animation = submission.state().animation;
   const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
+
+  // Animation steps must be stored with clone() (from Really Fast Deep Clone
+  // library), because otherwise every step will be the same in the recording
+  // due to JavaScript object references.
+  const clonedState = clone(dataStructuresState);
+  const clonedHTML = clone(exerciseHTML);
   const newState = {
-    type,
+    type: type,
     tstamp: eventData.tstamp || new Date(),
-    currentStep,
-    dataStructuresState,
-    animationHTML: exerciseHTML
+    currentStep: currentStep,
+    state: clonedState,
+    animationHTML: clonedHTML
   };
   try {
     submission.addAnimationStepSuccesfully.gradableStep(newState);
