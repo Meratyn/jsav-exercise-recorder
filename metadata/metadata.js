@@ -4,7 +4,6 @@ function setExerciseMetadata(metadata) {
   return submission.addMetadataSuccesfully(metadata);
   }
 
-
 module.exports = {
   setExerciseMetadata
 }
