@@ -13,7 +13,7 @@
   "author": "Giacomo Mariani",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^25.3.0"
+    "jest": "^28.1.0"
   },
   "dependencies": {
     "axios": "^0.21.1"
