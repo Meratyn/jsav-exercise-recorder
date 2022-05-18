@@ -161,7 +161,8 @@ function passEvent(eventData) {
       //   init_state_func.fixMissingIds(exercise, passEvent);
       // }
       init_state_func.setInitialDataStructures(exercise, passEvent);
-      init_state_func.setAnimationHTML(exercise);
+      // JAAL 1.0 HTML
+      // init_state_func.setAnimationHTML(exercise);
       break;
     case String(eventData.type.match(/^jsav-array-.*/)):
       // JSAV Array data structure events.
