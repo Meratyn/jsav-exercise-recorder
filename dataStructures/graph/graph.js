@@ -2,10 +2,12 @@
 // Records the state of a JSAV Graph data structure
 // http://jsav.io/datastructures/graph/
 
+const jaalID = require("../jaalID");
+
 function getGraph(graph) {
   return {
     type: "graph",
-    id: graph.element[0].id,
+    id: jaalID.getJaalID(graph.element[0].id, "graph"),
     nodes: getAllNodes(graph),
     edges: getAllEdges(graph)
   }
@@ -24,12 +26,16 @@ function getEdge(edge) {
   if (typeof(w) === "undefined") {
     w = 0;
   }
+  const startnode = getNode(edge.startnode).id;
+  const endnode = getNode(edge.endnode).id
   return {
     // list of CSS classes, e.g. ["jsavedge", "marked"]
     classList: edge.element[0].classList,
-
-    startNode: getNode(edge.startnode),
-    endNode: getNode(edge.endnode),
+    // JAAL id constructed from "${startnode}${endnode}"
+    // as JSAV does not give edges an id.
+    id: jaalID.getJaalID(startnode + endnode, "edge"),
+    startNode: startnode,
+    endNode: endnode,
     weight: edge.weight()
   }
 }
@@ -45,8 +51,8 @@ function getNode(node) {
     // data type of value label, e.g. "string"
     valueType: node.element[0].dataset.valueType,
 
-    // JSAV id of the node, e.g. "jsav-f09280868518460087f04b92138fd452"
-    id: node.element[0].id,
+    // JAAL id of the node, mapped to JSAV id
+    id: jaalID.getJaalID(node.element[0].id, "node"),
   }
 }
 
