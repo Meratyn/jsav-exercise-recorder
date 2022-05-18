@@ -11,7 +11,7 @@ function setExerciseMetadata(metadata) {
   metadata.windowLocation = window.location.href.split('?')[0];
   const d = new Date();
   metadata.recordingStarted = d.toISOString();
-  metadata.recordingTimezone = d.getTimezoneOffset() / 60; // hours to UTC
+  metadata.recordingTimezone = -1 * d.getTimezoneOffset() / 60; // hours to UTC
   return submission.addStandardMetadata(metadata);
 }
 
