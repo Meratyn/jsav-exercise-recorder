@@ -5,11 +5,15 @@
 const jaalID = require("../jaalID");
 
 function getGraph(graph) {
+  console.log(graph);
   return {
-    type: "graph",
     id: jaalID.getJaalID(graph.element[0].id, "graph"),
-    nodes: getAllNodes(graph),
-    edges: getAllEdges(graph)
+    dsClass: "graph",
+    node: getAllNodes(graph),
+    edge: getAllEdges(graph), 
+    //TODO: Find a way to pull directed from the graph data
+    //Not used in Dijkstra's. 
+    directed: false
   }
 }
 
@@ -30,26 +34,22 @@ function getEdge(edge) {
   const endnode = getNode(edge.endnode).id
   return {
     // list of CSS classes, e.g. ["jsavedge", "marked"]
-    classList: edge.element[0].classList,
+    // classList: edge.element[0].classList,
     // JAAL id constructed from "${startnode}${endnode}"
     // as JSAV does not give edges an id.
     id: jaalID.getJaalID(startnode + endnode, "edge"),
-    startNode: startnode,
-    endNode: endnode,
-    weight: edge.weight()
+    node: [startnode, endnode],
+    tag: String(edge.weight())
   }
 }
 
 function getNode(node) {
   return {
     // list of CSS classes, e.g. ["jsavnode", "jsavgraphnode", "marked"]
-    classList: node.element[0].classList,
+    // classList: node.element[0].classList,
 
     // label of the node, e.g. "A"
-    value: node.element[0].dataset.value,
-
-    // data type of value label, e.g. "string"
-    valueType: node.element[0].dataset.valueType,
+    key: node.element[0].dataset.value,
 
     // JAAL id of the node, mapped to JSAV id
     id: jaalID.getJaalID(node.element[0].id, "node"),
