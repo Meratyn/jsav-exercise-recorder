@@ -28,7 +28,8 @@ const submission =  {
   },
   initialState: {
     dataStructures: [],
-    animationHTML: ""
+    // JAAL 1.0 HTML
+    // animationHTML: ""
   },
   animation: []
 };
@@ -57,7 +58,8 @@ function reset() {
   };
   submission.initialState = {
     dataStructures: [],
-    animationHTML: ""
+    // JAAL 1.0 HTML
+    // animationHTML: ""
   };
   submission.animation = [];
 }
@@ -69,7 +71,8 @@ function state() {
   // TODO: change to support new DSs
   const initialState = {
     dataStructures: submission.initialState.dataStructures.map(ds => helpers.copyObject(ds)),
-    animationHTML: submission.initialState.animationHTML
+    // JAAL 1.0 HTML
+    // animationHTML: submission.initialState.animationHTML
   }
   const animation = submission.animation.map(a => helpers.copyObject(a));
   return {
@@ -139,7 +142,9 @@ function addOptions(options) {
 
 function addModelAnswerFunction(modelAnswerFunction) {
   if (valid.modelAnswerFunction(modelAnswerFunction)) {
-    submission.definitions.modelAnswer.function = modelAnswerFunction;
+    // submission.definitions.modelAnswer.function = modelAnswerFunction;
+    submission.definitions.modelAnswer.function = "modelAnswerFunction";
+    // console.log("Now I would add model answer: \n", modelAnswerFunction);
     return true;
   }
   return false;
@@ -162,13 +167,15 @@ function addDataStructure(ds) {
   return false;
 }
 
-function addAnimationHTML(html) {
-  if(valid.animationHTML(html)) {
-    submission.initialState.animationHTML = html;
-    return true;
-  }
-  return false;
-}
+// JAAL 1.0 HTML
+// function addAnimationHTML(html) {
+//   if(valid.animationHTML(html)) {
+//     // submission.initialState.animationHTML = html;
+//     submission.initialState.animationHTML = " ";
+//     return true;
+//   }
+//   return false;
+// }
 
 function setDsId(dsIndex, dsId) {
   if(valid.dsId(dsId)) {
@@ -226,14 +233,15 @@ function checkAndFixLastAnimationStep() {
 }
 
 function exerciseIsInitialized() {
-  if(submission.initialState.animationHTML.length === 0){
-    let message = 'Animation initialization data is missing.\n'
-    + 'Exercise is not being recorded for animation: '
-    + 'did the exercise emit javas-exercise-init event?'
-    + '\nIf you are submitting again the same exercise, try first reloading the page'
-    console.warn(message);
-    return false;
-  }
+  // JAAL 1.0 HTML
+  // if(submission.initialState.animationHTML.length === 0){
+  //   let message = 'Animation initialization data is missing.\n'
+  //   + 'Exercise is not being recorded for animation: '
+  //   + 'did the exercise emit javas-exercise-init event?'
+  //   + '\nIf you are submitting again the same exercise, try first reloading the page'
+  //   console.warn(message);
+  //   return false;
+  // }
   return true;
 }
 
@@ -248,7 +256,8 @@ const addDefinitionSuccesfully = {
 const addInitialStateSuccesfully = {
   dataStructure: addDataStructure,
   setDsId,
-  animationHTML: addAnimationHTML,
+  // JAAL 1.0 HTML
+  // animationHTML: addAnimationHTML,
 };
 
 const addAnimationStepSuccesfully = {

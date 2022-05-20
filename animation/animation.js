@@ -60,7 +60,7 @@ function addStepToSubmission(eventData, dataStructuresState, exerciseHTML) {
     tstamp: eventData.tstamp || new Date(),
     currentStep: currentStep,
     state: clonedState,
-    animationHTML: clonedHTML
+    // animationHTML: clonedHTML
   };
   try {
     submission.addAnimationStepSuccesfully.gradableStep(newState);

@@ -74,15 +74,17 @@ function setNewId(eventData) {
   }
 }
 
-function setAnimationHTML(exercise) {
-  const html = helpers.getExerciseHTML(exercise);
-  submission.addInitialStateSuccesfully.animationHTML(html);
-}
+// JAAL 1.0 HTML
+// function setAnimationHTML(exercise) {
+//   const html = helpers.getExerciseHTML(exercise);
+//   // JAAL 1.0 HTML
+//   // submission.addInitialStateSuccesfully.animationHTML(html);
+// }
 
 module.exports = {
   // fixMissingIds,
   setInitialDataStructures,
   setNewId,
-  setAnimationHTML,
+  // setAnimationHTML,
   // someIdMissing,
 }
