@@ -13,7 +13,8 @@
   "author": "Giacomo Mariani, Artturi Tilanterä, and Johanna Sänger",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^28.1.0"
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0"
   },
   "dependencies": {
     "axios": "^0.21.1",

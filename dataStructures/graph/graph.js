@@ -31,10 +31,10 @@ function getEdge(edge) {
     w = 0;
   }
   const startnode = getNode(edge.startnode).id;
-  const endnode = getNode(edge.endnode).id
+  const endnode = getNode(edge.endnode).id;
+  const classes = edge.element[0].classList;
   return {
-    // list of CSS classes, e.g. ["jsavedge", "marked"]
-    // classList: edge.element[0].classList,
+    style: classes.contains("marked") ? "selected" : "unselected",
     // JAAL id constructed from "${startnode}${endnode}"
     // as JSAV does not give edges an id.
     id: jaalID.getJaalID(startnode + endnode, "edge"),
@@ -44,10 +44,12 @@ function getEdge(edge) {
 }
 
 function getNode(node) {
+  // list of CSS classes, e.g. ["jsavnode", "jsavgraphnode", "marked"]
+  const classes = node.element[0].classList;
   return {
-    // list of CSS classes, e.g. ["jsavnode", "jsavgraphnode", "marked"]
-    // classList: node.element[0].classList,
-
+    // Check for the presence of marked in the class list. 
+    // If present, node is visited.
+    style: classes.contains("marked") ? "visited" : "unvisited",
     // label of the node, e.g. "A"
     key: String(node.element[0].dataset.value),
 
