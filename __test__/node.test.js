@@ -5,19 +5,16 @@ const graph = require("../dataStructures/graph/graph")
 const helper = require("./testHelpers")
 
 /**
- * Initialise a node with minial values. Node's format: 
- * const node = {
- *    element : [{
- *        dataset: {
- *            value: ""
- *        }, 
- *        id: ""
- *    }]
- * } 
+ * Minimal data structure as gathered from the JSAV dump for a node.
  */
-const node = helper.node
-node.element[0].dataset.value = 0;
-node.element[0].dataset.id = "jsav-id";
+ const node = {
+    element : [{
+        dataset: {
+            value: 0
+        }, 
+        id: "jsav-id"
+    }]
+  }
 
 /**
  * Basic test to see if we get back the expected node object. 

@@ -258,21 +258,9 @@ function arraySwap(arr, i, j) {
   return newArr;
 }
 
-/**
- * Minimal data structure as gathered from the JSAV dump for a node.
- */
-const node = {
-  element : [{
-      dataset: {
-          value: ""
-      }, 
-      id: ""
-  }]
-}
 
 module.exports = {
   exercise,
-  node, 
   singleArray,
   multipleArrays,
   jsavInitEvent,
