@@ -49,7 +49,7 @@ function getNode(node) {
     // classList: node.element[0].classList,
 
     // label of the node, e.g. "A"
-    key: node.element[0].dataset.value,
+    key: String(node.element[0].dataset.value),
 
     // JAAL id of the node, mapped to JSAV id
     id: jaalID.getJaalID(node.element[0].id, "node"),
@@ -59,5 +59,6 @@ function getNode(node) {
 module.exports = {
   getGraph,
   nodes: getAllNodes,
-  edges: getAllEdges
+  edges: getAllEdges,
+  getNode,
 }
