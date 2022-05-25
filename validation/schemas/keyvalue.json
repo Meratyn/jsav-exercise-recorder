@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/keyvalue.json",
+  "title": "JAAL 1.1 key-value pair",
+  "description": "A key which points to a value.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for the node among all data structures.",
+      "type": "string",
+      "pattern": "^keyvalue"
+    },
+    "key": {
+      "description": "Key part of the key-value pair. If the type is string, it may also be an identifier of a graph, matrix, or node defined elsewhere.",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "graph.json" },
+        { "$ref": "matrix.json" },
+        { "$ref": "node.json" }
+      ]
+    },
+    "value": {
+      "description": "Value part of the key-value pair. If the type is string, it may also be an identifier of a graph, matrix, or node defined elsewhere.",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "graph.json" },
+        { "$ref": "matrix.json" },
+        { "$ref": "node.json" }
+      ]
+    }
+  },
+  "required": ["id", "key", "value"]
+}
