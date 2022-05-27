@@ -11,6 +11,7 @@ const metad_func = require('./metadata/metadata');
 const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
+const validator_func = require('./validation/validator');
 
 // Services module is not needed, because OpenDSA code will handle the
 // communication to A+ LMS through mooc-grader.
@@ -270,6 +271,6 @@ function finish(eventData) {
 // Finishes the recording without saving the model answer.
 function finishWithoutModelAnswer(eventData) {
   def_func.setFinalGrade(eventData);
-
+  validator_func.validateData(submission.state());
   JSAVrecorder.sendSubmission(submission.state())
 }

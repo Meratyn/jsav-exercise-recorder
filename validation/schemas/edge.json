@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/edge.json",
+  "title": "JAAL 1.1 edge",
+  "description": "A graph edge in a JAAL recording.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for the node among all data structures.",
+      "type": "string",
+      "pattern": "^edge"
+    },
+    "node": {
+      "description": "A graph edge is defined by two nodes. If the graph is directed, the first node is the source and the second node is the target.",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "string",
+        "pattern": "^node"
+      }
+    },
+    "style": {
+      "description": "Graphical style of the node: a name of a style definition.",
+      "type": "string"
+    },
+    "tag": {
+      "description": "Text displayed in the middle of the edge. E.g. name or weight of the edge.",
+      "type": "string"
+    },
+    "tailElem": {
+      "description": "Data element at the tail (start) node of the edge.",
+      "type": "string"
+    },
+    "headElem": {
+      "description": "Data element at the head (end) node of the edge.",
+      "type": "string"
+    }
+  },
+  "required": ["id", "node"]
+}

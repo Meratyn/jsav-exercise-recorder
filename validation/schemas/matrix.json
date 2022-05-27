@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/matrix.json",
+  "title": "JAAL 1.1 matrix",
+  "description": "A one- or two-dimensional array with fixed number of rows and columns.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for the matrix among all data structures.",
+      "type": "string",
+      "pattern": "^matrix"
+    },
+    "rows": {
+      "description": "Number of rows in the matrix.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "columns": {
+      "description": "Number of columns in the matrix.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "key": {
+      "description": "List of rows in the array.",
+      "type": "array",
+      "items": {
+        "description": "List of cells on a row.",
+        "type": "array",
+        "items": {
+          "$ref": "node.json"
+        }
+      }
+    },
+    "rowLabels": {
+      "description": "Label for each row to be displayed on the bottom of the matrix.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "columnLabels": {
+      "description": "Label for each column to be displayed on the bottom of the matrix.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "legend": {
+      "description": "A text to be displayed on the top of the matrix.",
+      "type": "string"
+    },
+    "style": {
+      "description": "Graphical style of the node: a name of a style definition.",
+      "type": "string"
+    }
+  },
+  "required": ["id", "rows", "columns", "key"]
+}

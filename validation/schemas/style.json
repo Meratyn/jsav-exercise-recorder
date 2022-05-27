@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/style.json",
+  "title": "JAAL 1.1 node",
+  "description": "A style definition in a JAAL recording.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "A unique identifier for the style among all styles.",
+      "type": "string",
+      "minLength": 3
+    },
+    "text-color": {
+      "description": "Color for the text inside the element.",
+      "$ref": "#/definitions/hexcolor"
+    },
+    "fill-color": {
+      "description": "Fill color for the inside area of the element.",
+      "$ref": "#/definitions/hexcolor"
+    },
+    "border-color": {
+      "description": "Border color for the outline of the element.",
+      "$ref": "#/definitions/hexcolor"
+    }
+  },
+  "definitions": {
+    "hexcolor": {
+      "description": "RGB color triplet:  #rrggbb, where each rr, gg, and bb are red-green-blue values in the range 0..255 in hexadecimal.",
+      "type": "string",
+      "pattern": "^#([0-9]|[a-f]){6}$"
+    }
+  }
+}

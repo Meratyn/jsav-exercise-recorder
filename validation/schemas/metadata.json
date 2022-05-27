@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/metadata.json",
+  "title": "JAAL 1.1 metadata",
+  "description": "Metadata about a JAAL recording",
+  "type": "object",
+  "properties": {
+    "jaalVersion": {
+      "description": "Text 'JAAL' with a language version number",
+      "type": "string"
+    },
+    "jaalGenerator": {
+      "description": "JAAL data generator software name and version",
+      "type": "string"
+    },
+    "browser": {
+      "description": "Name and version of the web browser which is running JAAL data generator software",
+      "type": "string"
+    },
+    "exercise": {
+      "description": "Information about the VAS exercise",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the exercise",
+          "type": "string"
+        },
+        "collection": {
+          "description": "Name of the exercise collection (e.g. the name of an electronic textbook)",
+          "type": "string"
+        },
+        "runningLocation": {
+          "description": "URL of the configured and running exercise",
+          "type": "string"
+        }
+      },
+      "required": [ "name", "collection" ]
+    },
+    "simulationStart": {
+      "description": "A timestamp: when the exercise is loaded and the JAAL recorder begins recording. A time stamp in ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z"
+    }
+  },
+  "required": [ "jaalVersion", "jaalGenerator", "exercise" ]
+}

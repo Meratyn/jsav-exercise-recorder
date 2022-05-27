@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jaal.fi/schemas/node.json",
+  "title": "JAAL 1.1 node",
+  "description": "Generic data structure for an array cell, a list node, a tree node, and a graph node.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for the node among all data structures.",
+      "type": "string",
+      "pattern": "^node"
+    },
+    "key": {
+      "description": "Primary data inside the node. If the type is string, it may also be an identifier of a graph, matrix, or node defined elsewhere.",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "keyvalue.json" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "keyvalue.json"
+          }
+        }
+      ]
+    },
+    "legend": {
+      "description": "A text to be displayed aside the node.",
+      "type": "string"
+    },
+    "style": {
+      "description": "Graphical style of the node: a name of a style definition.",
+      "type": "string"
+    }
+  },
+  "required": ["id", "key"]
+}
