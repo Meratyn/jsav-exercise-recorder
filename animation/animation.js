@@ -5,6 +5,7 @@ const edgeAnimation = require('./edge/edge-animation');
 const modelAnswerAnimation = require('./model-answer/model-answer-animation');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
+const svg = require('./svg');
 
 // Really Fast Deep Clone library. https://github.com/davidmarkclements/rfdc
 const clone = require('rfdc')()
@@ -13,7 +14,8 @@ function handleGradableStep(exercise, eventData) {
   const exerciseHTML = helpers.getExerciseHTML(exercise)
   // const dataStructuresState = getDataStructuresState(submissionDataStructures(), exercise);
   const dataStructuresState = dataStructures.getDataStructuresFromExercise(exercise)
-  if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState, exerciseHTML);
+  const svgImage = svg.createSvg();
+  if(dataStructuresState.length) addStepToSubmission(eventData, dataStructuresState, exerciseHTML, svgImage);
 }
 
 // Returns an empthy array if there is not state change
@@ -45,7 +47,7 @@ function submissionDataStructures() {
   return dataStructures;
 }
 
-function addStepToSubmission(eventData, dataStructuresState, exerciseHTML) {
+function addStepToSubmission(eventData, dataStructuresState, exerciseHTML, svgImage) {
   const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'gradeable-step';
   const animation = submission.state().animation;
   const currentStep = eventData.currentStep || animation[animation.length - 1].currentStep +1;
@@ -60,6 +62,7 @@ function addStepToSubmission(eventData, dataStructuresState, exerciseHTML) {
     tstamp: eventData.tstamp || new Date(),
     currentStep: currentStep,
     state: clonedState,
+    image: svgImage,
     // animationHTML: clonedHTML
   };
   try {
