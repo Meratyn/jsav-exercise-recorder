@@ -6,12 +6,19 @@ const version = require('./version');
  */
 function setExerciseMetadata(metadata) {
   metadata.browser = navigator.userAgent;
-  metadata.recorderName = "JSAV Exercise Recorder";
-  metadata.recorderVersion = version;
-  metadata.windowLocation = window.location.href.split('?')[0];
   const d = new Date();
   metadata.recordingStarted = d.toISOString();
   metadata.recordingTimezone = -1 * d.getTimezoneOffset() / 60; // hours to UTC
+  metadata.jaalVersion = "1.1";
+  metadata.jaalGenerator = "JSAV Exercise Recorder " + version;
+  const windowLocation = window.location.href.split('?')[0];
+  const linkParts = windowLocation.split("/");
+  const exercise = linkParts[linkParts.length - 1];
+  metadata.exercise = {
+    "name": exercise,
+    "collection": "CS-A1141/CS-A1143", 
+    "running location": windowLocation
+  }
   return submission.addStandardMetadata(metadata);
 }
 

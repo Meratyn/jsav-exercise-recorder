@@ -35,11 +35,6 @@
         }
       },
       "required": [ "name", "collection" ]
-    },
-    "simulationStart": {
-      "description": "A timestamp: when the exercise is loaded and the JAAL recorder begins recording. A time stamp in ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ",
-      "type": "string",
-      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z"
     }
   },
   "required": [ "jaalVersion", "jaalGenerator", "exercise" ]

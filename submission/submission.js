@@ -51,10 +51,7 @@ function reset() {
     style: {},
     score: {},
     options: {},
-    modelAnswer: {
-      function: "",
-      steps: []
-    },
+    modelAnswer: [],
   };
   submission.initialState = {
     dataStructures: [],
@@ -142,9 +139,8 @@ function addOptions(options) {
 
 function addModelAnswerFunction(modelAnswerFunction) {
   if (valid.modelAnswerFunction(modelAnswerFunction)) {
-    // submission.definitions.modelAnswer.function = modelAnswerFunction;
-    submission.definitions.modelAnswer.function = "modelAnswerFunction";
-    // console.log("Now I would add model answer: \n", modelAnswerFunction);
+    // TODO: Implement model answer function and shift that data.
+    submission.definitions.modelAnswer = [];
     return true;
   }
   return false;

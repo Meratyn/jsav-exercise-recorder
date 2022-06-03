@@ -15,8 +15,7 @@ const schemaDependencies = [require("./schemas/definitions.json"),
                             require("./schemas/keyvalue.json"), 
                             require("./schemas/matrix.json"), 
                             require("./schemas/metadata.json"), 
-                            require("./schemas/node.json"), 
-                            require("./schemas/style.json")];
+                            require("./schemas/node.json")];
 
 
 /**
