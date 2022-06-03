@@ -8,7 +8,10 @@ For extensive background information, see
 
 ## git branches
 
-`master` is the main development branch.
+`jaal1.1` is the 2022 development branch based on
+[JAAL 1.1 rc2 specification](https://github.com/Aalto-LeTech/JAAL/releases/tag/1.1rc2).
+
+`master` is the old development branch.
 
 `traky` is integration work for Data Structures and Algorithms Y (DSA Y) course.
 This version of JSAV Exercise recorder does not handle communication with the
