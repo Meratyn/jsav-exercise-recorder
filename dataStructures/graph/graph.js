@@ -6,14 +6,15 @@ const jaalID = require("../jaalID");
 
 function getGraph(graph) {
   console.log(graph);
+  const directed = graph.element[0].getAttribute("data-directed");
   return {
     id: jaalID.getJaalID(graph.element[0].id, "graph"),
     dsClass: "graph",
     node: getAllNodes(graph),
     edge: getAllEdges(graph), 
-    //TODO: Find a way to pull directed from the graph data
-    //Not used in Dijkstra's. 
-    directed: false
+    // data-directed returns a string. We assume that the default 
+    // for a string that is not "true" or "false" is non-directed.
+    directed: (directed === "true"),
   }
 }
 
