@@ -1,4 +1,10 @@
 /**
+ * @jest-environment jsdom
+ */
+
+/**
+ * The above comment is required at the top of the file to set the 
+ * jest environment to allow the creation of DOM elements.
  * Tests for the node function as used in graph.js
  */
 const graph = require("../dataStructures/graph/graph")
@@ -6,13 +12,18 @@ const helper = require("./testHelpers")
 
 /**
  * Minimal data structure as gathered from the JSAV dump for a node.
+ * First create a dom_node so that we can have a DOMTokenList for the classes.
  */
+  const dom_node = document.createElement("div");
+  dom_node.classList.add("marked");
+
  const node = {
     element : [{
         dataset: {
             value: 0
         }, 
-        id: "jsav-id"
+        id: "jsav-id",
+        classList: dom_node.classList
     }]
   }
 
@@ -20,8 +31,7 @@ const helper = require("./testHelpers")
  * Basic test to see if we get back the expected node object. 
  */
 test("Basic node test", () => {
-    console.log(graph.getNode(node));
-    expect(graph.getNode(node)).toMatchObject({key: '0', id: 'node1'});
+    expect(graph.getNode(node)).toMatchObject({style: "visited", key: '0', id: 'node1'});
 })
 
 /**
@@ -45,4 +55,17 @@ test("Id field is a string", () => {
  */
 test("Key field is a string", () => {
     expect(graph.getNode(node)).toHaveProperty('key', expect.any(String));
+})
+
+/**
+ * Tests to make sure that the style is set properly. 
+ */
+test("Style is visited", () => {
+    expect(graph.getNode(node)).toHaveProperty('style', 'visited');
+})
+
+test("Style is unvisited", () => {
+    dom_node.classList.remove("marked");
+    node.element[0].classList = dom_node.classList;
+    expect(graph.getNode(node)).toHaveProperty('style', 'unvisited');
 })
