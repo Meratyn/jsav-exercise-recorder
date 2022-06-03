@@ -3,6 +3,14 @@
 This is a local configuration to test a JSAV-based visual algorithm simulation
 exercise with JSAV Exercise Recorder in local development.
 
+## Installation
+
+You will need to install a Node.js program
+[watchify](https://www.npmjs.com/package/watchify). E.g.
+```
+npm install -g watchify
+```
+
 ## How to use
 
 1. Open a UNIX terminal and start the script:
