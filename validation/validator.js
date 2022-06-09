@@ -34,6 +34,8 @@ function validateData (data) {
     if (!validation_passed) {
         console.log("Data is not valid JAAL1.1 schema.");
         console.log(validate.errors);
+    } else {
+        console.log("Data is valid JAAL1.1 schema.")
     }
     return validation_passed;
 }
