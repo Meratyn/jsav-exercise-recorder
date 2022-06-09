@@ -78,7 +78,7 @@ function addEdges () {
  * @returns svg for the label
  */
 function addEdgeLabel (label) {
-    const pos = label.getAttribute("style");
+    const pos = label.getAttribute("style").replace(" display: block;", "");;
     //Format: "top: ${Y}px; left: ${X}px;"
     const part = pos.split("px; left: "); //["top: ${Y}", "${X}px;"]
     //add offset for top aligned vs bot aligned. 
@@ -171,5 +171,9 @@ function createSvg ()  {
 }
 
 module.exports = {
-    createSvg
+    createSvg,
+    addNode, 
+    addEdge,
+    addEdgeLabel,
+    rgbToHex
 }

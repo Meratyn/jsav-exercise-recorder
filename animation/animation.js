@@ -123,7 +123,7 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
     type: type,
     time: (Date.parse(tstamp) - Date.parse(startTime)),
     currentStep: currentStep,
-    // image: svgImage,
+    image: svgImage,
   };
 
   if (type === "click") {
@@ -138,10 +138,12 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
 }
 
 function handleGradeButtonClick(eventData) {
+  const startTime = submission.state().metadata.recordingStarted;
+  const tstamp = eventData.tstamp || new Date();
   try {
     submission.addAnimationStepSuccesfully.gradeButtonClick({
       type: "grade",
-      tstamp: eventData.tstamp,
+      time: (Date.parse(tstamp) - Date.parse(startTime)),
       currentStep: eventData.currentStep,
       score: { ...eventData.score },
 
@@ -157,5 +159,6 @@ module.exports = {
   handleEdgeEvents: edgeAnimation.handleEdgeEvents,
   handleGradableStep,
   handleGradeButtonClick,
-  handleModelAnswer: modelAnswerAnimation.handleModelAnswer
+  handleModelAnswer: modelAnswerAnimation.handleModelAnswer,
+  edgeChanged
 }
