@@ -1,10 +1,10 @@
 {
   "name": "jsav-exercise-recorder",
-  "version": "1.1",
+  "version": "1.1.0",
   "description": "records steps from JSAV proficiency exercises and sends them to the server",
   "main": "exerciseRecorder.js",
   "scripts": {
-    "build": "genversion metadata/version.js && browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
+    "build": "npx genversion metadata/version.js && browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
     "test": "jest --watch --verbose"
   },
   "keywords": [
@@ -21,7 +21,7 @@
     "ajv-dist": "^8.11.0",
     "axios": "^0.21.1",
     "browserify": "^17.0.0",
-    "genversion": "^3.0.2",
+    "genversion": "^3.1.1",
     "he": "^1.2.0",
     "jest": "^27.3.1",
     "rfdc": "^1.1.4",
