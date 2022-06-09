@@ -18,7 +18,7 @@ function validateMetadata(metadata) {
   try {
     const notEmpthy = helpers.objectIsNotEmpthy(metadata);
     const notArray = helpers.objectIsNotArray(metadata);
-    const noInnerObjects = helpers.doesNotContainObjects(metadata);
+    // const noInnerObjects = helpers.doesNotContainObjects(metadata);
   } catch (err) {
     console.warn('Exercise Recorder, validating metadata', err);
     return false;

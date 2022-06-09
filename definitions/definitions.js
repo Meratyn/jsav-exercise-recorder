@@ -22,7 +22,13 @@ function setDefinitions(exercise) {
 }
 
 function setFinalGrade(eventData) {
-  return submission.addDefinitionSuccesfully.score({ ...eventData.score });
+  const score = {
+    "modelSteps": eventData.score.total,
+    "studentSteps": eventData.score.student,
+    "correctSteps": eventData.score.correct,
+    "undoSteps": eventData.score.undo,
+  };
+  return submission.addDefinitionSuccesfully.score(score);
 }
 
 function getExerciseTitle(initialHTML) {

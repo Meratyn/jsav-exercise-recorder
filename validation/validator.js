@@ -15,8 +15,7 @@ const schemaDependencies = [require("./schemas/definitions.json"),
                             require("./schemas/keyvalue.json"), 
                             require("./schemas/matrix.json"), 
                             require("./schemas/metadata.json"), 
-                            require("./schemas/node.json"), 
-                            require("./schemas/style.json")];
+                            require("./schemas/node.json")];
 
 
 /**
@@ -35,6 +34,8 @@ function validateData (data) {
     if (!validation_passed) {
         console.log("Data is not valid JAAL1.1 schema.");
         console.log(validate.errors);
+    } else {
+        console.log("Data is valid JAAL1.1 schema.")
     }
     return validation_passed;
 }

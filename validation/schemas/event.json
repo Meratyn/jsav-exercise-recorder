@@ -19,6 +19,10 @@
       "description": "Reference to a JAAL data structure or the Undo button.",
       "type": "string",
       "pattern": "^edge|graph|keyvalue|matrix|node"
+    }, 
+    "image" : {
+      "description": "A string containing an SVG representation of the image",
+      "type": "string"
     }
   },
   "if": {

@@ -7,10 +7,7 @@
   "properties": {
     "styles": {
       "description": "Array of style definitions.",
-      "type": "array",
-      "items": {
-        "$ref": "style.json"
-      }
+      "type": "array"
     },
     "score": {
       "description": "Grading data of the exercise.",
@@ -47,5 +44,5 @@
       }
     }
   },
-  "required": ["styles", "score", "modelAnswer"]
+  "required": ["score", "modelAnswer"]
 }
