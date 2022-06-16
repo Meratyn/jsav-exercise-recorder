@@ -9,7 +9,7 @@ function setExerciseMetadata(metadata) {
   const d = new Date();
   metadata.recordingStarted = d.toISOString();
   metadata.recordingTimezone = -1 * d.getTimezoneOffset() / 60; // hours to UTC
-  metadata.jaalVersion = "1.1";
+  metadata.jaalVersion = version;
   metadata.jaalGenerator = "JSAV Exercise Recorder " + version;
   const windowLocation = window.location.href.split('?')[0];
   const linkParts = windowLocation.split("/");
