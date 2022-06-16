@@ -147,11 +147,11 @@ function addModelAnswerFunction(modelAnswerFunction) {
 }
 
 function addModelAnswerStep(step) {
-  if(valid.modelAnswerStep(step)) {
-    submission.definitions.modelAnswer.steps.push(step);
+  // if(valid.modelAnswerStep(step)) {
+    submission.definitions.modelAnswer.push(step);
     return true;
-  }
-  return false;
+  // }
+  // return false;
 }
 
 

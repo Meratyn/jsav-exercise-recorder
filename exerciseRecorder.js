@@ -192,51 +192,51 @@ function passEvent(eventData) {
       anim_func.handleGradableStep(exercise, eventData);
       break;
     case 'jsav-exercise-model-open':
-      // // User clicks the Model answer button
-      // modelAnswer.opened = true;
-      // modelAnswer.ready = true;
+      // User clicks the Model answer button
+      modelAnswer.opened = true;
+      modelAnswer.ready = true;
       break;
     case 'jsav-exercise-model-init':
-      // if (!modelAnswer.opened) {
-      //   exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
-      //   modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-      //   $('.jsavmodelanswer .jsavforward').click();
-      //   break;
-      // }
+      if (!modelAnswer.opened) {
+        exercise.modelav.SPEED = modelAnswer.recordingSpeed + 10;
+        modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+        $('.jsavmodelanswer .jsavforward').click();
+        break;
+      }
       break;
     case 'jsav-exercise-model-forward':
-      // // The Forward button of the model answer animation was clicked.
-      // if (!modelAnswer.opened && !modelAnswer.ready) {
-      //   // The user had clicked Grade button. Now the model answer recording
-      //   // is in progress.
-      //   setTimeout(() => {
-      //     // Record current step of model answer
-      //     modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
-      //     // Trigger this click event again
-      //     $('.jsavmodelanswer .jsavforward').click();
-      //   }, modelAnswer.recordingSpeed);
-      // }
-      // else {
-      //   // The user clicked Forward button in the model answer
-      // }
+      // The Forward button of the model answer animation was clicked.
+      if (!modelAnswer.opened && !modelAnswer.ready) {
+        // The user had clicked Grade button. Now the model answer recording
+        // is in progress.
+        setTimeout(() => {
+          // Record current step of model answer
+          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+          // Trigger this click event again
+          $('.jsavmodelanswer .jsavforward').click();
+        }, modelAnswer.recordingSpeed);
+      }
+      else {
+        // The user clicked Forward button in the model answer
+      }
       break;
     case String(eventData.type.match(/^jsav-exercise-model-.*/)):
-      // // All user actions with the model answer animation
-      // if (modelAnswer.opened) {
-      //   anim_func.handleModelAnswer(exercise, eventData);
-      // }
+      // All user actions with the model answer animation
+      if (modelAnswer.opened) {
+        anim_func.handleModelAnswer(exercise, eventData);
+      }
       break;
     case 'jsav-exercise-grade-button':
       // User clicks the Grade button
       break;
     case 'jsav-exercise-grade':
       // Automatic grading of the exercise has finished
-      // if(!modelAnswer.opened) {
-      //   const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
-      //   const popUp = helpers.getPopUp(popUpText);
-      //   $('body').append(popUp);
-      // }
-      // finish(eventData);
+      if(!modelAnswer.opened) {
+        const popUpText = `Recording model answer steps\n ${def_func.modelAnswer.progress()}`;
+        const popUp = helpers.getPopUp(popUpText);
+        $('body').append(popUp);
+      }
+      finish(eventData);
       finishWithoutModelAnswer(eventData);
       break;
     case 'jsav-exercise-reset':
@@ -255,6 +255,7 @@ function finish(eventData) {
   if (modelAnswer.ready) {
     anim_func.handleGradeButtonClick(eventData);
     def_func.setFinalGrade(eventData);
+    validator_func.validateData(submission.state());
     JSAVrecorder.sendSubmission(submission.state())
 
     submission.reset();
