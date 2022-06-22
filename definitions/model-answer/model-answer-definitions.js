@@ -94,6 +94,9 @@ function recordModelAnswerStep(exercise) {
       modelAnswerStep.object = e;
       modelAnswerStep.svg = svg;
     } 
+    if (modelAnswerStep.time === 1){
+      modelAnswerStep.svg = svg;
+    }
     submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep);
     return (redoArray.length !== 0);
   }

@@ -154,19 +154,6 @@ function createSvg ()  {
     text += addEdgeLabels();
     text += addNodes();
     text = encapsulateSvg(text);
-
-    //For adding the svg image to the end of the page. 
-    const container = document.getElementById("svg_data");
-    if (container === null) {
-        const svg_node = document.createElement("svg");
-        svg_node.id = "svg_data";
-        svg_node.innerHTML = text;
-        document.body.append(svg_node);
-    } else {
-        container.innerHTML = text;
-    }
-
-    // console.log(text);
     return text;
 }
 

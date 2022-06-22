@@ -140,7 +140,7 @@ function getMetadataFromURLparams() {
 // eventData: { type: string,
 //              exercise: JSAV exercise, ...}
 function passEvent(eventData) {
-  console.log('EVENT DATA', eventData);
+  // console.log('EVENT DATA', eventData);
   switch(eventData.type){
     case 'jsav-init':
       // Set exercise title and instructions
@@ -237,7 +237,7 @@ function passEvent(eventData) {
         $('body').append(popUp);
       }
       finish(eventData);
-      finishWithoutModelAnswer(eventData);
+      // finishWithoutModelAnswer(eventData);
       break;
     case 'jsav-exercise-reset':
       // User clicks the Reset button

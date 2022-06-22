@@ -27,21 +27,26 @@ function svgTrimming(svgElement) {
 }
 
 /**
- * Encapsulate the svg data in the svg headers. This also sets the final canvas size.
+ * Encapsulate the svg data in the svg headers. This also sets the final 
+ * canvas size. The width is determined from the combined width of each 
+ * component + 20 pixels per component.
  * @param data the svg string to be encapsulated in svg header
- * @param canvasHTML the canvasHTML element, for grabbing the height and width
+ * @param canvasHTML the canvasHTML element, for grabbing the height 
  * of the svg canvas.
  * @returns the finished svg data.
  */
 function encapsulateSvg(data, canvasHTML) {
+  var width = 0;
+  canvasHTML.children().each(function() {
+    width += Number($(this).css("width").replace("px", "")) + 20
+  })
   const height = canvasHTML.css("min-height");
-  const width = canvasHTML.css("min-width");
   const fill = svg.rgbToHex(canvasHTML.css("background-color"));
 
   return "<svg height=\""+ height + "\" version=\"1.1\" width=\"" + width 
-       + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"overflow: hidden;\">"
+       + "px\" xmlns=\"http://www.w3.org/2000/svg\" style=\"display: inline;\">"
        + "\n<rect fill=\"" + fill + "\" height=\""+ height+ "\" width=\"" 
-       + width + "\" x=\"0\" y=\"0\"/>\n" + data + " </svg>";
+       + width + "px\" x=\"0\" y=\"0\"/>\n" + data + " </svg>";
 }
 
 /**
@@ -53,11 +58,14 @@ function encapsulateSvg(data, canvasHTML) {
  */
 function encapsulateGraph(data, innerSvg) {
   const canvasHTML = $('.jsavmodelanswer .jsavcanvas');
-  const width = canvasHTML.css("min-width");
+  var width = 0;
+  canvasHTML.children().each(function() {
+    width += Number($(this).css("width").replace("px", "")) + 20
+  })
   const height = canvasHTML.css("min-height");
   const innerSvgWidth = innerSvg.width.baseVal.value;
   const innerSvgHeight = innerSvg.height.baseVal.value;
-  const transWidth = (Number(width.slice(0, -2)) - innerSvgWidth)/2;
+  const transWidth = (width - innerSvgWidth);
   const transHeight = (Number(height.slice(0, -2)) - innerSvgHeight)/2;
 
   return "<g transform=\"translate(" 
@@ -148,7 +156,6 @@ function createSvg() {
   svgOutput += tableSvg([...tableHTML.children]);
   svgOutput += narration([...tableHTML.children]);
   svgOutput = encapsulateSvg(svgOutput, canvasHTML);
-  // console.log(svgOutput);
   return svgOutput;
 }
 

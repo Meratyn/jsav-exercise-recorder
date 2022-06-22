@@ -2,12 +2,14 @@ const recorder = require('../exerciseRecorder');
 const submission = require('../submission/submission');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
+const svg = require('../animation/svg')
 
 function setInitialDataStructures(exercise, passEvent) {
   const initialStructures = exercise.initialStructures;
   dataStructures.getDataStructuresFromExercise(exercise,passEvent).forEach(ds => {
     submission.addInitialStateSuccesfully.dataStructure(ds);
   });
+  submission.addInitialStateSuccesfully.addInitialStateSvg(svg.createSvg());
 }
 
 function moreThanOneDs(initialStructures) {
