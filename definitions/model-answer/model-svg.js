@@ -154,7 +154,7 @@ function createSvg() {
     
   var svgOutput= graphSvg([...graphHTML.children]);
   svgOutput += tableSvg([...tableHTML.children]);
-  svgOutput += narration([...tableHTML.children]);
+  // svgOutput += narration([...tableHTML.children]);
   svgOutput = encapsulateSvg(svgOutput, canvasHTML);
   return svgOutput;
 }

@@ -38,10 +38,24 @@
     },
     "modelAnswer": {
       "description": "Steps of the model answer.",
-      "type": "array",
-      "items": {
-        "$ref": "event.json"
-      }
+      "oneOf": [
+        {
+          "type": "array", 
+          "items": {
+            "$ref": "event.json"
+          }
+        },
+        {
+          "type": "array", 
+          "items": {
+            "type": "array", 
+            "items": {
+              "$ref": "event.json"
+            }
+          }
+        }
+      ]
+      
     }
   },
   "required": ["score", "modelAnswer"]

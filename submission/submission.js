@@ -29,6 +29,7 @@ const submission =  {
   initialState: {
     dataStructures: [],
     svg: "",
+    modelSvg: "",
     // JAAL 1.0 HTML
     // animationHTML: ""
   },
@@ -57,6 +58,7 @@ function reset() {
   submission.initialState = {
     dataStructures: [],
     svg: "",
+    modelSvg: "",
     // JAAL 1.0 HTML
     // animationHTML: ""
   };
@@ -70,7 +72,8 @@ function state() {
   // TODO: change to support new DSs
   const initialState = {
     dataStructures: submission.initialState.dataStructures.map(ds => helpers.copyObject(ds)),
-    svg: submission.initialState.svg
+    svg: submission.initialState.svg,
+    modelSvg: submission.initialState.modelSvg
     // JAAL 1.0 HTML
     // animationHTML: submission.initialState.animationHTML
   }
@@ -149,14 +152,19 @@ function addModelAnswerFunction(modelAnswerFunction) {
   return false;
 }
 
-function addModelAnswerStep(step) {
-  // if(valid.modelAnswerStep(step)) {
-    submission.definitions.modelAnswer.push(step);
-    return true;
-  // }
-  // return false;
+function addModelAnswerStep(step, major) {
+  const length = submission.definitions.modelAnswer.length;
+  if (major || length === 0) {
+    submission.definitions.modelAnswer.push([step]);
+  } else {
+    submission.definitions.modelAnswer[length - 1].push(step);
+  }
+  return true;
 }
 
+function addModelAnswerInitialSvg(svg) {
+  submission.initialState.modelSvg = svg;
+}
 
 function addDataStructure(ds) {
   if(valid.dataStructure(ds)) {
@@ -260,6 +268,7 @@ const addInitialStateSuccesfully = {
   dataStructure: addDataStructure,
   setDsId,
   addInitialStateSvg,
+  addModelAnswerInitialSvg
   // JAAL 1.0 HTML
   // animationHTML: addAnimationHTML,
 };

@@ -78,6 +78,7 @@ function getTable () {
  * @returns true if the model answer step was recorded successfully, false otherwise
  */
 function recordModelAnswerStep(exercise) {
+  console.log(exercise);
   const redoArray = exercise.modelav._redo;
   if (redoArray.length >= 0) {
     const e = getChangedEdge(exercise.modelStructures);
@@ -85,8 +86,7 @@ function recordModelAnswerStep(exercise) {
     const svg = modelSvg.createSvg();
     const modelAnswerStep = {
       type: (e) ? "click" : "narration",
-      time: submission.state().definitions.modelAnswer.length,
-      // svg: svg,
+      time: modelAnswerProgress(),
       table: table,
       explanation: getNarration(),
     };
@@ -94,10 +94,11 @@ function recordModelAnswerStep(exercise) {
       modelAnswerStep.object = e;
       modelAnswerStep.svg = svg;
     } 
-    if (modelAnswerStep.time === 1){
-      modelAnswerStep.svg = svg;
+    if (modelAnswerStep.time === 0){
+      submission.addInitialStateSuccesfully.addModelAnswerInitialSvg(svg);
     }
-    submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep);
+    submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep, 
+      (e) ? true : false);
     return (redoArray.length !== 0);
   }
   return false;
@@ -161,7 +162,14 @@ function getModelAnswerStepHTML() {
 
 // Returns the number of the current step in the model answer slideshow
 function modelAnswerProgress() {
-  return submission.state().definitions.modelAnswer.length;
+  var total = 0;
+  submission.state().definitions.modelAnswer.forEach(
+    function(index) {
+      total += index.length
+    }
+  )
+  return total;
+  // return submission.state().definitions.modelAnswer.length;
 }
 
 
