@@ -218,7 +218,8 @@ function passEvent(eventData) {
         // is in progress.
         setTimeout(() => {
           // Record current step of model answer
-          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise);
+          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise, 
+                                                      eventData.gradable);
           // Trigger this click event again
           $('.jsavmodelanswer .jsavforward').click();
         }, modelAnswer.recordingSpeed);

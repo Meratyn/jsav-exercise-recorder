@@ -75,10 +75,13 @@ function getTable () {
  * Records the current step of the model answer.
  * JAAL: definitions.modelAnswer.steps[i]
  * @param exercise a JSAV exercise
- * @returns true if the model answer step was recorded successfully, false otherwise
+ * @param gradable a boolean to indicate if the step is a gradable step according 
+ * to JSAV. 
+ * @returns true if there are more steps to be recorded, 
+ *          false otherwise
  */
-function recordModelAnswerStep(exercise) {
-  console.log(exercise);
+function recordModelAnswerStep(exercise, gradable) {
+  // console.log(exercise);
   const redoArray = exercise.modelav._redo;
   if (redoArray.length >= 0) {
     const e = getChangedEdge(exercise.modelStructures);
@@ -89,6 +92,7 @@ function recordModelAnswerStep(exercise) {
       time: modelAnswerProgress(),
       table: table,
       explanation: getNarration(),
+      gradable: gradable,
     };
     if (e) {
       modelAnswerStep.object = e;
@@ -98,7 +102,7 @@ function recordModelAnswerStep(exercise) {
       submission.addInitialStateSuccesfully.addModelAnswerInitialSvg(svg);
     }
     submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep, 
-      (e) ? true : false);
+      gradable);
     return (redoArray.length !== 0);
   }
   return false;

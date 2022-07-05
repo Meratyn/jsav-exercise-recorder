@@ -124,6 +124,7 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
     time: (Date.parse(tstamp) - Date.parse(startTime)),
     currentStep: currentStep,
     image: svgImage,
+    gradable: (type === "click"),
   };
 
   if (type === "click") {
