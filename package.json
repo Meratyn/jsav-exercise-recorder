@@ -8,23 +8,38 @@
     "test": "jest --watch --verbose"
   },
   "keywords": [
-    "JSAV"
+    "jsav"
   ],
-  "author": "Giacomo Mariani, Artturi Tilanterä, and Johanna Sänger",
+  "contributors": [
+    {
+      "name": "Giacomo Mariani",
+      "email": "giacomo.mariani@aalto.fi",
+      "url:": "https://github.com/MarianiGiacomo/"
+    },
+    {
+      "name": "Johanna Sänger",
+      "email": "johanna.sanger@aalto.fi",
+      "url": "https://github.com/Meratyn/"
+    },
+    {
+      "name": "Artturi Tilanterä",
+      "email": "artturi.tilantera@iki.fi",
+      "url": "https://github.com/atilante/"
+    }
+  ],
   "license": "ISC",
   "devDependencies": {
+    "browserify": "^17.0.0",
+    "genversion": "^3.1.1",
     "jest": "^28.1.0",
-    "jest-environment-jsdom": "^28.1.0"
+    "jest-environment-jsdom": "^28.1.0",
+    "watchify": "^4.0.0"
   },
   "dependencies": {
     "ajv": "^8.11.0",
     "ajv-dist": "^8.11.0",
-    "axios": "^0.21.1",
-    "browserify": "^17.0.0",
-    "genversion": "^3.1.1",
     "he": "^1.2.0",
-    "jest": "^27.3.1",
-    "rfdc": "^1.1.4",
-    "watchify": "^4.0.0"
+    "npm": "^8.13.2",
+    "rfdc": "^1.1.4"
   }
 }
