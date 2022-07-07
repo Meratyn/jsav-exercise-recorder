@@ -22,7 +22,8 @@
       "type": "array",
       "items": {
         "$ref": "edge.json"
-      }
+      },
+      "uniqueItems": true
     },
     "directed": {
       "description": "Directedness of the graph.",
