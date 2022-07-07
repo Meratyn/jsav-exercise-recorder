@@ -88,7 +88,7 @@ the grade button.
 
 ## Installation for development with DSA Y
 
-See doc/aplus_integration.md.
+See doc/aplus_integration/aplus_integration.md.
 
 ### Running the tests
 The tests are written with Jest. To run the tests do this the
