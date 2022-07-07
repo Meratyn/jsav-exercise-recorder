@@ -59,13 +59,20 @@ global.JSAVrecorder = {
     // 2. HTML Escape non-ASCII characters so that each character in the
     // string can be represented with one byte (character values 0-255).
     // Base64 encoding requires this format.
-    // const escaped = he.encode(jsonString, { 'allowUnsafeSymbols': true });
     const escaped = he.encode(jsonString);
 
     // 3. Encode the string as Base64 so that the data will not be modified
     // when it is stored to A+ LMS.
     const encoded = btoa(escaped);
-    return encoded;
+
+    // 4. Wrap the Base64 encoded data into another level of JSON which is
+    // human-readable and contains information
+    return JSON.stringify({
+      "description": "JAAL " + recording['metadata'].jaalVersion + " recording",
+      "generator": recording['metadata'].jaalGenerator,
+      "encoding": "JSON string which is HTML escaped and Base64 encoded",
+      "data": encoded
+    });
   },
 
   // Adds an extra entry into the Metadata section of the recording.

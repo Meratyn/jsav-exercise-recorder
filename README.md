@@ -88,17 +88,7 @@ the grade button.
 
 ## Installation for development with DSA Y
 
-It is assumed that the DSA Y course repository is at <some_dir>/traky.
-Go to <some_dir> and give the following commands:
-
-    git clone -b traky https://github.com/MarianiGiacomo/jsav-exercise-recorder
-    cd jsav-exercise-recorder
-    npm install
-
-For more information, see the file `exercises/jsav/jaal/README.md` in the
-source code of [Data Structures and Algorithms
-Y](https://version.aalto.fi/gitlab/course/traky). As of Autumn 2020, the
-branch `2020-both` contains a working version.
+See doc/aplus_integration.md.
 
 ### Running the tests
 The tests are written with Jest. To run the tests do this the
