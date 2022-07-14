@@ -20,6 +20,10 @@
       "type": "string",
       "pattern": "^edge|graph|keyvalue|matrix|node"
     }, 
+    "gradable": {
+      "description": "Boolean value to indicate whether the current event is considered a gradable step.",
+      "type": "boolean"
+    },
     "image" : {
       "description": "A string containing an SVG representation of the image",
       "type": "string"
