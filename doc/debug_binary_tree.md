@@ -26,7 +26,7 @@ to JSAV to do other tricks?
 
 Finally, only the root node is visible, as it should be.
 
-### Investigation attempt 1
+### Treatment attempt 1
 
 Treatment: Comment out call to minheap.layout() in
 DijkstraPE-research-v2.js:1611 function minHeapify().
@@ -76,6 +76,14 @@ binary heap implementation, because:
 (c) we don't want to modify OpenDSA code to keep it compatible with the
     main source of OpenDSA AT GitHub.
 
+### Treatment attempt 2
+
+Treatment: hide the removed node and edge with css before calling layout.
+
+Add line:
+DijkstraPE-research-v2.css:1588  lastNode.css({"opacity": "0"});
+
+Results: no effect.
 
 # Bug 2
 
