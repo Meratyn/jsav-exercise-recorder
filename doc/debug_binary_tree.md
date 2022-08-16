@@ -89,3 +89,32 @@ Results: no effect.
 
 Description: When the second node is added to the binary heap, JSAV shows
 an empty right node for a fraction of a second.
+
+Johanna said that JSAV creates an empty node to compute the layout.l
+It seems that the appearance of the empty node is animated, and then it is
+set to invisible.
+
+Call stack of anim:
+JSAV-min.js:607 anim
+JSAV-min.js:4610 show
+JSAV-min.js:1845 handleVisibility
+JSAV-min.js:4422 init
+JSAV-min.js:4709 BinaryTreeNode
+JSAV-min.js:4304 newNode
+DijkstraPE-research-v2.js:1515
+
+Awful! The glitch cannot be reproduced with stepping.
+JSAV seems to run in a loop at JSAV-min.js:497 function timeouter
+
+The animation is running in another event. Functions in the the call stack
+initiated by the user's edge click and then click on the add/update dialog
+is waiting for the animation to finish.
+
+When setting the animation speed to slowest possible, it can be seen that
+adding the second node to the heap appears visually as follows:
+1. Left node and its edge starts to appear (increase opacity)
+2. Root node moves to the right
+3. Right child node appears without edge
+
+Logically, one should find out the code in JSAV where the nodes are created
+and animated.
