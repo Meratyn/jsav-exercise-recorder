@@ -35,9 +35,47 @@ Outcome: the same bug visualizes now in
 DijkstraPE-research-v2.js:1498 $("#removeButton").click(function() {}
 
 Discussion: it seems that the removed node and the line leading to it from its
-parent should be hidden before calling minheap.layout().
+parent should be hidden before calling minheap.layout(). Some code already
+does the visual operation for the removed node, but after minheap.layout()
+has executed.
 
 JSAV documentation? Binary tree removal exercise?
+
+### Investigating OpenDSA Delete Min heap exercise
+
+This exercise has a reference implementation on how to visualize binary heap
+delete correctly with JSAV.
+
+DSA Y repository:
+tools/extras/OpenDSA/AV/Binary/heapremovePRO.js:12-25
+
+  $("#decrement").click(function () {
+    var heapsize = bh.heapsize() - 1; // decrement by one
+    bh.heapsize(heapsize); // set heapsize
+    // hide last item and the edge in the tree
+    bh.css(heapsize, {"opacity": "0"});
+    var edgeToParent = bh._treenodes[heapsize].edgeToParent();
+    if (edgeToParent) {
+      edgeToParent.css({"opacity": "0"});
+    }
+    if (swapIndex.value() !== -1) {
+      swapIndex.value(-1);
+    }
+    exercise.gradeableStep();
+  });
+
+Indeed, the items are *hidden* with CSS. Moreover, that exercise uses the
+OpenDSA implementation of a binary heap:
+tools/extras/OpenDSA/DataStructures/binaryheap.js.
+
+The binary heap is created at heapremovePRO.js:61. This call creates both
+the array and the binary tree view. However, we don't want to use the OpenDSA
+binary heap implementation, because:
+(a) the code is not documented
+(b) the visualization always includes an array
+(c) we don't want to modify OpenDSA code to keep it compatible with the
+    main source of OpenDSA AT GitHub.
+
 
 # Bug 2
 
