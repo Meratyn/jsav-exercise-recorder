@@ -6,25 +6,9 @@
 
 // Use some of the SVG functions.
 const svg = require('../../animation/svg');
-
-
-/**
- * Trim the passed along svg canvas to contain minimal necessary information
- * @param svgElement the HTML element for the svg.
- * @returns a string of the trimmed svg input. 
- */
-function svgTrimming(svgElement) {
-  const elementsList = [...svgElement.children]
-
-  var svgOutput = "";
-  for (var i = 0; i < elementsList.length; i++) {
-    const className = elementsList[i].className.baseVal
-    if (className.includes("jsavedge")) {
-      svgOutput += svg.addEdge(elementsList[i]);
-    }
-  }
-  return svgOutput;
-}
+//vars used for offset of the different components.
+var top = 0;
+var left = 0;
 
 /**
  * Encapsulate the svg data in the svg headers. This also sets the final 
@@ -50,94 +34,102 @@ function encapsulateSvg(data, canvasHTML) {
 }
 
 /**
- * Encapsulate the svg of the graph in the right position. 
- * @param data the string of the graph svg.
- * @param innerSvg the HTML svg element that contains the information
- * on the size of the graph
- * @returns an svg string
+ * Grabs the .jsavgraph from the model answer and turns the nodes, 
+ * edges, and edge labels into an svg.
+ * @returns the graph svg component
  */
-function encapsulateGraph(data, innerSvg) {
-  const canvasHTML = $('.jsavmodelanswer .jsavcanvas');
-  var width = 0;
-  canvasHTML.children().each(function() {
-    width += Number($(this).css("width").replace("px", "")) + 20
-  })
-  const height = canvasHTML.css("min-height");
-  const innerSvgWidth = innerSvg.width.baseVal.value;
-  const innerSvgHeight = innerSvg.height.baseVal.value;
-  const transWidth = (width - innerSvgWidth);
-  const transHeight = (Number(height.slice(0, -2)) - innerSvgHeight)/2;
+function addGraph() {
+  const graph = $(".jsavmodelanswer").find(".jsavgraph");
+  var modelSvg = "";
 
-  return "<g transform=\"translate(" 
-       + Math.round(transWidth) + "," + Math.round(transHeight) + ")\">\n" 
-       + data + "</g>";
+  const nodes = graph.find(".jsavgraphnode");
+  nodes.each(function() {modelSvg += svg.addNode($(this))});
+  const edges = graph.find(".jsavedge");
+  edges.each(function() {modelSvg += svg.addEdge($(this))});
+  const labels = graph.find(".jsavedgelabel");
+  labels.each(function() {modelSvg += svg.addEdgeLabel($(this))});
+
+  modelSvg = svg.offset(modelSvg, left, top)
+  top += Number(graph.css("height").match(/\d+/)[0]);
+  return modelSvg;
 }
 
 /**
- * Generate the svg of the graph. 
- * @param graphChildren a list of HTML elements that make up the graph. 
- * @returns the svg representation of the graph. 
+ * Grabs .jsavmatrix from the model answer and turns it into an svg
+ * @returns the table svg component
  */
-function graphSvg(graphChildren) {
-  var svgOutput = "";
-  var svgIndex = 0;
-  for (var i = 0; i < graphChildren.length; i++){
-    if (graphChildren[i] instanceof SVGElement){
-      //Element is the svg canvas
-      svgOutput += svgTrimming(graphChildren[i]);
-      svgIndex = i;
-    } else if (graphChildren[i].className.includes("jsavgraphnode")) {
-      //Element is a node
-      svgOutput += svg.addNode(graphChildren[i]);
-    } else if (graphChildren[i].className.includes("jsavedgelabel")) {
-      //Element is an edge label
-      svgOutput += svg.addEdgeLabel(graphChildren[i]);
-    } else {
-      console.warn("Missing information about the following node: \n", 
-                    graphChildren[i])
-    }
-  }
+function addTable() {
+  const matrix = $(".jsavmodelanswer").find(".jsavmatrix");
+  const rows = matrix.children(".jsavarray");
 
-  return encapsulateGraph(svgOutput, graphChildren[svgIndex]);
-}
-
-
-/**
- * Generate the svg representation of the table.
- * @param {*} tableChildren 
- * @returns 
- */
-function tableSvg(tableChildren) {
   var offsetY = 0;
-  var svgOutput = "";
+  var offsetX = 0;
+  var modelSvg = "";
 
-  for (var i = 0; i < tableChildren.length; i++){
-    const li = [...tableChildren[i].children];
-    var offsetX = 0;
-    const height = Number(getComputedStyle(li[0])
-                            .getPropertyValue("min-height")
-                            .slice(0,-2));
-
-    for (var j = 0; j < li.length; j++) {
-      const text = li[j].textContent;
-      const width = Number(getComputedStyle(li[j])
-                            .getPropertyValue("min-width")
-                            .slice(0,-2));
-      const colour = getComputedStyle(li[j])
-                            .getPropertyValue("background-color");
+  rows.each(function () {
+    offsetX = 0;
+    //$(this) = current row
+    const cells = $(this).children(".jsavindex");
+    const height = Number($(this).css("height").match(/\d+/)[0])
+    
+    cells.each(function() {
+      //$(this) = current cell
+      //width returns 0, so we fall back to using min-width
+      const width = Number($(this).css("min-width").match(/\d+/)[0]);
+      const colour = svg.rgbToHex($(this).css("background-color"));
       const textX = offsetX + width/2;
       const textY = offsetY + height/2 + 5;
-      svgOutput += "<rect x=\" " + offsetX + "\" y=\""+ offsetY + "\" width=\""
-                + width + "\" height=\"" + height+ "\" fill=\""
-                + svg.rgbToHex(colour) + "\"></rect>\n" 
-                + "<text x=\"" + textX + "\" y=\"" + textY 
-                + "\" text-anchor=\"middle\">" + text + "</text>\n";
+      const text = $(this).text();
+
+      modelSvg += "<rect x=\" " + offsetX + "\" y=\""+ offsetY + "\" width=\""
+          + width + "\" height=\"" + height+ "\" fill=\""+ colour 
+          + "\"></rect>\n<text x=\"" + textX + "\" y=\"" + textY 
+          + "\" text-anchor=\"middle\">" + text + "</text>\n";
+      
       offsetX += width;
-    }
+    });
 
     offsetY += height;
-  }
-  return svgOutput;
+  });
+
+  left += offsetX;
+  return modelSvg;
+}
+
+/**
+ * Grabs the .jsavtree component from the model answer and turns 
+ * the edges and nodes into an svg.
+ * @returns the tree svg component
+ */
+function addTree() {
+  const tree = $(".jsavmodelanswer").find(".jsavtree");
+  var modelSvg = "";
+  // grab the nodes that do not have display=none, the class jsavnullnode,
+  // no data-value, no parent field, or no parent and are not the root
+  // JSAV has all the model solution nodes in HTML the whole time
+  // Thus we need to make sure we only select the active ones 
+  // data-parent == "" in the case of a 'removed' node
+  // data-parent is undefined for root nodes (even removed ones), 
+  // but the current root-node has data-child-role == root;
+  const nodes = tree.find(".jsavtreenode").not(function() {
+          return $(this).css("display") === "none" || 
+              $(this).hasClass("jsavnullnode") || 
+              $(this).attr("data-value") === "" ||
+              $(this).attr("data-parent") === "" || 
+              $(this).attr("data-parent") === undefined && 
+              $(this).attr("data-child-role") !== "root"
+        });
+  nodes.each(function() {modelSvg += svg.addNode($(this))})
+
+  //Grab the edges that do not have the class jsavnulledge or opacity of 0.
+  const edges = tree.find(".jsavedge").not(function() {
+          return $(this).hasClass("jsavnulledge") || 
+              $(this).css("opacity") === "0";
+        });
+  edges.each(function() {modelSvg += svg.addEdge($(this))});
+  modelSvg = svg.offset(modelSvg, left, top);
+  top += Number(tree.css("height").match(/\d+/)[0])
+  return modelSvg;
 }
 
 function narration(table) {
@@ -147,14 +139,18 @@ function narration(table) {
   return "<text x=\"" + tableOffset + "\" y=\"20\">" + narr + "</text>";
 }
 
+/**
+ * Create an svg representation of the current model answer state.
+ * @returns an svg representation of the current model answer state
+ */
 function createSvg() {
+  top = 0;
+  left = 0;
   const canvasHTML = $('.jsavmodelanswer .jsavcanvas');
-  const graphHTML = canvasHTML.children()["0"];
-  const tableHTML = canvasHTML.children()["1"];
-    
-  var svgOutput= graphSvg([...graphHTML.children]);
-  svgOutput += tableSvg([...tableHTML.children]);
-  // svgOutput += narration([...tableHTML.children]);
+  //Order matters here because of the relative off-sets.
+  var svgOutput = addTable();
+  svgOutput += addGraph();
+  svgOutput += addTree();
   svgOutput = encapsulateSvg(svgOutput, canvasHTML);
   return svgOutput;
 }

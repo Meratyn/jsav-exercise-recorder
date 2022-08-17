@@ -31,6 +31,7 @@ function recordModelAnswerFunction(modelAnswerFunction) {
  *          undefined if no changes
  */
 function getChangedEdge (gr) {
+  console.log("GR:", gr)
   const jaalEdgeList = graph.edges(gr);
 
   const lastState = (submission.state().definitions.modelAnswer.length === 0)
@@ -84,7 +85,9 @@ function recordModelAnswerStep(exercise, gradable) {
   // console.log(exercise);
   const redoArray = exercise.modelav._redo;
   if (redoArray.length >= 0) {
-    const e = getChangedEdge(exercise.modelStructures);
+    const e = getChangedEdge(exercise.modelStructures.filter(
+      ds => $(ds.element).hasClass("jsavgraph")
+    )[0]);
     const table = getTable();
     const svg = modelSvg.createSvg();
     const modelAnswerStep = {
