@@ -100,7 +100,7 @@ The tests are written with Jest. To run the tests do this the
 To bundle all the required modules in one file use [Browserify](http://browserify.org/).
 
     npm install -g browserify
-    npm build
+    npm run build
 
 The DSA Y course repository, branch `traky`, should have a script called
 `compile-jaal.sh` which does the rest.
