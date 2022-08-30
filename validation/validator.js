@@ -1,41 +1,44 @@
 /**
- * Use AJV to validate the data against the JAAL 1.1 schema before 
- * it is sent off to the server. 
+ * Use AJV to validate the data against the JAAL schema before
+ * it is sent off to the server.
  *
- * JAAL 1.1 is written in 2020-12 draft. 
+ * JAAL is written in JSON Schema version 2020-12 draft.
  * schemas/jaal.json is dependent on all the other json-files
- * in the schemas folder. 
+ * in the schemas folder.
  */
+
+const jaalVersion = "2.0rc1";
 const Ajv2020 = require("ajv/dist/2020")
-const schemaDependencies = [require("./schemas/definitions.json"), 
-                            require("./schemas/edge.json"), 
-                            require("./schemas/event.json"), 
-                            require("./schemas/graph.json"), 
-                            require("./schemas/initialState.json"), 
-                            require("./schemas/keyvalue.json"), 
-                            require("./schemas/matrix.json"), 
-                            require("./schemas/metadata.json"), 
-                            require("./schemas/node.json")];
+const schemaDependencies = [
+  require("./JAAL/spec/schemas/definitions.json"),
+  require("./JAAL/spec/schemas/edge.json"),
+  require("./JAAL/spec/schemas/event.json"),
+  require("./JAAL/spec/schemas/graph.json"),
+  require("./JAAL/spec/schemas/initialState.json"),
+  require("./JAAL/spec/schemas/keyvalue.json"),
+  require("./JAAL/spec/schemas/matrix.json"),
+  require("./JAAL/spec/schemas/metadata.json"),
+  require("./JAAL/spec/schemas/node.json")];
 
 
 /**
- * validateData validates the parameter data against JAAL1.1. 
+ * validateData validates the parameter data against JAAL.
  * If the data is not valid, it prints all the validation errors to the console.
  * @param data is a JSON object of the data to be submitted to the server.
- * @returns whether the data is valid JAAL1.1
+ * @returns whether the data is valid JAAL
  */
 function validateData (data) {
     //Set allErrors to true, otherwise we only get one error at a time.
     const ajv = new Ajv2020({allErrors: true});
     const validate = ajv.addSchema(schemaDependencies)
-                        .compile(require("./schemas/jaal.json"));
-    
+                        .compile(require("./JAAL/spec/schemas/jaal.json"));
+
     const validation_passed = validate(data);
     if (!validation_passed) {
-        console.log("Data is not valid JAAL1.1 schema.");
+        console.log("Data conforms to JAAL " + jaalVersion + ".");
         console.log(validate.errors);
     } else {
-        console.log("Data is valid JAAL1.1 schema.")
+        console.log("Data does not conform to JAAL " + jaalVersion + ".");
     }
     return validation_passed;
 }

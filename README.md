@@ -8,8 +8,8 @@ For extensive background information, see
 
 ## git branches
 
-`jaal1.1` is the 2022 development branch based on
-[JAAL 1.1 rc2 specification](https://github.com/Aalto-LeTech/JAAL/releases/tag/1.1rc2).
+`jaal2.0` is the 2022 development branch based on
+[JAAL 2.0 rc2 specification](https://github.com/Aalto-LeTech/JAAL/releases/tag/2.0rc1).
 
 `master` is the old development branch.
 
@@ -27,13 +27,27 @@ The main differences in the JSAV Exercise Recorder between the `master` and
 3. Exercise recording is accessible globally:
    `global.JSAVrecorder.getRecording()`
 
-## Required software
+## Installation for development
 
 To compile and run the software, you will need:
 
 - [Node.js](https://nodejs.org/en/)
-- [Browserify](http://browserify.org/)
-- [he](https://github.com/mathiasbynens/he)
+- [Python 3](https://www.python.org/)
+
+
+After you have cloned this git repository:
+
+```
+git submodule init
+git submodule update
+npm install
+npm run build
+```
+
+## Testing at development
+
+See `testbench/README.md`.
+
 
 ## JAAL
 
@@ -50,6 +64,8 @@ is the following.
         "animation": [],
     }
 
+JAAL specification and documentation is included as a git submodule in the
+directory `validation/JAAL`.
 
 ## Source code organisation
 
