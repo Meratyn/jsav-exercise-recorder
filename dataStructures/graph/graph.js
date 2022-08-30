@@ -11,8 +11,8 @@ function getGraph(graph) {
     id: jaalID.getJaalID(graph.element[0].id, "graph"),
     dsClass: "graph",
     node: getAllNodes(graph),
-    edge: getAllEdges(graph), 
-    // data-directed returns a string. We assume that the default 
+    edge: getAllEdges(graph),
+    // data-directed returns a string. We assume that the default
     // for a string that is not "true" or "false" is non-directed.
     directed: (directed === "true"),
   }
@@ -26,29 +26,41 @@ function getAllEdges(graph) {
   return graph._alledges.map(edge => getEdge(edge));
 }
 
+/**
+ * Creates a JAAL edge from a JSAV Edge.
+ *
+ * Parameters:
+ *  edge: JSAV Edge
+ * Returns:
+ *  JAAL edge (refer to JAAL schema edge.json)
+ */
 function getEdge(edge) {
-  let w = edge.weight();
-  if (typeof(w) === "undefined") {
-    w = 0;
-  }
   const startnode = getNode(edge.startnode).id;
   const endnode = getNode(edge.endnode).id;
-  const classes = edge.element[0].classList;
-  return {
-    style: classes.contains("marked") ? "selected" : "unselected",
-    // JAAL id constructed from "${startnode}${endnode}"
-    // as JSAV does not give edges an id.
+  // style is all CSS classes of the edge except "jsavedge" which every edge has
+  let cssClasses = [];
+  for (const cssClass of edge.element[0].classList) {
+    if (cssClass !== "jsavedge") {
+      cssClasses.push(cssClass);
+    }
+  }
+  let jaalEdge = {
     id: jaalID.getJaalID(startnode + endnode, "edge"),
     node: [startnode, endnode],
-    tag: String(edge.weight())
+    style: cssClasses.join(" ")
   }
+  if (edge.weight() !== "undefined") {
+    jaalEdge['tag'] = String(edge.weight());
+  }
+  // JAAL 2.0 Edge "tailElem" and "headElem" properties are not yet supported
+  return jaalEdge;
 }
 
 function getNode(node) {
   // list of CSS classes, e.g. ["jsavnode", "jsavgraphnode", "marked"]
   const classes = node.element[0].classList;
   return {
-    // Check for the presence of marked in the class list. 
+    // Check for the presence of marked in the class list.
     // If present, node is visited.
     style: classes.contains("marked") ? "visited" : "unvisited",
     // label of the node, e.g. "A"
