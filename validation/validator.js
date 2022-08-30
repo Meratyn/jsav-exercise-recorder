@@ -35,10 +35,10 @@ function validateData (data) {
 
     const validation_passed = validate(data);
     if (!validation_passed) {
-        console.log("Data conforms to JAAL " + jaalVersion + ".");
+        console.log("Data does not conform to JAAL " + jaalVersion + ".");      
         console.log(validate.errors);
     } else {
-        console.log("Data does not conform to JAAL " + jaalVersion + ".");
+        console.log("Data conforms to JAAL " + jaalVersion + ".");
     }
     return validation_passed;
 }
