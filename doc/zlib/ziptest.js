@@ -1,5 +1,5 @@
 const { deflate, unzip } = require('zlib');
-
+const { promisify } = require('util');
 
 const input = 'spam spam spam spam spam spam spam spam';
 deflate(input, (err, buffer) => {
@@ -23,3 +23,15 @@ unzip(buffer, (err, buffer) => {
   "\n" +
     "decompressed: " + buffer.toString());
 });
+
+
+// Promisified version
+const zip = promisify(deflate);
+
+zip(input)
+  .then((buf) => console.log("Promisified zipping (base64): " +
+   buf.toString('base64')))
+  .catch((err) => {
+    console.error('Promisified: An error occurred:', err);
+    process.exitCode = 1;
+  });
