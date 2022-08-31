@@ -104,8 +104,6 @@ function getClickedObject(dsState) {
     const lastEdgeList = lastState.edge;
     const currentEdges = state.edge;
     for (var i = 0; i < currentEdges.length; i++) {
-      console.log(lastEdgeList[i].id + " " + lastEdgeList[i].style + " " +
-                  currentEdges[i].id + " " + currentEdges[i].style + " ");
       if (edgeChanged(currentEdges[i], lastEdgeList)) {
         return currentEdges[i].id;
       }

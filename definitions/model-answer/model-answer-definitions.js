@@ -25,18 +25,17 @@ function recordModelAnswerFunction(modelAnswerFunction) {
 
 /**
  * Check whether there is a change in one of the edges that would indicate
- * an edge having been clicked. 
- * @param gr the root HTML node of the graph. 
- * @returns the edge id if an edge has been changed, 
+ * an edge having been clicked.
+ * @param gr the root HTML node of the graph.
+ * @returns the edge id if an edge has been changed,
  *          undefined if no changes
  */
 function getChangedEdge (gr) {
-  console.log("GR:", gr)
   const jaalEdgeList = graph.edges(gr);
 
   const lastState = (submission.state().definitions.modelAnswer.length === 0)
                   ? jaalEdgeList : state;
-  
+
   state = jaalEdgeList;
   for (var i = 0; i < jaalEdgeList.length; i++) {
     if (animation.edgeChanged(jaalEdgeList[i], lastState)) {
@@ -48,7 +47,7 @@ function getChangedEdge (gr) {
 
 /**
  * Get the table from the canvas HTML and return it as a matrix.
- * The index fields are used to generate a jsav-id, as the entries do 
+ * The index fields are used to generate a jsav-id, as the entries do
  * not have their on jsav-id.
  * @returns a matrix of the table
  */
@@ -76,9 +75,9 @@ function getTable () {
  * Records the current step of the model answer.
  * JAAL: definitions.modelAnswer.steps[i]
  * @param exercise a JSAV exercise
- * @param gradable a boolean to indicate if the step is a gradable step according 
- * to JSAV. 
- * @returns true if there are more steps to be recorded, 
+ * @param gradable a boolean to indicate if the step is a gradable step according
+ * to JSAV.
+ * @returns true if there are more steps to be recorded,
  *          false otherwise
  */
 function recordModelAnswerStep(exercise, gradable) {
@@ -99,14 +98,14 @@ function recordModelAnswerStep(exercise, gradable) {
     };
     if (e) {
       modelAnswerStep.object = e;
-    } 
+    }
     if (gradable) {
       modelAnswerStep.svg = svg;
     }
     if (modelAnswerStep.time === 0){
       submission.addInitialStateSuccesfully.addModelAnswerInitialSvg(svg);
     }
-    submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep, 
+    submission.addDefinitionSuccesfully.modelAnswerStep(modelAnswerStep,
       gradable);
     return (redoArray.length !== 0);
   }

@@ -5,7 +5,6 @@
 const jaalID = require("../jaalID");
 
 function getGraph(graph) {
-  console.log(graph);
   const directed = graph.element[0].getAttribute("data-directed");
   return {
     id: jaalID.getJaalID(graph.element[0].id, "graph"),
