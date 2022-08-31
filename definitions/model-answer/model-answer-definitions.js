@@ -99,8 +99,10 @@ function recordModelAnswerStep(exercise, gradable) {
     };
     if (e) {
       modelAnswerStep.object = e;
-      modelAnswerStep.svg = svg;
     } 
+    if (gradable) {
+      modelAnswerStep.svg = svg;
+    }
     if (modelAnswerStep.time === 0){
       submission.addInitialStateSuccesfully.addModelAnswerInitialSvg(svg);
     }
