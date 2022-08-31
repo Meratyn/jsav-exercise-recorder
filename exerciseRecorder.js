@@ -23,6 +23,11 @@ const helpers = require('./utils/helperFunctions');
 // HTML Entity encoder/decoder library. https://github.com/mathiasbynens/he
 const he = require('he');
 
+// Zlib compression.
+// Use promisify to get a blocking call to zip compression in
+// JSAVrecorder.escapeRecording().
+const zlib = require('zlib');
+
 //
 // Starter code.
 //
@@ -51,26 +56,37 @@ global.JSAVrecorder = {
   },
 
   // Converts an exercise recording into a JSON string where all non-ASCII
-  escapeRecording: function(recording) {
+  escapeRecording: async function(recording) {
     // 1. Convert JSON data into (Unicode) string so that in can be stored as
     // text in the database of A+ LMS.
-    const jsonString = JSON.stringify(recording);
+    const stringified = JSON.stringify(recording);
 
     // 2. HTML Escape non-ASCII characters so that each character in the
     // string can be represented with one byte (character values 0-255).
     // Base64 encoding requires this format.
-    const escaped = he.encode(jsonString);
+    const escaped = he.encode(stringified);
 
-    // 3. Encode the string as Base64 so that the data will not be modified
+    // 3. Compress the data using zlib (Deflate algorithm)
+    const zipped = zlib.deflateSync(escaped);
+
+    // 4. Encode the string as Base64 so that the data will not be modified
     // when it is stored to A+ LMS.
-    const encoded = btoa(escaped);
+    // Note: zlib.deflateSync returns an Uint8array. This has to be converted
+    // into a string byte by byte, because otherwise btoa thinks it is an
+    // Unicode string.
+    let result = '';
+    for (let i = 0; i < zipped.byteLength; i++) {
+      result += String.fromCharCode(zipped[i]);
+    }
+    const encoded = btoa(result);
 
-    // 4. Wrap the Base64 encoded data into another level of JSON which is
+    // 5. Wrap the Base64 encoded data into another level of JSON which is
     // human-readable and contains information
     return JSON.stringify({
       "description": "JAAL " + recording['metadata'].jaalVersion + " recording",
       "generator": recording['metadata'].jaalGenerator,
-      "encoding": "JSON string which is HTML escaped and Base64 encoded",
+      "encoding":
+      "JSON string -> HTML escape -> zlib compress -> Base64 encode",
       "data": encoded
     });
   },
@@ -218,7 +234,7 @@ function passEvent(eventData) {
         // is in progress.
         setTimeout(() => {
           // Record current step of model answer
-          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise, 
+          modelAnswer.ready = !def_func.modelAnswer.recordStep(exercise,
                                                       eventData.gradable);
           // Trigger this click event again
           $('.jsavmodelanswer .jsavforward').click();
