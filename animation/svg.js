@@ -112,6 +112,7 @@ function addNode(node) {
 
 function addTree () {
     const tree = $(".jsavtree");
+    if (tree.length === 0) return;
     var svg = "";
     // grab the nodes that do not have display=none or the class jsavnullnode
     const nodes = tree.find(".jsavtreenode").not(function() {
@@ -155,6 +156,7 @@ function addGraph () {
  */
 function addMatrix () {
     const matrix = $(".jsavmatrix");
+    if (matrix.length === 0) return;
     const rows = matrix.children(".jsavarray");
 
     var offsetY = 0;
