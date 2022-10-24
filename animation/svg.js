@@ -1,5 +1,5 @@
 /**
- * This file is used to turn the canvas into an svg output. 
+ * This file is used to turn the canvas into an svg output.
  */
 
 //Vars to be able to calculate the svg offsets for each part.
@@ -9,9 +9,9 @@ var left = 0;
 /**
  * Helper function.
  * Turns an rgb string as returned by getComputedStyle.getPropertyValue
- * into a hex string for the SVG. 
+ * into a hex string for the SVG.
  * @param rgb an rgb colour string
- * @returns a hex string. (default: #000000) 
+ * @returns a hex string. (default: #000000)
  */
 function rgbToHex(rgb) {
     const trim = rgb.slice(rgb.search("\\(") +1, rgb.search("\\)"));
@@ -20,28 +20,28 @@ function rgbToHex(rgb) {
     for (var i = 0; i < nums.length && i < 3; i++) {
         hex += Number(nums[i]).toString(16).padStart(2, "0");
     }
-    // Padding here to ensure 6 string. If for some reason rgb 
+    // Padding here to ensure 6 string. If for some reason rgb
     // does not return an array of 3, we return #000000 (black)
     return "#" + hex.padStart(6, "0");
 }
 
 /**
- * Add the offset for the element in the bigger context of the svg. 
+ * Add the offset for the element in the bigger context of the svg.
  * Used for when there is more than 1 datastructure in the exercise
  * @param  svg the svg string
  * @param  x optional parameter off-set left, default file variable left
  * @param  y optional parameter off-set top, default file variable top
- * @returns 
+ * @returns
  */
 function offset (svg, x, y) {
     const offX = (x === undefined) ? left : x;
     const offY = (y === undefined) ? top : y;
-    return "<g transform=\"translate(" + offX + "," + offY + ")\">\n" 
+    return "<g transform=\"translate(" + offX + "," + offY + ")\">\n"
             + svg + "</g>\n"
 }
 
 /**
- * Add the required SVG header/closer to the data. 
+ * Add the required SVG header/closer to the data.
  * @param data the data to be encapsulated.
  * @returns encapsulated data.
  */
@@ -49,45 +49,51 @@ function encapsulateSvg (data) {
     const canvas = $(".jsavcanvas");
     const height = canvas.css("height").match(/\d+/)[0]
     const width = canvas.css("width").match(/\d+/)[0]
-    // Background colour is inherited from the container. 
+    // Background colour is inherited from the container.
     // Need to grab it from the container element.
     const container = $("#container")
     const fill = rgbToHex(container.css("background-color"));
 
-    return "<svg height=\""+ height + "\" version=\"1.1\" width=\"" + width 
+    return "<svg height=\""+ height + "\" version=\"1.1\" width=\"" + width
          + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"overflow: hidden;\">"
-         + "\n<rect fill=\"" + fill + "\" height=\""+ height+ "\" width=\"" 
-         + width + "\" x=\"0\" y=\"0\"/>\n<g transform=\"translate(30,30)\">\n" 
+         + "\n<rect fill=\"" + fill + "\" height=\""+ height+ "\" width=\""
+         + width + "\" x=\"0\" y=\"0\"/>\n<g transform=\"translate(30,30)\">\n"
          + data + "</g> </svg>";
 }
 
 /**
- * Generate the svg for a singular edge. 
+ * Generate the svg for a singular edge.
  * @param edge jQuery object of the edge.
- * @returns svg for the edge. 
+ * @returns svg for the edge.
  */
 function addEdge (edge) {
     const d = edge.attr("d");
     // const edgeStyle = getComputedStyle(edge);
     const strokeWidth = edge.css("stroke-width");
     const colour = rgbToHex(edge.css("stroke"));
-    return "<path stroke=\"" + colour + "\" stroke-width=\"" + strokeWidth 
+    return "<path stroke=\"" + colour + "\" stroke-width=\"" + strokeWidth
             + "\" d=\"" + d + "\"></path>\n";
 }
 
 /**
  * Generate the svg for a singular edge label.
- * @param label jQuery object of the label. 
+ * @param label jQuery object of the label.
  * @returns svg for the label
  */
 function addEdgeLabel (label) {
     const y = Number(label.css("top").match(/\d+/)[0]) + 15;
     const x = Number(label.css("left").match(/\d+/)[0]);
     const label_val = label.text();
-    return "<text x=\"" + x + "\" y=\"" + y+ "\">" 
+    return "<text x=\"" + x + "\" y=\"" + y+ "\">"
          + label_val + "</text>\n";
 }
 
+/**
+ * Parses a label of a JSAV Node. If the label is multiline, produces
+ * multiple <tspan> elements for each line.
+ * @param label jQuery object of the label.
+ * @returns svg for the label
+ */ 
 function parseLabel(label) {
     const parts = label.split("<br>");
     if (parts.length === 1) {
@@ -108,8 +114,8 @@ function parseLabel(label) {
 function addNode(node) {
     const label = parseLabel(node.attr("data-value"));
     const radius = Number(node.css("border-radius").match(/\d+/)[0]);
-    //add offset for top aligned vs mid aligned. 
-    const x = Number(node.css("left").match(/\d+/)[0]) + radius; 
+    //add offset for top aligned vs mid aligned.
+    const x = Number(node.css("left").match(/\d+/)[0]) + radius;
     const y = Number(node.css("top").match(/\d+/)[0]) + radius;
     const colour = rgbToHex(node.css("background-color"));
     const stroke = rgbToHex(node.css("border"));
@@ -117,10 +123,10 @@ function addNode(node) {
     // +5 offset to center single line text, -5 offset to center 2 line text
     const textOffset = (label === node.attr("data-value")) ? 5 : -5;
 
-    return "<g transform=\"translate(" + x + "," + y + ")\">\n" 
-         + "<circle r=\"" + radius +"\" stroke=\"" + stroke 
-         + "\" stroke-width=\"" + strokeWidth + "\" fill=\""+ colour 
-         + "\"></circle>\n" + "<text y=\"" + textOffset 
+    return "<g transform=\"translate(" + x + "," + y + ")\">\n"
+         + "<circle r=\"" + radius +"\" stroke=\"" + stroke
+         + "\" stroke-width=\"" + strokeWidth + "\" fill=\""+ colour
+         + "\"></circle>\n" + "<text y=\"" + textOffset
          + "\" text-anchor=\"middle\">" + label + "</text>\n</g>\n";
 }
 
@@ -129,14 +135,14 @@ function addTree () {
     var svg = "";
     // grab the nodes that do not have display=none or the class jsavnullnode
     const nodes = tree.find(".jsavtreenode").not(function() {
-            return $(this).css("display") === "none" || 
+            return $(this).css("display") === "none" ||
                 $(this).hasClass("jsavnullnode")
         });
     nodes.each(function() {svg += addNode($(this))})
 
     //Grab the edges that do not have the class jsavnulledge or opacity of 0.
     const edges = tree.find(".jsavedge").not(function() {
-            return $(this).hasClass("jsavnulledge") || 
+            return $(this).hasClass("jsavnulledge") ||
                 $(this).css("opacity") === "0";
         });
     edges.each(function() {svg += addEdge($(this))});
@@ -146,7 +152,7 @@ function addTree () {
 }
 
 /**
- * Function to add the graph of a page. Grabs each of the three graph 
+ * Function to add the graph of a page. Grabs each of the three graph
  * components: edges, edge labels, nodes.
  * @returns the graph's svg
  */
@@ -179,7 +185,7 @@ function addMatrix () {
         //$(this) = current row
         const cells = $(this).children(".jsavindex");
         const height = Number($(this).css("height").match(/\d+/)[0])
-        
+
         cells.each(function() {
             //$(this) = current cell
             const width = Number($(this).css("width").match(/\d+/)[0]);
@@ -190,10 +196,10 @@ function addMatrix () {
 
             svg += "<rect x=\" " + offsetX + "\" y=\""+ offsetY + "\" width=\""
                   + width + "\" height=\"" + height+ "\" fill=\""
-                  + colour + "\"></rect>\n" 
-                  + "<text x=\"" + textX + "\" y=\"" + textY 
+                  + colour + "\"></rect>\n"
+                  + "<text x=\"" + textX + "\" y=\"" + textY
                   + "\" text-anchor=\"middle\">" + text + "</text>\n";
-            
+
             offsetX += width;
         });
 
@@ -205,8 +211,8 @@ function addMatrix () {
 }
 
 /**
- * Create an svg image from the current state of the canvas. 
- * @returns svg data string. 
+ * Create an svg image from the current state of the canvas.
+ * @returns svg data string.
  */
 function createSvg ()  {
     //Make sure that top & left are 0
@@ -222,7 +228,7 @@ function createSvg ()  {
 
 module.exports = {
     createSvg,
-    addNode, 
+    addNode,
     addEdge,
     addEdgeLabel,
     offset,
