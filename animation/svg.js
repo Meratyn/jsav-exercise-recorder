@@ -88,13 +88,25 @@ function addEdgeLabel (label) {
          + label_val + "</text>\n";
 }
 
+function parseLabel(label) {
+    const parts = label.split("<br>");
+    if (parts.length === 1) {
+        return label;
+    }
+    var newLabel = "";
+    parts.forEach((part, index) => {
+        newLabel += "<tspan x=\"0\" dy=\"" + index + "em\">" + part + "</tspan>";
+    })
+    return newLabel;
+}
+
 /**
  * Generate the svg data for an individual node.
  * @param node jQuery object of the node
  * @returns svg for the node
  */
 function addNode(node) {
-    const label = node.attr("data-value");
+    const label = parseLabel(node.attr("data-value"));
     const radius = Number(node.css("border-radius").match(/\d+/)[0]);
     //add offset for top aligned vs mid aligned. 
     const x = Number(node.css("left").match(/\d+/)[0]) + radius; 
@@ -102,12 +114,14 @@ function addNode(node) {
     const colour = rgbToHex(node.css("background-color"));
     const stroke = rgbToHex(node.css("border"));
     const strokeWidth = node.css("stroke-width");
+    // +5 offset to center single line text, -5 offset to center 2 line text
+    const textOffset = (label === node.attr("data-value")) ? 5 : -5;
 
     return "<g transform=\"translate(" + x + "," + y + ")\">\n" 
          + "<circle r=\"" + radius +"\" stroke=\"" + stroke 
          + "\" stroke-width=\"" + strokeWidth + "\" fill=\""+ colour 
-         + "\"></circle>\n" + "<text y=\"5\" text-anchor=\"middle\">" 
-         + label + "</text>\n</g>\n";
+         + "\"></circle>\n" + "<text y=\"" + textOffset 
+         + "\" text-anchor=\"middle\">" + label + "</text>\n</g>\n";
 }
 
 function addTree () {
