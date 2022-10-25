@@ -56,7 +56,7 @@ global.JSAVrecorder = {
   },
 
   // Converts an exercise recording into a JSON string where all non-ASCII
-  escapeRecording: async function(recording) {
+  escapeRecording: function(recording) {
     // 1. Convert JSON data into (Unicode) string so that in can be stored as
     // text in the database of A+ LMS.
     const stringified = JSON.stringify(recording);
