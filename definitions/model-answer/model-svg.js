@@ -103,6 +103,7 @@ function addTable() {
  */
 function addTree() {
   const tree = $(".jsavmodelanswer").find(".jsavtree");
+  if (tree.length === 0) return;
   var modelSvg = "";
   // grab the nodes that do not have display=none, the class jsavnullnode,
   // no data-value, no parent field, or no parent and are not the root
