@@ -84,9 +84,7 @@ function recordModelAnswerStep(exercise, gradable) {
   // console.log(exercise);
   const redoArray = exercise.modelav._redo;
   if (redoArray.length >= 0) {
-    const e = getChangedEdge(exercise.modelStructures.filter(
-      ds => $(ds.element).hasClass("jsavgraph")
-    )[0]);
+    const e = getChangedDataStructure(exercise.modelStructures)
     const table = getTable();
     const svg = modelSvg.createSvg();
     const modelAnswerStep = {
@@ -110,6 +108,23 @@ function recordModelAnswerStep(exercise, gradable) {
     return (redoArray.length !== 0);
   }
   return false;
+}
+
+/**
+ * If there are multiple data structures, iterate over them all to find the 
+ * one where the edge has changed. Else find changed edge of the singular 
+ * data structure.
+ * @param datastructure a datastructure object or an array of data structure
+ * objects. 
+ * @returns 
+ */
+function getChangedDataStructure (datastructure) {
+  if (Array.isArray(datastructure)) {
+    return getChangedEdge(datastructure.filter(
+      ds => $(ds.element).hasClass("jsavgraph")
+    )[0]);
+  }
+  return getChangedEdge(datastructure);
 }
 
 // Records the values of the data structures
