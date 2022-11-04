@@ -41,6 +41,16 @@ function getJaalID (jsavID, type) {
     return jaalID;
 }
 
+function resetJaalIDs () {
+    ids.edge = 1;
+    ids.graph = 1;
+    ids.keyvalue = 1;
+    ids.matrix = 1;
+    ids.node = 1;
+    jsavToJaalID.clear();
+}
+
 module.exports = {
-    getJaalID
+    getJaalID,
+    resetJaalIDs,
 }
