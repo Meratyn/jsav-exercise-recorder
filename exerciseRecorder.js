@@ -12,6 +12,7 @@ const def_func = require('./definitions/definitions');
 const init_state_func = require('./initialState/initialState');
 const anim_func = require('./animation/animation');
 const validator_func = require('./validation/validator');
+const jaalIDs = require('./dataStructures/jaalID');
 
 // Services module is not needed, because OpenDSA code will handle the
 // communication to A+ LMS through mooc-grader.
@@ -265,6 +266,9 @@ function passEvent(eventData) {
       break;
     case 'jsav-exercise-reset':
       // User clicks the Reset button
+      modelAnswer.opened = false;
+      modelAnswer.ready = false;
+      jaalIDs.resetJaalIDs();
       console.warn('Resetting submission');
       submission.reset();
       break;
