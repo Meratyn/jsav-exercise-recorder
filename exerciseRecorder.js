@@ -95,7 +95,22 @@ global.JSAVrecorder = {
   // Adds an extra entry into the Metadata section of the recording.
   addMetadata: function(name, data) {
     submission.addCustomMetadata(name, data);
-  }
+  },
+
+  // Adds custom event fields to the next animation event that will be recorded.
+  // Parameters:
+  //   data: object, e.g.
+  //         {
+  //             "myField1": "some data",
+  //             "myField2": ["more", "data"]
+  //         }
+  appendAnimationEventFields: function(data) {
+    console.log("Custom event field requested: ", data);
+    anim_func.addPendingEventFields(data);
+  },
+
+  getJaalID: jaalIDs.getJaalID,
+  jsavObjectToJaalID: jaalIDs.jsavObjectToJaalID
 }
 
 let jsav = {};

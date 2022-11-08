@@ -9,9 +9,15 @@ const svg = require('./svg');
 
 // Really Fast Deep Clone library. https://github.com/davidmarkclements/rfdc
 const clone = require('rfdc')()
+
 // state variable to keep track of last known state
 // used to compare & find what has been changed.
-var state = undefined;
+let state = undefined;
+
+// Custom data which the exercise can request to be stored in an upcoming
+// animation event.
+
+let customEventData = undefined;
 
 /**
  * Get the current data structure state, generate svg image, and then add
@@ -149,6 +155,12 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
     newState.object = getClickedObject(dataStructuresState);
   }
 
+  if (customEventData !== undefined) {
+    console.log("Got custom event data: ", customEventData);
+    Object.assign(newState, customEventData);
+    customEventData = undefined;
+  }
+
   try {
     submission.addAnimationStepSuccesfully.gradableStep(newState);
   } catch (error) {
@@ -172,6 +184,17 @@ function handleGradeButtonClick(eventData) {
   }
 }
 
+// Adds custom event fields to the next event that will be recorded.
+// Parameters:
+//   data: object, e.g.
+//         {
+//             "myField1": "some data",
+//             "myField2": ["more", "data"]
+//         }
+function addPendingEventFields(data) {
+  customEventData = data;
+}
+
 module.exports = {
   handleArrayEvents: arrayAnimation.handleArrayEvents,
   handleNodeEvents: nodeAnimation.handleNodeEvents,
@@ -179,5 +202,6 @@ module.exports = {
   handleGradableStep,
   handleGradeButtonClick,
   handleModelAnswer: modelAnswerAnimation.handleModelAnswer,
-  edgeChanged
+  edgeChanged,
+  addPendingEventFields
 }

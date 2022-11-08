@@ -44,7 +44,7 @@ function getEdge(edge) {
     }
   }
   let jaalEdge = {
-    id: jaalID.getJaalID(startnode + endnode, "edge"),
+    id: jaalID.jsavObjectToJaalID(edge, "Edge"),
     node: [startnode, endnode],
     style: cssClasses.join(" ")
   }
