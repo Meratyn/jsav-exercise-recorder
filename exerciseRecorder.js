@@ -105,7 +105,6 @@ global.JSAVrecorder = {
   //             "myField2": ["more", "data"]
   //         }
   appendAnimationEventFields: function(data) {
-    console.log("Custom event field requested: ", data);
     anim_func.addPendingEventFields(data);
   },
 

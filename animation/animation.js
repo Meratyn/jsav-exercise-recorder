@@ -156,7 +156,6 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
   }
 
   if (customEventData !== undefined) {
-    console.log("Got custom event data: ", customEventData);
     Object.assign(newState, customEventData);
     customEventData = undefined;
   }
@@ -164,7 +163,7 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
   try {
     submission.addAnimationStepSuccesfully.gradableStep(newState);
   } catch (error) {
-    console.warn(`Could not add state change to animatio: ${error}`)
+    console.warn(`Could not add state change to animation: ${error}`)
   }
 }
 
