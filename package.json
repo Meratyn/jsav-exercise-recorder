@@ -5,7 +5,8 @@
   "main": "exerciseRecorder.js",
   "scripts": {
     "build": "npx genversion metadata/version.js && browserify exerciseRecorder.js > build/jsav-exercise-recorder-bundle.js",
-    "test": "jest --watch --verbose"
+    "test": "jest --watch --verbose",
+    "uglify-exercises": "./uglify-exercises.sh"
   },
   "keywords": [
     "jsav"
@@ -41,6 +42,7 @@
     "browserify-zlib": "^0.2.0",
     "he": "^1.2.0",
     "npm": "^8.13.2",
-    "rfdc": "^1.1.4"
+    "rfdc": "^1.1.4",
+    "uglify-js": "^3.17.4"
   }
 }
