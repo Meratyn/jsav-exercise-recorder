@@ -5,9 +5,10 @@
 
 const submission = require('../submission/submission');
 
-// Prints a JAAL edge to the console
-// Parameters:
-// edge: a JAAL edge
+/**
+ * Prints a JAAL edge to the console
+ * @param edge: a JAAL edge
+ *//
 function printEdge(edge) {
   let graph = submission.state().initialState.dataStructures[0];
 

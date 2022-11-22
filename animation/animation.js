@@ -139,28 +139,28 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
   // everything else      -> "click"
   const type = eventData.type === 'jsav-exercise-undo' ? 'undo' : 'click';
 
-  const animation = submission.state().animation;
+  // Current step: the step number (a positive integer).
   const currentStep = eventData.currentStep ||
                       animation[animation.length - 1].currentStep +1;
 
   const startTime = submission.state().metadata.recordingStarted;
-  const tstamp = eventData.tstamp || new Date();
+  const timeStamp = eventData.tstamp || new Date();
+  const msecFromStart = (Date.parse(timeStamp) - Date.parse(startTime));
 
   const newState = {
     type: type,
-    time: (Date.parse(tstamp) - Date.parse(startTime)),
+    time: msecFromStart,
     currentStep: currentStep,
     image: svgImage,
     gradable: (type === "click"),
   };
 
-  if (type === "click") {
+  if (newState.gradable) {
     newState.object = getClickedObject(dataStructuresState);
-  }
-
-  if (customEventData !== undefined) {
-    Object.assign(newState, customEventData);
-    customEventData = undefined;
+    if (customEventData !== undefined) {
+      Object.assign(newState, customEventData);
+      customEventData = undefined;
+    }
   }
 
   try {
