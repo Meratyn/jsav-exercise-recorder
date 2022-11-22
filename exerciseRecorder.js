@@ -223,7 +223,10 @@ function passEvent(eventData) {
       init_state_func.setNewId(eventData);
       break;
     case 'jsav-exercise-undo':
-      // User clicks the Undo button
+      // User clicks the Undo button.
+      // A wild guess: there is a timeout of 100 milliseconds to ensure that
+      // JSAV has completed the undo action before recording the new state of
+      // the data structures.
       setTimeout(() => anim_func.handleGradableStep(exercise, eventData), 100);
       break;
     case 'jsav-exercise-gradeable-step':

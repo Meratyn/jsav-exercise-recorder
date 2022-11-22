@@ -76,7 +76,6 @@ function edgeChanged(edge, lastState) {
     if (lastState[i].id === edge.id &&
         lastState[i].style !== edge.style)
     {
-      debug.printEdge(edge);
       return true;
     }
   }
@@ -155,12 +154,13 @@ function addStepToSubmission(eventData, dataStructuresState, svgImage) {
     gradable: (type === "click"),
   };
 
-  if (newState.gradable) {
-    newState.object = getClickedObject(dataStructuresState);
-    if (customEventData !== undefined) {
-      Object.assign(newState, customEventData);
-      customEventData = undefined;
-    }
+  let object = getClickedObject(dataStructuresState);
+  if (object !== undefined) {
+    newState.object = object;
+  }
+  if (customEventData !== undefined) {
+    Object.assign(newState, customEventData);
+    customEventData = undefined;
   }
 
   try {
