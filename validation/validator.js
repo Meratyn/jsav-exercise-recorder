@@ -7,7 +7,8 @@
  * in the schemas folder.
  */
 
-const jaalVersion = "2.0rc1";
+const jaalVersion = require('./JAAL/spec/version');
+
 const Ajv2020 = require("ajv/dist/2020")
 const schemaDependencies = [
   require("./JAAL/spec/schemas/definitions.json"),
@@ -35,7 +36,7 @@ function validateData (data) {
 
     const validation_passed = validate(data);
     if (!validation_passed) {
-        console.log("Data does not conform to JAAL " + jaalVersion + ".");      
+        console.log("Data does not conform to JAAL " + jaalVersion + ".");
         console.log(validate.errors);
     } else {
         console.log("Data conforms to JAAL " + jaalVersion + ".");

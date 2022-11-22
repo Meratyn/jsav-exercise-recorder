@@ -1,5 +1,6 @@
 const submission = require('../submission/submission');
 const version = require('./version');
+const jaalVersion = require('../validation/JAAL/spec/version');
 
 /*
  * Constructs standard metadata of the exercise and recording.
@@ -9,7 +10,7 @@ function setExerciseMetadata(metadata) {
   const d = new Date();
   metadata.recordingStarted = d.toISOString();
   metadata.recordingTimezone = -1 * d.getTimezoneOffset() / 60; // hours to UTC
-  metadata.jaalVersion = "2.0";
+  metadata.jaalVersion = jaalVersion;
   metadata.jaalGenerator = "JSAV Exercise Recorder " + version;
   const windowLocation = window.location.href.split('?')[0];
   const linkParts = windowLocation.split("/");
