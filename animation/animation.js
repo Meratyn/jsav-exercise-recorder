@@ -3,6 +3,7 @@ const arrayAnimation = require('./array/array-animation');
 const nodeAnimation = require('./node/node-animation');
 const edgeAnimation = require('./edge/edge-animation');
 const modelAnswerAnimation = require('./model-answer/model-answer-animation');
+const debug = require('../utils/debug');
 const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
 const svg = require('./svg');
@@ -66,15 +67,17 @@ function submissionDataStructures() {
  * Compare a singular edge object against an edge list to see if the
  * style has been changed or not. Finds the matching edge in the last
  * known state and compares the style against that.
- * @param edge object to see if it has been changed
+ * @param edge JAAL edge to see if it has been changed
  * @param lastState array of edge objects of the last known state
  * @returns whether the edge has been changed or not.
  */
 function edgeChanged(edge, lastState) {
   for (var i = 0; i < lastState.length; i++) {
     if (lastState[i].id === edge.id &&
-        lastState[i].style !== edge.style) {
-          return true;
+        lastState[i].style !== edge.style)
+    {
+      debug.printEdge(edge);
+      return true;
     }
   }
   return false;
