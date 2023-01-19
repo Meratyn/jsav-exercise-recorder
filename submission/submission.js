@@ -5,7 +5,7 @@
 // recording in JAAL format.
 //
 const helpers = require('./helpers');
-const valid = require('./validate');
+// const valid = require('./validate');
 
 
 
@@ -94,16 +94,10 @@ function stateAsJSON() {
  * Adds the standard metadata entry to the submission.
  */
 function addStandardMetadata(metadata) {
-  if(valid.metadata(metadata)) {
-    // Assign metadata entry by entry, because at this point of execution,
-    // the exercise might have called addCustomMetadata() and we don't want to
-    // overwrite that.
-    for (const x in metadata) {
-      submission.metadata[x] = metadata[x];
-    }
-    return true;
+  for (const x in metadata) {
+    submission.metadata[x] = metadata[x];
   }
-  return false;
+  return true;
 }
 
 /**
@@ -120,36 +114,24 @@ function addCustomMetadata(name, data) {
 }
 
 function addStyle(style) {
-  if (valid.style(style)) {
-    submission.definitions.style = { ...style };
-    return true;
-  }
-  return false;
+  submission.definitions.style = { ...style };
+  return true;
 }
 
 function addScore(score) {
-  if (valid.score(score) && exerciseIsInitialized()) {
-    submission.definitions.score = { ...score };
-    return true;
-  }
-  return false;
+  submission.definitions.score = { ...score };
+  return true;
 };
 
 function addOptions(options) {
-  if(valid.options(options)) {
-    submission.definitions.options = { ...options };
-    return true;
-  }
-  return false;
+  submission.definitions.options = { ...options };
+  return true;
 }
 
 function addModelAnswerFunction(modelAnswerFunction) {
-  if (valid.modelAnswerFunction(modelAnswerFunction)) {
-    // TODO: Implement model answer function and shift that data.
-    submission.definitions.modelAnswer = [];
-    return true;
-  }
-  return false;
+  // This is a remnant from JAAL 1.0, is this still needed?
+  submission.definitions.modelAnswer = [];
+  return true;
 }
 
 function addModelAnswerStep(step, major) {
@@ -167,65 +149,38 @@ function addModelAnswerInitialSvg(svg) {
 }
 
 function addDataStructure(ds) {
-  if(valid.dataStructure(ds)) {
-    submission.initialState.dataStructures.push(ds);
-    return true;
-  }
-  return false;
+  submission.initialState.dataStructures.push(ds);
+  return true;
 }
 
 function addInitialStateSvg(svg) {
   submission.initialState.svg = svg;
 }
 
-// JAAL 1.0 HTML
-// function addAnimationHTML(html) {
-//   if(valid.animationHTML(html)) {
-//     // submission.initialState.animationHTML = html;
-//     submission.initialState.animationHTML = " ";
-//     return true;
-//   }
-//   return false;
-// }
 
 function setDsId(dsIndex, dsId) {
-  if(valid.dsId(dsId)) {
-    submission.initialState.dataStructures[dsIndex].id = dsId;
-    return true;
-  }
-  return false;
+  submission.initialState.dataStructures[dsIndex].id = dsId;
+  return true;
 }
 
 function addDsClick(data) {
-  if(valid.dsClick(data) && exerciseIsInitialized()) {
-    submission.animation.push(data);
-    return true;
-  }
-  return false;
+  submission.animation.push(data);
+  return true;
 }
 
 function addGradableStep(data) {
-  if (valid.gradableStep(data) && exerciseIsInitialized()) {
-    submission.animation.push(data);
-    return true;
-  }
-  return false;
+  submission.animation.push(data);
+  return true;
 }
 
 function addGradeButtonClick(data) {
-  if(valid.gradeButtonClick(data) && exerciseIsInitialized()) {
-    submission.animation.push(data);
-    return true;
-  }
-  return false;
+  submission.animation.push(data);
+  return true;
 }
 
 function addWatchedModelAnswerStep(data) {
-  if(valid.watchedModelAnswerStep(data) && exerciseIsInitialized()) {
-    submission.animation.push(data);
-    return true;
-  }
-  return false;
+  submission.animation.push(data);
+  return true;
 }
 
 function checkAndFixLastAnimationStep() {
@@ -243,18 +198,6 @@ function checkAndFixLastAnimationStep() {
   return true;
 }
 
-function exerciseIsInitialized() {
-  // JAAL 1.0 HTML
-  // if(submission.initialState.animationHTML.length === 0){
-  //   let message = 'Animation initialization data is missing.\n'
-  //   + 'Exercise is not being recorded for animation: '
-  //   + 'did the exercise emit javas-exercise-init event?'
-  //   + '\nIf you are submitting again the same exercise, try first reloading the page'
-  //   console.warn(message);
-  //   return false;
-  // }
-  return true;
-}
 
 const addDefinitionSuccesfully = {
   style: addStyle,
