@@ -26,9 +26,6 @@ function removeTrimLineBreaks(string){
   return string.split(/\r?\n|\r/g).map(e => e.trim()).join('');
 }
 
-function getExerciseHTML(exercise) {
-  return exercise.jsav.container[0].innerHTML;
-}
 
 function getPopUp(text) {
   const modalDivStyle = {
@@ -67,11 +64,8 @@ function getPopUp(text) {
 }
 
 
-const helpers = {
+module.exports = {
   extractTextByClassName,
   extractTextByTagName,
-  getExerciseHTML,
   getPopUp
 }
-
-module.exports = helpers;
