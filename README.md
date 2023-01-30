@@ -67,6 +67,15 @@ is the following.
 JAAL specification and documentation is included as a git submodule in the
 directory `validation/JAAL`.
 
+## New designs of JSAV exercises
+
+This repository contains new designs of JSAV exercises.
+
+The exercise code itself is at `Testbench/OpenDSA/AV/Development`.
+See `testbench/README.md` for how to start the test bench.
+
+The design documentation of the exercises is at `doc/exercise_design`.
+
 ## Source code organisation
 
 The Exercise Recorder is implemented on [Node.js](https://nodejs.org/en/).
@@ -107,7 +116,7 @@ the grade button.
 See doc/aplus_integration/aplus_integration.md.
 
 ### Running the tests
-The tests are written with Jest. To run the tests do this the
+The tests are written with Jest. To run the tests do t/JSAV-exerciseshis the
 `jsav-exercise-recorder` directory:
 
     npm run test
