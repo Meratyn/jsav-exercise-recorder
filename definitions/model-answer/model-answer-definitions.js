@@ -5,7 +5,6 @@
 
 const submission = require('../../submission/submission');
 const animation = require('../../animation/animation');
-const jaalID = require('../../dataStructures/jaalID');
 const graph = require('../../dataStructures/graph/graph');
 const modelSvg = require('./model-svg');
 // Global var to keep track of the last-known edge state.
@@ -127,61 +126,11 @@ function getChangedDataStructure (datastructure) {
   return getChangedEdge(datastructure);
 }
 
-// Records the values of the data structures
-// in the current step of the model answer.
-// JAAL: definitions.modelAnswer.steps[i].dataStructures
-function dataStructuresNode(exercise) {
-  const modelStructures = exercise.modelStructures;
-  const stepDSvalues = [];
-  if (Array.isArray(modelStructures)) {
-    modelStructures.forEach((item) => {
-      stepDSvalues.push([ ...item._values || 'undefined' ]);
-    });
-  } else {
-    stepDSvalues.push([ ...modelStructures._values || 'undefined' ]);
-  }
-  return stepDSvalues;
-}
-
-// JAAL: definitions.modelAnswer.steps[i].operations
-function operationsNode(redoArray) {
-  if (redoArray.length === 0) {
-    return []
-  }
-  const operations = redoArray[0].operations;
-  let stepOperations = [];
-  for (const op in operations) {
-    stepOperations.push({
-      args: getFormattedOperationArgs(operations[op].args),
-      effect: operations[op].effect.toString(),
-    })
-  }
-  return stepOperations;
-}
-
-// JAAL: definitions.modelAnswer.steps[i].operations[j].args
-function getFormattedOperationArgs(args) {
-  const formattedArgs = {};
-  for (const arg in args) {
-    formattedArgs[arg] =
-      (typeof(args[arg]) !== 'object' || Array.isArray(args[arg])) ?
-      args[arg] :
-      `Converted to string when recording to avoid cyclic object value: ${args[arg].toString()}`
-  }
-  return formattedArgs;
-}
 
 function getNarration() {
   return $('.jsavmodelanswer .jsavoutput').children().html();
 }
 
-// JAAL: definitions.modelAnswer.steps[i].html
-function getModelAnswerStepHTML() {
-  let counterHTML = $('.jsavmodelanswer .jsavcounter').html();
-  let outputHTML = $('.jsavmodelanswer .jsavoutput').html();
-  let canvasHTML = $('.jsavmodelanswer .jsavcanvas').html();
-  return { counterHTML,  outputHTML, canvasHTML };
-}
 
 // Returns the number of the current step in the model answer slideshow
 function modelAnswerProgress() {

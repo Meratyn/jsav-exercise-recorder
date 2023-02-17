@@ -1,72 +1,14 @@
-const recorder = require('../exerciseRecorder');
 const submission = require('../submission/submission');
-const helpers = require('../utils/helperFunctions');
 const dataStructures = require('../dataStructures/dataStructures');
 const svg = require('../animation/svg')
 
 function setInitialDataStructures(exercise, passEvent) {
-  const initialStructures = exercise.initialStructures;
   dataStructures.getDataStructuresFromExercise(exercise,passEvent).forEach(ds => {
     submission.addInitialStateSuccesfully.dataStructure(ds);
   });
   submission.addInitialStateSuccesfully.addInitialStateSvg(svg.createSvg());
 }
 
-function moreThanOneDs(initialStructures) {
-  return Array.isArray(initialStructures);
-}
-
-// function someIdMissing(exercise) {
-//   const initialStructures = exercise.initialStructures;
-//   // If initialDataStructures is an Array, it means there is more than one data structure
-//   if(Array.isArray(initialStructures)) {
-//     initialStructures.forEach(ds => {
-//       const htmlElement = ds.element['0'];
-//       if(!htmlElement.id) return true;
-//     })
-//     return false;
-//   }
-//   return !!initialStructures.element['0'].id;
-// }
-
-// function fixMissingIds(exercise, passEvent) {
-//   const initialStructures = exercise.initialStructures;
-//   if(Array.isArray(initialStructures)) {
-//     initialStructures.map(ds => {
-//       const htmlElement = ds.element['0'];
-//       if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
-//     })
-//   } else {
-//     const htmlElement = initialStructures.element['0'];
-//     if(!htmlElement.id) handleMissingId(htmlElement, passEvent);
-//   }
-// }
-
-function handleMissingId(htmlElement, passEvent) {
-  tempId = `tempid-${Math.random().toString().substr(2)}`;
-  htmlElement.onclick = ((clickData) => {
-    passEvent({
-    type: 'recorder-set-id',
-    tempId: tempId,
-    newId: htmlElement.id
-    })
-    htmlElement.onclick = null;
-  });
-  return tempId;
-}
-
-function getDataStructureOptions(options) {
-  const filteredOptions = {};
-  for(const key in options) {
-    const option = options[key];
-    if(typeof(option) === 'function') {
-      filteredOptions[key] = option.name;
-    } else if (typeof(option) !== 'object') {
-      filteredOptions[key] = option;
-    }
-  }
-  return filteredOptions;
-}
 
 function setNewId(eventData) {
   const initialState = submission.state().initialState;
@@ -76,17 +18,8 @@ function setNewId(eventData) {
   }
 }
 
-// JAAL 1.0 HTML
-// function setAnimationHTML(exercise) {
-//   const html = helpers.getExerciseHTML(exercise);
-//   // JAAL 1.0 HTML
-//   // submission.addInitialStateSuccesfully.animationHTML(html);
-// }
 
 module.exports = {
-  // fixMissingIds,
   setInitialDataStructures,
   setNewId,
-  // setAnimationHTML,
-  // someIdMissing,
 }
