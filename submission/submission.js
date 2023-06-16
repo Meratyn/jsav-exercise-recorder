@@ -5,9 +5,6 @@
 // recording in JAAL format.
 //
 const helpers = require('./helpers');
-// const valid = require('./validate');
-
-
 
 // TODO: set all try catch statements
 
@@ -30,8 +27,6 @@ const submission =  {
     dataStructures: [],
     svg: "",
     modelSvg: "",
-    // JAAL 1.0 HTML
-    // animationHTML: ""
   },
   animation: []
 };
@@ -59,8 +54,6 @@ function reset() {
     dataStructures: [],
     svg: "",
     modelSvg: "",
-    // JAAL 1.0 HTML
-    // animationHTML: ""
   };
   submission.animation = [];
 }
@@ -74,8 +67,6 @@ function state() {
     dataStructures: submission.initialState.dataStructures.map(ds => helpers.copyObject(ds)),
     svg: submission.initialState.svg,
     modelSvg: submission.initialState.modelSvg
-    // JAAL 1.0 HTML
-    // animationHTML: submission.initialState.animationHTML
   }
   const animation = submission.animation.map(a => helpers.copyObject(a));
   return {
@@ -86,9 +77,6 @@ function state() {
   };
 }
 
-function stateAsJSON() {
-  return JSON.stringify(submission);
-}
 
 /**
  * Adds the standard metadata entry to the submission.
@@ -178,21 +166,6 @@ function addWatchedModelAnswerStep(data) {
   return true;
 }
 
-function checkAndFixLastAnimationStep() {
-  try {
-    let animation = submission.animation
-    let lastIndex = animation.length -1
-    let lastStep = animation[lastIndex]
-    if(lastStep.type === 'model-recorded') {
-      submission.animation.pop();
-    }
-  } catch (error) {
-    console.warn(`Could not remove model answer from last animation step: ${error}`)
-    return false;
-  }
-  return true;
-}
-
 
 const addDefinitionSuccesfully = {
   style: addStyle,
@@ -206,8 +179,6 @@ const addInitialStateSuccesfully = {
   setDsId,
   addInitialStateSvg,
   addModelAnswerInitialSvg
-  // JAAL 1.0 HTML
-  // animationHTML: addAnimationHTML,
 };
 
 const addAnimationStepSuccesfully = {
@@ -221,11 +192,9 @@ const addAnimationStepSuccesfully = {
 module.exports = {
   reset,
   state,
-  stateAsJSON,
   addStandardMetadata,
   addCustomMetadata,
   addDefinitionSuccesfully,
   addInitialStateSuccesfully,
   addAnimationStepSuccesfully,
-  checkAndFixLastAnimationStep
 }
