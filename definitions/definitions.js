@@ -10,16 +10,6 @@ function setExerciseOptions(eventData) {
   });
 }
 
-// JAAL: definitions.modelAnswer.function
-function setDefinitions(exercise) {
-  try {
-    modelAnswer.recordModelAnswerFunction(exercise.options.model.toString());
-  } catch (error) {
-    console.warn(`Could not set model answer when recording animation: ${error.message}`);
-    return false;
-  }
-  return true
-}
 
 function setFinalGrade(eventData) {
   const score = {
@@ -58,10 +48,8 @@ function getExerciseInstructions(initialHTML) {
 
 module.exports = {
   setExerciseOptions,
-  setDefinitions,
   setFinalGrade,
   modelAnswer: {
-    recordFunction: modelAnswer.recordModelAnswerFunction,
     recordStep: modelAnswer.recordModelAnswerStep,
     progress: modelAnswer.modelAnswerProgress
   }

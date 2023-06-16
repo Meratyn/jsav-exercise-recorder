@@ -194,11 +194,6 @@ function passEvent(eventData) {
       exercise = eventData.exercise;
       jsav = exercise.jsav;
       metad_func.setExerciseMetadata(getMetadataFromURLparams())
-      def_func.setDefinitions(exercise);
-      // init_state_func.fixMissingIds(exercise, passEvent);
-      // if(init_state_func.someIdMissing(exercise)) {
-      //   init_state_func.fixMissingIds(exercise, passEvent);
-      // }
       init_state_func.setInitialDataStructures(exercise, passEvent);
       // JAAL 1.0 HTML
       // init_state_func.setAnimationHTML(exercise);

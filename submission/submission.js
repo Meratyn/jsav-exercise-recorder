@@ -128,11 +128,6 @@ function addOptions(options) {
   return true;
 }
 
-function addModelAnswerFunction(modelAnswerFunction) {
-  // This is a remnant from JAAL 1.0, is this still needed?
-  submission.definitions.modelAnswer = [];
-  return true;
-}
 
 function addModelAnswerStep(step, major) {
   const length = submission.definitions.modelAnswer.length;
@@ -203,7 +198,6 @@ const addDefinitionSuccesfully = {
   style: addStyle,
   score: addScore,
   options: addOptions,
-  modelAnswerFunction: addModelAnswerFunction,
   modelAnswerStep: addModelAnswerStep,
 };
 

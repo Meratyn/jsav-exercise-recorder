@@ -10,17 +10,6 @@ const modelSvg = require('./model-svg');
 // Global var to keep track of the last-known edge state.
 var state = undefined;
 
-// Adds the model answer JavaScript function as a string.
-// JAAL: definitions.modelAnswer.function
-function recordModelAnswerFunction(modelAnswerFunction) {
-  try {
-    submission.addDefinitionSuccesfully
-              .modelAnswerFunction(JSON.stringify(modelAnswerFunction));
-  } catch (error) {
-    throw error;
-  }
-  return true;
-}
 
 /**
  * Check whether there is a change in one of the edges that would indicate
@@ -141,7 +130,6 @@ function modelAnswerProgress() {
 
 
 module.exports = {
-  recordModelAnswerFunction,
   recordModelAnswerStep,
   modelAnswerProgress,
 }
