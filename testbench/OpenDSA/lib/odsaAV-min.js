@@ -830,7 +830,8 @@
       dispCorrect = correct;
       dispTotal = total;
     }
-    var msg = translator("yourScore") + " " + dispCorrect + " / " + dispTotal +
+    // var msg = translator("yourScore") + " " + dispCorrect + " / " + dispTotal +
+    var msg = translator("yourScore") + " " + correct + " / " + total +
       "\n";
     return msg + "\n";
   }
