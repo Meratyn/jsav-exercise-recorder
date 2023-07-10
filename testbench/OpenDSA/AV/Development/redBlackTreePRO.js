@@ -2,6 +2,60 @@
 (function ($) {
   "use strict";
   // AV variables
+
+  JSAV._types.ds.RedBlackTreeNode.prototype.createLabel = function (val) {
+    var valtype = typeof(newValue)
+    this.element
+      .removeClass("jsavnullnode")
+      .find(".jsavvalue")
+      .html(this._valstring(val))
+      .end()
+      .attr({"data-value": val, "data-value-type": valtype});
+    if (this.label) {
+      this.label.clear();
+    }
+    this.label = this.jsav.label(val, {container: this.element});
+    this.label.element.css({
+      left: this.element.outerWidth() - 42,
+      top: - this.label.element.outerHeight() - 5
+    });
+    //set z-index to prevent the label from disappearing behind the edge to its nodes parent node
+    //if z-index < 110 the label disappears behind the edge
+    this.element.css({"z-index": 110});
+  };
+
+  JSAV._types.ds.RedBlackTreeNode.prototype.clearLabel = function () {
+    if (!this.label) { return; }
+    this.label.clear();
+  };
+  
+  JSAV._types.ds.RedBlackTreeNode.prototype.getLabel = function () {
+    return this.label;
+  };
+
+  // //modified to remove label when value is empty and create label when it's not empty
+  // JSAV._types.ds.RedBlackTreeNode.prototype._setvalue = JSAV.anim(function (newValue) {
+  //   var oldVal = this.value(),
+  //     valtype = typeof(newValue);
+  //   if (typeof oldVal === "undefined") { oldVal = ""; }
+  //   if (valtype === "object") { valtype = "string"; }
+  //   this.element
+  //     .removeClass("jsavnullnode")
+  //     .find(".jsavvalue")
+  //     .html(this._valstring(newValue))
+  //     .end()
+  //     .attr({"data-value": newValue, "data-value-type": valtype});
+  //   if (newValue === "") {
+  //     this.clearLabel();
+  //   } else if (newValue !== "jsavnull") {
+  //     this.createLabel(newValue);
+  //   }
+  //   if (newValue === "jsavnull") {
+  //     this.element.addClass("jsavnullnode");
+  //   }
+  //   return [oldVal];
+  // });
+
   var insertValues = [],
       tree,
       stack,
@@ -94,6 +148,8 @@
       //find emptynode where the value will be inserted
       var node = modelTree.insert(insertValues[i]).removeClass("emptynode");
       node.addClass("highlighted");
+      node.createLabel("u");
+      console.log("added label: ", node);
       modelTree.addEmptyNodes();
       modelTree.layout();
       jsav.umsg(interpret("av_insert"));
@@ -108,6 +164,7 @@
         }
         highlighted.removeClass("highlighted");
       }
+      node.clearLabel();
       node.removeClass("highlighted");
     }
 
